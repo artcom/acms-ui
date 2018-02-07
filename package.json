@@ -6,7 +6,7 @@
     "build": "NODE_ENV=production webpack -p",
     "start": "http-server ./public/ -p ${PORT}",
     "release": "./scripts/release",
-    "watch": "NODE_ENV=development webpack-dev-server -d"
+    "watch": "NODE_ENV=development webpack-dev-server --port ${PORT} -d"
   },
   "dependencies": {
     "axios": "^0.16.2",
