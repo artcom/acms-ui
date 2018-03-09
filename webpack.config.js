@@ -1,6 +1,7 @@
 /* eslint-disable import/no-commonjs */
 
 const path = require("path")
+const webpack = require("webpack");
 
 const publicPath = path.join(__dirname, "public")
 
@@ -27,6 +28,12 @@ module.exports = {
       }
     ]
   },
+  plugins: [
+    new webpack.EnvironmentPlugin([
+      "GIT_JSON_API_URI",
+      "ASSET_SERVER_URI"
+    ])
+  ],
   devServer: {
     contentBase: publicPath,
     host: "0.0.0.0",
