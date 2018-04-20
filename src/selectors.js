@@ -1,6 +1,7 @@
 import Immutable from "immutable"
 import kebabCase from "lodash/kebabCase"
 import mapValues from "lodash/mapValues"
+import isUndefined from "lodash/isUndefined"
 import { createSelector } from "reselect"
 
 import { evaluate } from "./condition"
@@ -82,6 +83,10 @@ export const getNewEntityValues = createSelector(
 )
 
 function defaultValue(field) {
+  if (!isUndefined(field.default)) {
+    return field.default
+  }
+
   switch (field.type) {
     case "enum":
       return field.values[0].value
