@@ -90,7 +90,8 @@ function defaultValue(field) {
   switch (field.type) {
     case "enum":
       return field.values[0].value
-
+    case "boolean":
+      return false
     case "markdown":
     case "string":
       return ""
