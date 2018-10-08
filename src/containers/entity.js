@@ -11,7 +11,7 @@ import {
   ListGroupItem,
   MenuItem,
   Row
- } from "react-bootstrap"
+} from "react-bootstrap"
 
 import Field from "./field"
 

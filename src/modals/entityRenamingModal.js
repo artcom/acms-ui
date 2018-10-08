@@ -28,7 +28,7 @@ function EntityRenamingModal({ dispatch, renamedEntity }) {
               type="text"
               value={ renamedEntity.newName }
               autoFocus
-              onChange={ (event) => dispatch(updateEntityRenaming(event.target.value)) } />
+              onChange={ event => dispatch(updateEntityRenaming(event.target.value)) } />
           </FormGroup>
         </Modal.Body>
         <Modal.Footer>
@@ -36,7 +36,7 @@ function EntityRenamingModal({ dispatch, renamedEntity }) {
             type="submit"
             bsStyle="info"
             disabled={ !renamedEntity.isValidName }
-            onClick={ (event) => { event.preventDefault(); dispatch(finishEntityRenaming()) } }>
+            onClick={ event => { event.preventDefault(); dispatch(finishEntityRenaming()) } }>
             Rename
           </Button>
         </Modal.Footer>

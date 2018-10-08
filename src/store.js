@@ -19,7 +19,7 @@ export function configureStore() {
 }
 
 function objectToJS(object) {
-  return mapValues(object, (value) => {
+  return mapValues(object, value => {
     if (Immutable.Iterable.isIterable(value)) {
       return value.toJS()
     } else {

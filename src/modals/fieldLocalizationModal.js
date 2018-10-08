@@ -36,15 +36,17 @@ function FieldLocalizationModal({ dispatch, fieldLocalization, languages }) {
               languages.map((language, index) => {
                 const isDefault = index === 0
 
-                return <Checkbox
-                  key={ language.id }
-                  disabled={ isDefault }
-                  checked={ fieldLocalization.languageIds.get(language.id) }
-                  onChange={ (event) =>
-                    dispatch(updateFieldLocalization(language.id, event.target.checked))
-                  }>
-                  { language.name } { isDefault && <Label>Default</Label>}
-                </Checkbox>
+                return (
+                  <Checkbox
+                    key={ language.id }
+                    disabled={ isDefault }
+                    checked={ fieldLocalization.languageIds.get(language.id) }
+                    onChange={ event =>
+                      dispatch(updateFieldLocalization(language.id, event.target.checked))
+                    }>
+                    { language.name } { isDefault && <Label>Default</Label> }
+                  </Checkbox>
+                )
               })
             }
           </FormGroup>
@@ -53,7 +55,7 @@ function FieldLocalizationModal({ dispatch, fieldLocalization, languages }) {
           <Button
             type="submit"
             bsStyle="info"
-            onClick={ (event) => { event.preventDefault(); dispatch(finishFieldLocalization()) } }>
+            onClick={ event => { event.preventDefault(); dispatch(finishFieldLocalization()) } }>
             Localize
           </Button>
         </Modal.Footer>

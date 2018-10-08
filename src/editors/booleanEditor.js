@@ -16,7 +16,7 @@ export default function BooleanEditor({ field, onChange }) {
 
   return (
     <FormControl componentClass="select" value={ selected } onChange={ onChangeBoolean }>
-      { values.map((value, index) => <option key={ index } value={ value }>{ value}</option>) }
+      { values.map((value, index) => <option key={ index } value={ value }>{ value }</option>) }
     </FormControl>
   )
 }

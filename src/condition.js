@@ -2,7 +2,7 @@ const handlers = {
   EQUALS: ([value1, value2]) => value1 === value2,
   GET: ([key], values) => values.get(key),
   IN: ([item, list]) => list.includes(item),
-  LIST: (args) => args
+  LIST: args => args
 }
 
 export function evaluate(expression, values) {

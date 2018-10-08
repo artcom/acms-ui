@@ -11,21 +11,21 @@ import { isWhitelisted } from "./whitelist"
 const INDEX_KEY = "index"
 const TEMPLATE_KEY = "template"
 
-export const getVersion = (state) => state.version
-export const getOriginalContent = (state) => state.originalContent
-export const getChangedContent = (state) => state.changedContent
-export const getPath = (state) => state.path
-export const getLanguages = (state) => state.languages
-export const getProgress = (state) => state.progress
-export const getWhitelist = (state) => state.whitelist
+export const getVersion = state => state.version
+export const getOriginalContent = state => state.originalContent
+export const getChangedContent = state => state.changedContent
+export const getPath = state => state.path
+export const getLanguages = state => state.languages
+export const getProgress = state => state.progress
+export const getWhitelist = state => state.whitelist
 
-export const getTemplates = (state) => mapValues(state.templates, template => ({
+export const getTemplates = state => mapValues(state.templates, template => ({
   fields: [],
   children: [],
   ...template
 }))
 
-export const getNewEntity = (state) => {
+export const getNewEntity = state => {
   if (!state.newEntity) {
     return {
       isVisible: false,
@@ -40,7 +40,7 @@ export const getNewEntity = (state) => {
   }
 }
 
-export const getRenamedEntity = (state) => {
+export const getRenamedEntity = state => {
   if (!state.renamedEntity) {
     return {
       isVisible: false,
@@ -101,7 +101,7 @@ function defaultValue(field) {
   }
 }
 
-export const getFieldLocalization = (state) => {
+export const getFieldLocalization = state => {
   if (!state.fieldLocalization) {
     return {
       languageIds: new Immutable.OrderedMap(),
@@ -126,12 +126,12 @@ export const getChangedEntity = createSelector(
 
 export const getOriginalValues = createSelector(
   [getOriginalEntity],
-  (originalEntity) => originalEntity.get(INDEX_KEY, new Immutable.Map())
+  originalEntity => originalEntity.get(INDEX_KEY, new Immutable.Map())
 )
 
 export const getChangedValues = createSelector(
   [getChangedEntity],
-  (changedEntity) => changedEntity.get(INDEX_KEY)
+  changedEntity => changedEntity.get(INDEX_KEY)
 )
 
 export const getTemplate = createSelector(
@@ -141,7 +141,7 @@ export const getTemplate = createSelector(
 
 export const getTemplateChildren = createSelector(
   [getTemplate],
-  (template) => template.children
+  template => template.children
 )
 
 const getFields = createSelector(

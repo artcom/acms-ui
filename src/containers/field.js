@@ -30,18 +30,20 @@ export default function Field(props) {
 }
 
 function renderHeader({ field, dispatch }) {
-  return <div>
-    { startCase(field.name) }
+  return (
+    <div>
+      { startCase(field.name) }
 
-    <Dropdown pullRight style={ { float: "right" } } id={ field.name }>
-      <Dropdown.Toggle noCaret bsSize="xsmall">
-        <Glyphicon glyph="option-vertical" />
-      </Dropdown.Toggle>
-      <Dropdown.Menu>
-        { renderMenuItems(field, dispatch) }
-      </Dropdown.Menu>
-    </Dropdown>
-  </div>
+      <Dropdown pullRight style={ { float: "right" } } id={ field.name }>
+        <Dropdown.Toggle noCaret bsSize="xsmall">
+          <Glyphicon glyph="option-vertical" />
+        </Dropdown.Toggle>
+        <Dropdown.Menu>
+          { renderMenuItems(field, dispatch) }
+        </Dropdown.Menu>
+      </Dropdown>
+    </div>
+  )
 }
 
 function renderMenuItems(field, dispatch) {
@@ -104,7 +106,7 @@ function renderEditor(field, config, dispatch, Editor) {
     <Editor
       config={ config }
       field={ field }
-      onChange={ (event) => dispatch(changeValue(field.path, event.target.value)) }
-      onFileSelect={ (files) => dispatch(uploadFile(field.path, files[0], config.assetServer)) } />
+      onChange={ event => dispatch(changeValue(field.path, event.target.value)) }
+      onFileSelect={ files => dispatch(uploadFile(field.path, files[0], config.assetServer)) } />
   )
 }

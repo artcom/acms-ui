@@ -29,7 +29,7 @@ function EntityCreationModal({ dispatch, newEntity }) {
               type="text"
               value={ newEntity.name }
               autoFocus
-              onChange={ (event) => dispatch(updateEntityCreation({
+              onChange={ event => dispatch(updateEntityCreation({
                 name: event.target.value
               })) } />
           </FormGroup>
@@ -39,7 +39,7 @@ function EntityCreationModal({ dispatch, newEntity }) {
               componentClass="select"
               value={ newEntity.template }
               disabled={ newEntity.templates.length < 2 }
-              onChange={ (event) => dispatch(updateEntityCreation({
+              onChange={ event => dispatch(updateEntityCreation({
                 template: event.target.value
               })) }>
               { newEntity.templates.map(template =>
@@ -53,7 +53,7 @@ function EntityCreationModal({ dispatch, newEntity }) {
             type="submit"
             bsStyle="info"
             disabled={ !newEntity.isValidName }
-            onClick={ (event) => { event.preventDefault(); dispatch(finishEntityCreation()) } }>
+            onClick={ event => { event.preventDefault(); dispatch(finishEntityCreation()) } }>
             Create
           </Button>
         </Modal.Footer>

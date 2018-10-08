@@ -1,4 +1,3 @@
-import axios from "axios"
 import querystring from "querystring"
 
 import AssetServer from "./apis/assetServer"
