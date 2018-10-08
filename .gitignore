@@ -1,6 +1,5 @@
 node_modules
 npm-debug.log
+stats.json
 
-public/bundle.js
-public/bundle.js.map
-public/config.json
+dist
