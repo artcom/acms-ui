@@ -1,22 +1,17 @@
 /* eslint-disable import/no-commonjs */
 
-const path = require("path")
-const webpack = require("webpack");
+const HtmlWebpackPlugin = require("html-webpack-plugin")
+const webpack = require("webpack")
 
-const publicPath = path.join(__dirname, "public")
-
-module.exports = {
-  entry: ["./src/main.js"],
-  output: {
-    path: publicPath,
-    filename: "bundle.js"
-  },
+module.exports = (env = {}) => ({
+  mode: env.production ? "production" : "development",
+  devtool: env.production ? "source-map" : "eval-source-map",
   module: {
     rules: [
       {
         test: /\.js$/,
-        include: [path.resolve(__dirname, "src")],
-        use: ["babel-loader"]
+        exclude: /node_modules/,
+        use: "babel-loader"
       },
       {
         test: /\.css$/,
@@ -24,7 +19,7 @@ module.exports = {
       },
       {
         test: /\.(eot|woff|woff2|ttf|svg)$/,
-        use: ["file-loader?name=[path][name].[ext]"]
+        use: { loader: "file-loader", options: { name: "[path][name].[ext]" } }
       }
     ]
   },
@@ -32,11 +27,14 @@ module.exports = {
     new webpack.EnvironmentPlugin([
       "GIT_JSON_API_URI",
       "ASSET_SERVER_URI"
-    ])
+    ]),
+    new webpack.optimize.ModuleConcatenationPlugin(),
+    new HtmlWebpackPlugin({
+      template: "./src/index.html"
+    })
   ],
   devServer: {
-    contentBase: publicPath,
     host: "0.0.0.0",
     disableHostCheck: true
   }
-}
+})
