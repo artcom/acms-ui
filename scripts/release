@@ -3,15 +3,17 @@
 set -eo pipefail
 
 DIST_DIR="dist"
+ARTEFACTS_DIR="artefacts"
 
 echo "Cleaning up"
 rm -rf "${DIST_DIR}"
+rm -rf "${ARTEFACTS_DIR}"
 
 echo "Building"
 npm run build
 
 echo "Packaging"
+mkdir "${ARTEFACTS_DIR}"
 cd "${DIST_DIR}"
-mkdir artifacts
-zip -r -9 "./artifacts/git-json-cms-frontend-${TRAVIS_TAG:-master}.zip" *
-tar czvf "./artifacts/git-json-cms-frontend-${TRAVIS_TAG:-master}.tar.gz" *
+zip -r -9 "../${ARTEFACTS_DIR}/git-json-cms-frontend-${TRAVIS_TAG:-master}.zip" *
+tar czvf "../${ARTEFACTS_DIR}/git-json-cms-frontend-${TRAVIS_TAG:-master}.tar.gz" *
