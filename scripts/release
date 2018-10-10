@@ -13,5 +13,5 @@ npm run build
 echo "Packaging"
 cd "${DIST_DIR}"
 mkdir artifacts
-zip -r -9 "./artifacts/git-json-cms-${TRAVIS_TAG:-master}.zip" *
-tar czvf "./artifacts/git-json-cms-${TRAVIS_TAG:-master}.tar.gz" *
+zip -r -9 "./artifacts/git-json-cms-frontend-${TRAVIS_TAG:-master}.zip" *
+tar czvf "./artifacts/git-json-cms-frontend-${TRAVIS_TAG:-master}.tar.gz" *
