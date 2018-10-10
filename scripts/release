@@ -3,7 +3,6 @@
 set -eo pipefail
 
 DIST_DIR="dist"
-BUILD_DIR="build"
 
 echo "Cleaning up"
 rm -rf "${DIST_DIR}"
@@ -13,5 +12,6 @@ npm run build
 
 echo "Packaging"
 cd "${DIST_DIR}"
-zip -r -9 "../${BUILD_DIR}/git-json-cms-${TRAVIS_TAG:-master}.zip" *
-tar czvf "../${BUILD_DIR}/git-json-cms-${TRAVIS_TAG:-master}.tar.gz" *
+mkdir artifacts
+zip -r -9 "./artifacts/git-json-cms-${TRAVIS_TAG:-master}.zip" *
+tar czvf "./artifacts/git-json-cms-${TRAVIS_TAG:-master}.tar.gz" *

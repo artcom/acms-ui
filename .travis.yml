@@ -1,6 +1,6 @@
 language: node_js
 node_js:
-  - '6'
+  - '8'
 
 script: npm run release
 
@@ -9,7 +9,7 @@ deploy:
   api_key:
     secure: Cyw7uVRz+z7NvXg/XvIp4U4BzwtGri/LT0aqpCJ79OjzmFjWtPicYhiNPbRlMg25BdTbfdVP5HLfY22F7a+eyqHUGrk+jySYOEGXGisuBkdbfxkQCN+zw5VHjaipCmcvZnzYNtu2l9da0r2K4EFAEZC8YC2JM5qKMVcukeoelGSw5slVIrTOP/kfREuKV2CUGzpN3ckSeP9JSTMj+RlmQi2/ST1EPKRB1JQRzyU/6bKP+m3YKIbti6RJVahV57durTqMAG6/GPgRpPYtr8+oFbJ5lu8dZX927oWhJmMxt3y0s9tNWT0KTD48siEwKmS59926HJhHSH98xlJlg8LkpnxSPxPfoJzUyetG6nEC7n9jUyrxceghE7O2VfDBNYNHIMtCo4QjYamLfhDbk9Uk+fEAfjeMbmEswbtoFZEW0zy/aZOFsGA1xfLRuy6UJ59ZC8qOsSUAOvwl8CazM+OdQnlHxdwMb6vlhd3jO6UesN1Dw+SulqokoUCjSiPyIyKa8tarZnbxULUkV/09BZnv/nhT3O5AE8O3Li2Rox35aIHlU9zvfAPLT5ee5Et3zUr3ovqafBclMPrRf660WHTOtl+FkHbeIZl3aJ/258vwtCvoiYgRvmLXpjo2q3IomR3M3ecycu7WK51hWxe3iKAIPULAorCSKoOipoQL0EeLW9o=
   file_glob: true
-  file: dist/*
+  file: dist/artifacts/*
   skip_cleanup: true
   on:
     repo: artcom/git-json-cms-frontend
