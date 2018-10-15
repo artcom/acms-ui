@@ -1,6 +1,10 @@
 {
   "presets": [
-    ["@babel/preset-env", { "modules": false, "useBuiltIns": "usage" }],
+    ["@babel/preset-env", {
+      "targets": { "chrome": "61" },
+      "modules": false,
+      "useBuiltIns": "usage" 
+    }],
     "@babel/preset-react"
   ],
   "plugins": ["@babel/plugin-proposal-object-rest-spread"]
