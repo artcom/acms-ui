@@ -3,7 +3,7 @@ import { getChangedContent, getVersion } from "../selectors"
 import { showError } from "./error"
 
 export function loadData(gitJsonApi) {
-  return async function(dispatch) {
+  return async dispatch => {
     try {
       const { data, version } = await gitJsonApi.loadData()
       dispatch(updateData(data, version))
@@ -14,7 +14,7 @@ export function loadData(gitJsonApi) {
 }
 
 export function saveData(gitJsonApi) {
-  return async function(dispatch, getState) {
+  return async (dispatch, getState) => {
     const state = getState()
     const version = getVersion(state)
     const content = getChangedContent(state)

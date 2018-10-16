@@ -6,7 +6,7 @@ import { showError } from "./error"
 import { changeValue } from "./value"
 
 export function uploadFile(path, file, assetServer) {
-  return async function(dispatch) {
+  return async dispatch => {
     function onUploadProgress(event) {
       dispatch(progressUpload(path, event.loaded / event.total))
     }
