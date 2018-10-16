@@ -6,9 +6,9 @@
     "lint": "eslint src",
     "stats": "webpack --profile --json --env.production > stats.json",
     "build": "webpack --env.production",
-    "start": "npm run build && http-server ./dist/ -p ${PORT}",
+    "start": "npm run build && http-server ./dist/ -p ${PORT:-8080}",
     "release": "./scripts/release",
-    "watch": "webpack-dev-server --port ${PORT} -d"
+    "watch": "webpack-dev-server --port ${PORT:-8080} -d"
   },
   "dependencies": {
     "@babel/polyfill": "^7.0.0",
