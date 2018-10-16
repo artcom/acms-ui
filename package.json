@@ -25,7 +25,8 @@
     "redux": "^4.0.1",
     "redux-logger": "^3.0.6",
     "redux-thunk": "^2.3.0",
-    "reselect": "^4.0.0"
+    "reselect": "^4.0.0",
+    "sha.js": "^2.4.11"
   },
   "devDependencies": {
     "@babel/cli": "^7.1.2",

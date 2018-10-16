@@ -1,8 +1,8 @@
 import createHash from "sha.js"
 
-export async function sha1(file) {
+export async function sha256(file) {
   const buffer = await toTypedArray(file)
-  const hash = createHash("sha1")
+  const hash = createHash("sha256")
   return hash.update(buffer).digest("hex")
 }
 
