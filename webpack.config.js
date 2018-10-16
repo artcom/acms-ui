@@ -24,10 +24,10 @@ module.exports = (env = {}) => ({
     ]
   },
   plugins: [
-    new webpack.EnvironmentPlugin([
-      "GIT_JSON_API_URI",
-      "ASSET_SERVER_URI"
-    ]),
+    new webpack.EnvironmentPlugin({
+      GIT_JSON_API_URI: null,
+      ASSET_SERVER_URI: null
+    }),
     new webpack.optimize.ModuleConcatenationPlugin(),
     new HtmlWebpackPlugin({
       template: "./src/index.html"
