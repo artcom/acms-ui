@@ -6,7 +6,7 @@
     "lint": "eslint src",
     "stats": "webpack --profile --json --env.production > stats.json",
     "build": "webpack --env.production",
-    "start": "npm run build && http-server ./dist/ -p ${PORT:-8080}",
+    "start": "npm run build && http-server ./dist/ -p ${PORT:-8080} -c 0",
     "release": "./scripts/release",
     "watch": "webpack-dev-server --port ${PORT:-8080} -d"
   },
