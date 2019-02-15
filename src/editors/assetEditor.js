@@ -26,10 +26,19 @@ function renderView(field, config) {
   const src = config.assetServer.assetUrl(key)
   const style = { width: "100%" }
 
+  const checkerboard = {
+    backgroundImage:
+                `linear-gradient(to right, rgba(192, 192, 192, 0.75), rgba(192, 192, 192, 0.75)),
+                linear-gradient(to right, black 50%, white 50%),
+                linear-gradient(to bottom, black 50%, white 50%)`,
+    backgroundBlendMode: "normal, difference, normal",
+    backgroundSize: "2em 2em"
+
+  }
   switch (field.type) {
     case "audio": return <audio controls key={ key } src={ src } style={ style } />
     case "file": return <div key={ key } style={ style }>{ path.basename(key) }</div>
-    case "image": return <img key={ key } src={ src } style={ style } />
+    case "image": return <img key={ key } src={ src } style={ checkerboard } />
     case "video": return <video controls key={ key } src={ src } style={ style } />
   }
 }
