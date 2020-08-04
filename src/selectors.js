@@ -17,9 +17,7 @@ export const getChangedContent = state => state.changedContent
 export const getPath = state => state.path
 export const getLanguages = state => state.languages
 export const getProgress = state => state.progress
-export const getWhitelist = state => state.currentUser && state.currentUser.whiteList
-  ? state.currentUser.whiteList
-  : ["**"]
+export const getWhitelist = state => state.user.whiteList
 
 export const getTemplates = state => mapValues(state.templates, template => ({
   fields: [],

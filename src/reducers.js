@@ -34,16 +34,6 @@ export function languages(state = [], { type, payload }) {
   }
 }
 
-export function users(state = [], { type, payload }) {
-  switch (type) {
-    case "UPDATE_DATA":
-      return payload.config.users || []
-
-    default:
-      return state
-  }
-}
-
 export function templates(state = null, { type, payload }) {
   switch (type) {
     case "UPDATE_DATA":
@@ -228,13 +218,31 @@ export function progress(state = new Immutable.Map(), { type, payload }) {
   }
 }
 
-export function currentUser(state = null, { type, payload }) {
+const defaultUser = { name: "default", whiteList: ["**"] }
+
+export function user(state = defaultUser, { type, payload }) {
   switch (type) {
-    case "UPDATE_DATA":
-      return payload.config.users ? payload.config.users[0] : null
-    case "SET_CURRENT_USER":
-      return payload.user
+    case "UPDATE_DATA": {
+      const users = payload.config.users
+      const params = queryParams()
+
+      if (users) {
+        return params.user
+          ? users[params.user] || defaultUser
+          : Object.values(users)[0]
+      } else {
+        return defaultUser
+      }
+    }
     default:
       return state
   }
+}
+
+function queryParams() {
+  const queryString = window.location.search.substring(1)
+  return queryString.split("&").reduce((params, pair) => {
+    const [key, value] = pair.split("=")
+    return { ...params, [decodeURIComponent(key)]: decodeURIComponent(value) }
+  }, {})
 }
