@@ -1,15 +1,12 @@
 import startCase from "lodash/startCase"
 import React from "react"
 
-import {
-  ControlLabel,
-  Dropdown,
-  Glyphicon,
-  ListGroup,
-  ListGroupItem,
-  MenuItem,
-  Panel
-} from "react-bootstrap"
+import Card from "react-bootstrap/Card"
+import Dropdown from "react-bootstrap/Dropdown"
+import DropdownItem from "react-bootstrap/DropdownItem"
+import FormLabel from "react-bootstrap/FormLabel"
+import ListGroup from "react-bootstrap/ListGroup"
+import ListGroupItem from "react-bootstrap/ListGroupItem"
 
 import { getLanguageName } from "../language"
 
@@ -23,9 +20,9 @@ export default function Field(props) {
   const { style, content } = renderContent(props)
 
   return (
-    <Panel bsStyle={ style } header={ renderHeader(props) }>
+    <Card variant={ style } header={ renderHeader(props) }>
       { content }
-    </Panel>
+    </Card>
   )
 }
 
@@ -35,31 +32,23 @@ function renderHeader({ field, dispatch }) {
       { startCase(field.name) }
 
       <Dropdown pullRight style={ { float: "right" } } id={ field.name }>
-        <Dropdown.Toggle noCaret bsSize="xsmall">
-          <Glyphicon glyph="option-vertical" />
-        </Dropdown.Toggle>
+        <Dropdown.Toggle noCaret bsSize="xsmall" />
         <Dropdown.Menu>
-          { renderMenuItems(field, dispatch) }
+          <DropdownItem
+            key="undo"
+            disabled={ !field.hasChanged }
+            onSelect={ () => dispatch(undoChanges(field.path)) }>
+            Undo Changes
+          </DropdownItem>,
+          <DropdownItem
+            key="localize"
+            onSelect={ () => dispatch(startFieldLocalization(field)) }>
+            Localize...
+          </DropdownItem>
         </Dropdown.Menu>
       </Dropdown>
     </div>
   )
-}
-
-function renderMenuItems(field, dispatch) {
-  return [
-    <MenuItem
-      key="undo"
-      disabled={ !field.hasChanged }
-      onSelect={ () => dispatch(undoChanges(field.path)) }>
-      Undo Changes
-    </MenuItem>,
-    <MenuItem
-      key="localize"
-      onSelect={ () => dispatch(startFieldLocalization(field)) }>
-      Localize...
-    </MenuItem>
-  ]
 }
 
 function renderContent({ config, dispatch, field, languages }) {
@@ -89,9 +78,9 @@ function renderLocalizedEditors(field, languages, config, dispatch, Editor) {
 
     return (
       <ListGroupItem key={ languageId }>
-        <ControlLabel>
+        <FormLabel>
           { getLanguageName(languageId, languages) }
-        </ControlLabel>
+        </FormLabel>
 
         { renderEditor(languageField, config, dispatch, Editor) }
       </ListGroupItem>

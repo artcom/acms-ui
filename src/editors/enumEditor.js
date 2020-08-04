@@ -1,5 +1,6 @@
 import React from "react"
-import { FormControl } from "react-bootstrap"
+import FormControl from "react-bootstrap/FormControl"
+
 
 export default function EnumEditor({ field, onChange }) {
   function onChangeEnum(event) {

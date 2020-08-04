@@ -2,7 +2,12 @@ import startCase from "lodash/startCase"
 import React from "react"
 import { connect } from "react-redux"
 
-import { Button, ControlLabel, Form, FormControl, FormGroup, Modal } from "react-bootstrap"
+import Button from "react-bootstrap/Button"
+import FormLabel from "react-bootstrap/FormLabel"
+import Form from "react-bootstrap/Form"
+import FormControl from "react-bootstrap/FormControl"
+import FormGroup from "react-bootstrap/FormGroup"
+import Modal from "react-bootstrap/Modal"
 
 import { cancelEntityCreation, finishEntityCreation, updateEntityCreation } from "../actions/entity"
 import { getNewEntity } from "../selectors"
@@ -24,7 +29,7 @@ function EntityCreationModal({ dispatch, newEntity }) {
         </Modal.Header>
         <Modal.Body>
           <FormGroup validationState={ newEntity.isValidName ? null : "error" }>
-            <ControlLabel>Name</ControlLabel>
+            <FormLabel>Name</FormLabel>
             <FormControl
               type="text"
               value={ newEntity.name }
@@ -34,7 +39,7 @@ function EntityCreationModal({ dispatch, newEntity }) {
               })) } />
           </FormGroup>
           <FormGroup>
-            <ControlLabel>Template</ControlLabel>
+            <FormLabel>Template</FormLabel>
             <FormControl
               componentClass="select"
               value={ newEntity.template }
@@ -51,7 +56,7 @@ function EntityCreationModal({ dispatch, newEntity }) {
         <Modal.Footer>
           <Button
             type="submit"
-            bsStyle="info"
+            variant="info"
             disabled={ !newEntity.isValidName }
             onClick={ event => { event.preventDefault(); dispatch(finishEntityCreation()) } }>
             Create

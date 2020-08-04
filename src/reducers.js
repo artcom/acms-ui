@@ -24,10 +24,20 @@ export function version(state = null, { type, payload }) {
   }
 }
 
-export function languages(state = null, { type, payload }) {
+export function languages(state = [], { type, payload }) {
   switch (type) {
     case "UPDATE_DATA":
-      return payload.config.languages
+      return payload.config.languages || []
+
+    default:
+      return state
+  }
+}
+
+export function users(state = [], { type, payload }) {
+  switch (type) {
+    case "UPDATE_DATA":
+      return payload.config.users || []
 
     default:
       return state
@@ -38,6 +48,16 @@ export function templates(state = null, { type, payload }) {
   switch (type) {
     case "UPDATE_DATA":
       return payload.templates
+
+    default:
+      return state
+  }
+}
+
+export function title(state = "", { type, payload }) {
+  switch (type) {
+    case "UPDATE_DATA":
+      return payload.config.title || ""
 
     default:
       return state
@@ -208,11 +228,12 @@ export function progress(state = new Immutable.Map(), { type, payload }) {
   }
 }
 
-export function whitelist(state = null, { type, payload }) {
+export function currentUser(state = null, { type, payload }) {
   switch (type) {
-    case "WHITELIST_PATHS":
-      return payload.whitelist
-
+    case "UPDATE_DATA":
+      return payload.config.users ? payload.config.users[0] : null
+    case "SET_CURRENT_USER":
+      return payload.user
     default:
       return state
   }

@@ -1,8 +1,8 @@
 language: node_js
 node_js:
-  - '10.10.0'
+  - '14.5.0'
 
-script: npm run release
+script: ./scripts/release
 
 deploy:
   provider: releases
@@ -12,5 +12,5 @@ deploy:
   file: artifacts/*
   skip_cleanup: true
   on:
-    repo: artcom/git-json-cms-frontend
+    repo: artcom/git-json-cms
     tags: true

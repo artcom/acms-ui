@@ -4,8 +4,7 @@ import { Provider } from "react-redux"
 
 import { loadData } from "./actions/data"
 import { updatePath } from "./actions/path"
-import { whitelistPaths } from "./actions/whitelist"
-import { loadConfig } from "./config"
+import bootstrap from "./bootstrap"
 import { configureStore } from "./store"
 
 import Application from "./containers/application"
@@ -16,10 +15,9 @@ import FieldLocalizationModal from "./modals/fieldLocalizationModal"
 
 import "bootstrap/dist/css/bootstrap.min.css"
 
-loadConfig().then(config => {
+bootstrap().then(({ assetServer, cmsConfigPath, configServer }) => {
   const store = configureStore()
-  store.dispatch(whitelistPaths(config.whitelist || ["**"]))
-  store.dispatch(loadData(config.gitJsonApi))
+  store.dispatch(loadData(configServer, cmsConfigPath))
 
   window.addEventListener("hashchange", updatePathFromHash)
   updatePathFromHash()
@@ -30,8 +28,8 @@ loadConfig().then(config => {
 
   render(
     <Provider store={ store } >
-      <Application config={ config }>
-        <Entity config={ config } />
+      <Application configServer={ configServer }>
+        <Entity assetServer={ assetServer } />
         <EntityCreationModal />
         <EntityRenamingModal />
         <FieldLocalizationModal />

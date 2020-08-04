@@ -1,10 +1,10 @@
 import React from "react"
-import { Glyphicon, ProgressBar } from "react-bootstrap"
+import ProgressBar from "react-bootstrap/ProgressBar"
 import path from "path"
 
 import FileSelector from "../components/fileSelector"
 
-const PLACEHOLDER_GLYPH = {
+const PLACEHOLDER = {
   audio: "music",
   file: "file",
   image: "picture",
@@ -45,8 +45,8 @@ function renderView(field, config) {
 }
 
 function renderPlaceholder(field) {
-  const glyph = PLACEHOLDER_GLYPH[field.type]
-  return <Glyphicon glyph={ glyph } style={ { width: "100%", textAlign: "center" } } />
+  const placeholder = PLACEHOLDER[field.type]
+  return <div style={ { width: "100%", textAlign: "center" } }>{ placeholder }</div>
 }
 
 function renderUpload(field, onFileSelect) {

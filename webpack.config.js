@@ -1,7 +1,7 @@
 /* eslint-disable import/no-commonjs */
 
-const HtmlWebpackPlugin = require("html-webpack-plugin")
-const webpack = require("webpack")
+const HtmlPlugin = require("html-webpack-plugin")
+const { EnvironmentPlugin } = require("webpack")
 
 module.exports = (env = {}) => ({
   mode: env.production ? "production" : "development",
@@ -16,25 +16,20 @@ module.exports = (env = {}) => ({
       {
         test: /\.css$/,
         use: ["style-loader", "css-loader"]
-      },
-      {
-        test: /\.(eot|woff|woff2|ttf|svg)$/,
-        use: { loader: "file-loader", options: { name: "[path][name].[ext]" } }
       }
     ]
   },
   plugins: [
-    new webpack.EnvironmentPlugin({
-      GIT_JSON_API_URI: null,
+    new EnvironmentPlugin({
+      CONFIG_SERVER_URI: null,
+      CMS_CONFIG_PATH: null,
       ASSET_SERVER_URI: null
     }),
-    new webpack.optimize.ModuleConcatenationPlugin(),
-    new HtmlWebpackPlugin({
+    new HtmlPlugin({
       template: "./src/index.html"
     })
   ],
   devServer: {
-    host: "0.0.0.0",
-    disableHostCheck: true
+    port: 5000
   }
 })

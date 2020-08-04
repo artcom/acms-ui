@@ -1,7 +1,13 @@
 import React from "react"
 import { connect } from "react-redux"
 
-import { Button, Checkbox, ControlLabel, Form, FormGroup, Label, Modal } from "react-bootstrap"
+import Button from "react-bootstrap/Button"
+import FormCheck from "react-bootstrap/FormCheck"
+import FormLabel from "react-bootstrap/FormLabel"
+import Form from "react-bootstrap/Form"
+import FormGroup from "react-bootstrap/FormGroup"
+import Badge from "react-bootstrap/Badge"
+import Modal from "react-bootstrap/Modal"
 
 import {
   cancelFieldLocalization,
@@ -31,21 +37,21 @@ function FieldLocalizationModal({ dispatch, fieldLocalization, languages }) {
         </Modal.Header>
         <Modal.Body>
           <FormGroup>
-            <ControlLabel>Languages</ControlLabel>
+            <FormLabel>Languages</FormLabel>
             {
               languages.map((language, index) => {
                 const isDefault = index === 0
 
                 return (
-                  <Checkbox
+                  <FormCheck
                     key={ language.id }
                     disabled={ isDefault }
                     checked={ fieldLocalization.languageIds.get(language.id) }
                     onChange={ event =>
                       dispatch(updateFieldLocalization(language.id, event.target.checked))
                     }>
-                    { language.name } { isDefault && <Label>Default</Label> }
-                  </Checkbox>
+                    { language.name } { isDefault && <Badge>Default</Badge> }
+                  </FormCheck>
                 )
               })
             }
@@ -54,7 +60,7 @@ function FieldLocalizationModal({ dispatch, fieldLocalization, languages }) {
         <Modal.Footer>
           <Button
             type="submit"
-            bsStyle="info"
+            variant="info"
             onClick={ event => { event.preventDefault(); dispatch(finishFieldLocalization()) } }>
             Localize
           </Button>

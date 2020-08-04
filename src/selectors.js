@@ -17,7 +17,9 @@ export const getChangedContent = state => state.changedContent
 export const getPath = state => state.path
 export const getLanguages = state => state.languages
 export const getProgress = state => state.progress
-export const getWhitelist = state => state.whitelist
+export const getWhitelist = state => state.currentUser && state.currentUser.whiteList
+  ? state.currentUser.whiteList
+  : ["**"]
 
 export const getTemplates = state => mapValues(state.templates, template => ({
   fields: [],
@@ -55,12 +57,12 @@ export const getRenamedEntity = state => {
 }
 
 function validateEntityName(name) {
-  return name.length > 0 && name !== "index"
+  return name.length > 0
 }
 
 export const getNewEntityPath = createSelector(
   [getNewEntity, getPath],
-  (newEntity, path) => [...path, kebabCase(newEntity.name), INDEX_KEY]
+  (newEntity, path) => [...path, kebabCase(newEntity.name)]
 )
 
 export const getNewEntityValues = createSelector(
@@ -126,12 +128,12 @@ export const getChangedEntity = createSelector(
 
 export const getOriginalValues = createSelector(
   [getOriginalEntity],
-  originalEntity => originalEntity.get(INDEX_KEY, new Immutable.Map())
+  originalEntity => new Immutable.Map(originalEntity.toJS())
 )
 
 export const getChangedValues = createSelector(
   [getChangedEntity],
-  changedEntity => changedEntity.get(INDEX_KEY)
+  changedEntity => new Immutable.Map(changedEntity.toJS())
 )
 
 export const getTemplate = createSelector(
@@ -151,7 +153,7 @@ const getFields = createSelector(
     .map(field => {
       const originalValue = originalValues.get(field.name)
       const changedValue = changedValues.get(field.name)
-      const fieldPath = [...path, INDEX_KEY, field.name]
+      const fieldPath = [...path, field.name]
 
       return { ...field,
         hasChanged: !Immutable.is(originalValue, changedValue),

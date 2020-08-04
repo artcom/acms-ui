@@ -2,18 +2,21 @@ import { getChangedContent, getVersion } from "../selectors"
 
 import { showError } from "./error"
 
-export function loadData(gitJsonApi) {
+export function loadData(configServer, cmsConfigPath) {
   return async dispatch => {
     try {
-      const { data, version } = await gitJsonApi.loadData()
-      dispatch(updateData(data, version))
+      const { data: config, version } = await configServer.queryJson(cmsConfigPath)
+      const { data: content } = await configServer.queryJson(config.contentPath, version)
+      const { data: templates } = await configServer.queryJson(config.templatesPath, version)
+
+      dispatch(updateData(config, content, templates, version))
     } catch (error) {
       dispatch(showError("Failed to Load Data", error))
     }
   }
 }
 
-export function saveData(gitJsonApi) {
+export function saveData(configServer) {
   return async (dispatch, getState) => {
     const state = getState()
     const version = getVersion(state)
@@ -21,8 +24,8 @@ export function saveData(gitJsonApi) {
 
     try {
       dispatch(startSaving())
-      await gitJsonApi.updateContent(content.toJS(), version)
-      dispatch(loadData(gitJsonApi))
+      await configServer.updateContent(content.toJS(), version)
+      dispatch(loadData(configServer))
     } catch (error) {
       dispatch(showError("Failed to Save Data", error))
     }
@@ -35,13 +38,13 @@ function startSaving() {
   }
 }
 
-function updateData(data, version) {
+function updateData(config, content, templates, version) {
   return {
     type: "UPDATE_DATA",
     payload: {
-      config: data.config,
-      content: data.content,
-      templates: data.templates,
+      config,
+      content,
+      templates,
       version
     }
   }

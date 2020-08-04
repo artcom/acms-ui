@@ -12,14 +12,14 @@ import {
 export function startEntityCreation() {
   return (dispatch, getState) => {
     const state = getState()
-    const templates = getTemplateChildren(state)
+    const types = getTemplateChildren(state)
 
     dispatch({
       type: "START_ENTITY_CREATION",
       payload: {
         name: "",
-        template: templates[0],
-        templates
+        template: types[0],
+        types
       }
     })
   }

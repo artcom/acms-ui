@@ -1,9 +1,16 @@
 import Immutable from "immutable"
 import startCase from "lodash/startCase"
 import React from "react"
-import { Alert, Breadcrumb, Button, Col, Grid, Row } from "react-bootstrap"
+import Alert from "react-bootstrap/Alert"
+import Breadcrumb from "react-bootstrap/Breadcrumb"
+import Button from "react-bootstrap/Button"
+import Navbar from "react-bootstrap/Navbar"
+import Row from "react-bootstrap/Row"
+import Col from "react-bootstrap/Col"
+import Form from "react-bootstrap/Form"
 import { connect } from "react-redux"
 
+import Container from "react-bootstrap/Container"
 import { saveData } from "../actions/data"
 import { hideError } from "../actions/error"
 import { fromPath } from "../hash"
@@ -16,24 +23,25 @@ function mapStateToProps(state) {
     hasChanged: !Immutable.is(state.originalContent, state.changedContent),
     isLoading: state.originalContent === null,
     isSaving: state.isSaving,
-    path: state.path
+    path: state.path,
+    title: state.title
   }
 }
 
 function Application(props) {
   return (
-    <Grid style={ { marginTop: "15px" } }>
+    <Container>
       { renderError(props) }
       { !props.isLoading && renderHeader(props) }
       { !props.isLoading && props.children }
-    </Grid>
+    </Container>
   )
 }
 
 function renderError({ dispatch, flash }) {
   if (flash) {
     return (
-      <Alert bsStyle="danger" onDismiss={ () => dispatch(hideError()) }>
+      <Alert variant="danger" onClose={ () => dispatch(hideError()) }>
         <h4>{ flash.title }</h4>
         <pre>
           <code>
@@ -45,11 +53,20 @@ function renderError({ dispatch, flash }) {
   }
 }
 
-function renderHeader({ config, dispatch, hasChanged, isSaving, path }) {
+function renderHeader({ title, configServer, dispatch, hasChanged, isSaving, path }) {
   return (
-    <Row>
-      <Col md={ 10 }>
-        <Breadcrumb>
+    <Navbar sticky="top" bg="light" variant="light" className={ "flex-column" }>
+      <Container>
+        <Navbar.Text className={ "h2" } style={ { paddingBottom: "0px" } }>{ title }</Navbar.Text>
+        <Button
+          style={ { float: "right", width: "100px" } }
+          disabled={ !hasChanged || isSaving }
+          onClick={ () => dispatch(saveData(configServer)) }>
+          { isSaving ? "Saving..." : "Save" }
+        </Button>
+      </Container>
+      <Container>
+        <Breadcrumb style={ { marginBottom: "-16px", width: "100%" } }>
           <Breadcrumb.Item href={ fromPath([]) }>
             Exhibition
           </Breadcrumb.Item>
@@ -62,16 +79,7 @@ function renderHeader({ config, dispatch, hasChanged, isSaving, path }) {
             </Breadcrumb.Item>
           ) }
         </Breadcrumb>
-      </Col>
-      <Col md={ 2 }>
-        <Button
-          block
-          bsStyle="info"
-          disabled={ !hasChanged || isSaving }
-          onClick={ () => dispatch(saveData(config.gitJsonApi)) }>
-          { isSaving ? "Saving..." : "Save" }
-        </Button>
-      </Col>
-    </Row>
+      </Container>
+    </Navbar>
   )
 }

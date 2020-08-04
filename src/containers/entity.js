@@ -2,16 +2,13 @@ import startCase from "lodash/startCase"
 import React from "react"
 import { connect } from "react-redux"
 
-import {
-  Button,
-  Col,
-  Dropdown,
-  Glyphicon,
-  ListGroup,
-  ListGroupItem,
-  MenuItem,
-  Row
-} from "react-bootstrap"
+import Button from "react-bootstrap/Button"
+import Col from "react-bootstrap/Col"
+import Dropdown from "react-bootstrap/Dropdown"
+import DropDownItem from "react-bootstrap/DropDownItem"
+import ListGroup from "react-bootstrap/ListGroup"
+import ListGroupItem from "react-bootstrap/ListGroupItem"
+import Row from "react-bootstrap/Row"
 
 import Field from "./field"
 
@@ -43,9 +40,7 @@ function Entity({ canHaveChildren, children, config, dispatch, fields, languages
       <Col md={ 4 }>
         <h4>Children</h4>
         { renderChildren(children, dispatch) }
-        <Button disabled={ !canHaveChildren } onClick={ () => dispatch(startEntityCreation()) }>
-          <Glyphicon glyph="plus" />
-        </Button>
+        <Button disabled={ !canHaveChildren } onClick={ () => dispatch(startEntityCreation()) } />
       </Col>
 
       <Col md={ 8 }>
@@ -69,29 +64,27 @@ function renderChild(child, dispatch) {
   const link = child.isDeleted ? displayName : <a href={ fromPath(child.path) }>{ displayName }</a>
 
   return (
-    <ListGroupItem key={ child.name } bsStyle={ childStyle(child) }>
+    <ListGroupItem key={ child.name } variant={ childStyle(child) }>
       { link }
 
-      <Dropdown pullRight style={ { float: "right" } } id={ child.name }>
-        <Dropdown.Toggle noCaret bsSize="xsmall">
-          <Glyphicon glyph="option-vertical" />
-        </Dropdown.Toggle>
+      <Dropdown className="float-right btn-sm" id={ child.name }>
+        <Dropdown.Toggle />
         <Dropdown.Menu>
-          <MenuItem
+          <DropDownItem
             disabled={ child.isDeleted }
             onSelect={ () => dispatch(startEntityRenaming(child.name)) }>
             Rename...
-          </MenuItem>
-          <MenuItem
+          </DropDownItem>
+          <DropDownItem
             disabled={ !child.hasChanged }
             onSelect={ () => dispatch(undoChanges(child.path)) }>
             Undo Changes
-          </MenuItem>
-          <MenuItem
+          </DropDownItem>
+          <DropDownItem
             disabled={ child.isDeleted }
             onSelect={ () => dispatch(deleteEntity(child.path)) }>
             Delete
-          </MenuItem>
+          </DropDownItem>
         </Dropdown.Menu>
       </Dropdown>
     </ListGroupItem>
@@ -108,14 +101,14 @@ function childStyle(child) {
   }
 
   if (child.hasChanged) {
-    return "info"
+    return "warning"
   }
 }
 
 function renderFields(fields, languages, config, dispatch) {
   return fields.map(field =>
     <Field
-      key={ field.name }
+      key={ field.id }
       field={ field }
       languages={ languages }
       config={ config }
