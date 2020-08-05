@@ -4,7 +4,7 @@ import startCase from "lodash/startCase"
 import {
   getNewEntityPath,
   getNewEntityValues,
-  getPath,
+  getFilePath,
   getRenamedEntity,
   getTemplateChildren
 } from "../selectors"
@@ -81,7 +81,7 @@ export function finishEntityRenaming() {
     dispatch({
       type: "FINISH_ENTITY_RENAMING",
       payload: {
-        path: getPath(state),
+        path: getFilePath(state),
         oldName,
         newName: kebabCase(newName)
       }

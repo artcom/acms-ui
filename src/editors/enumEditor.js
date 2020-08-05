@@ -1,5 +1,5 @@
 import React from "react"
-import FormControl from "react-bootstrap/FormControl"
+import Form from "react-bootstrap/Form"
 
 
 export default function EnumEditor({ field, onChange }) {
@@ -14,10 +14,10 @@ export default function EnumEditor({ field, onChange }) {
   const selectedIndex = field.values.findIndex(value => value.value === field.value)
 
   return (
-    <FormControl componentClass="select" value={ selectedIndex } onChange={ onChangeEnum }>
+    <Form.Control as="select" value={ selectedIndex } onChange={ onChangeEnum }>
       { field.values.map((value, index) =>
         <option key={ index } value={ index }>{ value.name }</option>
       ) }
-    </FormControl>
+    </Form.Control>
   )
 }

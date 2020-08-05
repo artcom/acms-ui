@@ -1,8 +1,7 @@
 import get from "lodash/get"
 import isNumber from "lodash/isNumber"
 import React from "react"
-import FormControl from "react-bootstrap/FormControl"
-import FormGroup from "react-bootstrap/FormGroup"
+import Form from "react-bootstrap/Form"
 
 export default function NumberEditor({ field, onChange }) {
   const value = field.value
@@ -19,9 +18,9 @@ export default function NumberEditor({ field, onChange }) {
   }
 
   return (
-    <FormGroup validationState={ isValid ? null : "warning" }>
-      <FormControl type="number" value={ value } onChange={ onChangeFloat } />
+    <Form>
+      <Form.Control type="number" value={ value } onChange={ onChangeFloat } />
       { isValid || <div>The number should be between { min } and { max }.</div> }
-    </FormGroup>
+    </Form>
   )
 }

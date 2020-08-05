@@ -6,8 +6,8 @@ export function loadData(configServer, cmsConfigPath) {
   return async dispatch => {
     try {
       const { data: config, version } = await configServer.queryJson(cmsConfigPath)
+      const { data: templates } = await configServer.queryFiles(config.templatesPath, version)
       const { data: content } = await configServer.queryJson(config.contentPath, version)
-      const { data: templates } = await configServer.queryJson(config.templatesPath, version)
 
       dispatch(updateData(config, content, templates, version))
     } catch (error) {

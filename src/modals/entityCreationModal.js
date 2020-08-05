@@ -3,10 +3,7 @@ import React from "react"
 import { connect } from "react-redux"
 
 import Button from "react-bootstrap/Button"
-import FormLabel from "react-bootstrap/FormLabel"
 import Form from "react-bootstrap/Form"
-import FormControl from "react-bootstrap/FormControl"
-import FormGroup from "react-bootstrap/FormGroup"
 import Modal from "react-bootstrap/Modal"
 
 import { cancelEntityCreation, finishEntityCreation, updateEntityCreation } from "../actions/entity"
@@ -28,19 +25,19 @@ function EntityCreationModal({ dispatch, newEntity }) {
           <Modal.Title>Add Child</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          <FormGroup validationState={ newEntity.isValidName ? null : "error" }>
-            <FormLabel>Name</FormLabel>
-            <FormControl
+          <Form.Group validated={ newEntity.isValidName }>
+            <Form.Label>Name</Form.Label>
+            <Form.Control
               type="text"
               value={ newEntity.name }
               autoFocus
               onChange={ event => dispatch(updateEntityCreation({
                 name: event.target.value
               })) } />
-          </FormGroup>
-          <FormGroup>
-            <FormLabel>Template</FormLabel>
-            <FormControl
+          </Form.Group>
+          <Form.Group>
+            <Form.Label>Template</Form.Label>
+            <Form.Control
               componentClass="select"
               value={ newEntity.template }
               disabled={ newEntity.templates.length < 2 }
@@ -50,8 +47,8 @@ function EntityCreationModal({ dispatch, newEntity }) {
               { newEntity.templates.map(template =>
                 <option key={ template } value={ template }>{ startCase(template) }</option>
               ) }
-            </FormControl>
-          </FormGroup>
+            </Form.Control>
+          </Form.Group>
         </Modal.Body>
         <Modal.Footer>
           <Button

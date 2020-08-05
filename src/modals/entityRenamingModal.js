@@ -2,10 +2,7 @@ import React from "react"
 import { connect } from "react-redux"
 
 import Button from "react-bootstrap/Button"
-import FormLabel from "react-bootstrap/FormLabel"
 import Form from "react-bootstrap/Form"
-import FormControl from "react-bootstrap/FormControl"
-import FormGroup from "react-bootstrap/FormGroup"
 import Modal from "react-bootstrap/Modal"
 
 import { cancelEntityRenaming, finishEntityRenaming, updateEntityRenaming } from "../actions/entity"
@@ -22,19 +19,19 @@ function mapStateToProps(state) {
 function EntityRenamingModal({ dispatch, renamedEntity }) {
   return (
     <Modal show={ renamedEntity.isVisible } onHide={ () => dispatch(cancelEntityRenaming()) }>
-      <Form>
+      <Form validated={ renamedEntity.isValidName }>
         <Modal.Header closeButton>
           <Modal.Title>Rename Child</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          <FormGroup validationState={ renamedEntity.isValidName ? null : "error" }>
-            <FormLabel>Name</FormLabel>
-            <FormControl
+          <Form.Group>
+            <Form.Label>Name</Form.Label>
+            <Form.Control
               type="text"
               value={ renamedEntity.newName }
               autoFocus
               onChange={ event => dispatch(updateEntityRenaming(event.target.value)) } />
-          </FormGroup>
+          </Form.Group>
         </Modal.Body>
         <Modal.Footer>
           <Button

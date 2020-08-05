@@ -19,6 +19,7 @@ import { fromPath } from "../hash"
 import {
   getLanguages,
   getTemplateChildren,
+  getWhitelistedFixedChildren,
   getWhitelistedChildren,
   getWhitelistedFields
 } from "../selectors"
@@ -29,16 +30,19 @@ function mapStateToProps(state) {
   return {
     canHaveChildren: getTemplateChildren(state).length > 0,
     children: getWhitelistedChildren(state),
+    fixedChildren: getWhitelistedFixedChildren(state),
     fields: getWhitelistedFields(state),
     languages: getLanguages(state)
   }
 }
 
-function Entity({ canHaveChildren, children, config, dispatch, fields, languages }) {
+function Entity({ canHaveChildren, children, fixedChildren, config, dispatch, fields, languages }) {
   return (
     <Row>
       <Col md={ 4 }>
         <h4>Children</h4>
+        { renderFixedChildren(fixedChildren, dispatch) }
+        <h4>Optional Children</h4>
         { renderChildren(children, dispatch) }
         <Button disabled={ !canHaveChildren } onClick={ () => dispatch(startEntityCreation()) } />
       </Col>
@@ -48,6 +52,14 @@ function Entity({ canHaveChildren, children, config, dispatch, fields, languages
         { renderFields(fields, languages, config, dispatch) }
       </Col>
     </Row>
+  )
+}
+
+function renderFixedChildren(children, dispatch) {
+  return (
+    <ListGroup>
+      { children.map(child => renderChild(child, dispatch)) }
+    </ListGroup>
   )
 }
 

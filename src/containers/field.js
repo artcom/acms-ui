@@ -20,7 +20,8 @@ export default function Field(props) {
   const { style, content } = renderContent(props)
 
   return (
-    <Card variant={ style } header={ renderHeader(props) }>
+    <Card bg={ style } text={ style === "light" ? "dark" : "white" }>
+      <Card.Header>{ renderHeader(props) }</Card.Header>
       { content }
     </Card>
   )
@@ -29,10 +30,10 @@ export default function Field(props) {
 function renderHeader({ field, dispatch }) {
   return (
     <div>
-      { startCase(field.name) }
+      { startCase(field.name ? field.name : field.id) }
 
-      <Dropdown pullRight style={ { float: "right" } } id={ field.name }>
-        <Dropdown.Toggle noCaret bsSize="xsmall" />
+      <Dropdown style={ { float: "right" } } id={ field.name }>
+        <Dropdown.Toggle />
         <Dropdown.Menu>
           <DropdownItem
             key="undo"
@@ -62,7 +63,7 @@ function renderContent({ config, dispatch, field, languages }) {
   }
 
   return {
-    style: field.hasChanged ? "info" : "default",
+    style: field.hasChanged ? "info" : "info",
     content: field.isLocalized
       ? renderLocalizedEditors(field, languages, config, dispatch, Editor)
       : renderEditor(field, config, dispatch, Editor)

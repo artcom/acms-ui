@@ -90,6 +90,7 @@ export function changedContent(state = null, { type, payload }) {
       return state.deleteIn(payload.path)
 
     case "FINISH_FIELD_LOCALIZATION": {
+      // eslint-disable-next-line no-shadow
       const { defaultLanguageId, fieldLocalization } = payload
       const { field, languageIds } = fieldLocalization
       const localizedLanguageIds = languageIds.filter(hasLocalization => hasLocalization)
