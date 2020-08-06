@@ -1,12 +1,13 @@
 import Immutable from "immutable"
-import kebabCase from "lodash/kebabCase"
 import mapValues from "lodash/mapValues"
 import isUndefined from "lodash/isUndefined"
 import { createSelector } from "reselect"
 
+import { camelCase } from "lodash"
 import { evaluate } from "./condition"
 import { isLocalized } from "./language"
 import { isWhitelisted } from "./whitelist"
+import * as utils from "./utils"
 
 const TEMPLATE_KEY = "template"
 
@@ -60,7 +61,7 @@ function validateEntityName(name) {
 
 export const getNewEntityPath = createSelector(
   [getNewEntity, getFilePath],
-  (newEntity, path) => [...path, kebabCase(newEntity.name)]
+  (newEntity, path) => [...path, camelCase(newEntity.name)]
 )
 
 export const getNewEntityValues = createSelector(
