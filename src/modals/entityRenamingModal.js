@@ -19,7 +19,7 @@ function mapStateToProps(state) {
 function EntityRenamingModal({ dispatch, renamedEntity }) {
   return (
     <Modal show={ renamedEntity.isVisible } onHide={ () => dispatch(cancelEntityRenaming()) }>
-      <Form validated={ renamedEntity.isValidName }>
+      <Form validated={ renamedEntity.isValidId }>
         <Modal.Header closeButton>
           <Modal.Title>Rename Child</Modal.Title>
         </Modal.Header>
@@ -37,7 +37,7 @@ function EntityRenamingModal({ dispatch, renamedEntity }) {
           <Button
             type="submit"
             variant="info"
-            disabled={ !renamedEntity.isValidName }
+            disabled={ !renamedEntity.isValidId }
             onClick={ event => { event.preventDefault(); dispatch(finishEntityRenaming()) } }>
             Rename
           </Button>

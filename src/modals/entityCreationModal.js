@@ -19,7 +19,7 @@ function mapStateToProps(state) {
 function EntityCreationModal({ dispatch, newEntity }) {
   return (
     <Modal show={ newEntity.isVisible } onHide={ () => dispatch(cancelEntityCreation()) }>
-      <Form validated={ newEntity.isValidName }>
+      <Form validated={ newEntity.isValidId }>
         <Modal.Header closeButton>
           <Modal.Title>Add Child</Modal.Title>
         </Modal.Header>
@@ -28,9 +28,9 @@ function EntityCreationModal({ dispatch, newEntity }) {
             <Form.Label>Name</Form.Label>
             <Form.Control
               type="text"
-              value={ newEntity.name }
+              value={ newEntity.id }
               autoFocus
-              onChange={ event => dispatch(updateEntityCreation({ name: event.target.value })) } />
+              onChange={ event => dispatch(updateEntityCreation({ id: event.target.value })) } />
           </Form.Group>
           <Form.Group>
             <Form.Label>Template</Form.Label>
@@ -51,7 +51,7 @@ function EntityCreationModal({ dispatch, newEntity }) {
           <Button
             type="submit"
             variant="info"
-            disabled={ !newEntity.isValidName }
+            disabled={ !newEntity.isValidId }
             onClick={ event => { event.preventDefault(); dispatch(finishEntityCreation()) } }>
             Create
           </Button>
