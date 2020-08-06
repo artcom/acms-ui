@@ -1,6 +1,6 @@
 import { getChangedContent, getVersion } from "../selectors"
 import { showError } from "./error"
-import { getTemplate, defaultValue } from "../utils"
+import { createEntry, getTemplate } from "../utils"
 
 export function loadData(configServer, cmsConfigPath) {
   return async dispatch => {
@@ -42,7 +42,7 @@ function fixEntries(entity, templates) {
   const missingEntries = namedEntries.filter(({ id }) => !allEntries.includes(id))
   missingEntries.forEach(entry => {
     // eslint-disable-next-line no-param-reassign
-    entity[entry.id] = createValue(entry, templates)
+    entity[entry.id] = createEntry(entry, templates)
   })
 
   // fix fixed children
@@ -60,21 +60,6 @@ function fixEntries(entity, templates) {
       fixEntries(entity[child], templates)
     }
   })
-}
-
-function createValue(entry, templates) {
-  return entry.type ? defaultValue(entry) : createChild(entry, templates)
-}
-
-function createChild({ template }, templates) {
-  const { fields = [], fixedChildren = [] } = getTemplate(template, templates)
-
-  const child = { template };
-  [...fields, ...fixedChildren].forEach(entry => {
-    child[entry.id] = createValue(entry, templates)
-  })
-
-  return child
 }
 
 export function saveData(configServer) {
