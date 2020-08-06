@@ -2,6 +2,7 @@ import isUndefined from "lodash/isUndefined"
 
 import { getChangedContent, getVersion } from "../selectors"
 import { showError } from "./error"
+import { getTemplate } from "../utils"
 
 export function loadData(configServer, cmsConfigPath) {
   return async dispatch => {
@@ -61,10 +62,6 @@ function fixEntries(entity, templates) {
       fixEntries(entity[child], templates)
     }
   })
-}
-
-function getTemplate(templateId, templates) {
-  return templates[templateId] ? templates[templateId] : templates[`${templateId}/index`]
 }
 
 function createValue(entry, templates) {

@@ -66,7 +66,7 @@ export const getNewEntityPath = createSelector(
 export const getNewEntityValues = createSelector(
   [getNewEntity, getTemplates],
   (newEntity, templates) => {
-    const template = templates[newEntity.template]
+    const template = utils.getTemplate(newEntity.template, templates)
 
     const values = new Immutable.Map(template.fields.map(field => [
       field.id,
@@ -137,9 +137,7 @@ export const getChangedValues = createSelector(
 export const getTemplate = createSelector(
   [getTemplates, getChangedValues],
   (templates, changedValues) =>
-    templates[changedValues.get(TEMPLATE_KEY)]
-      ? templates[changedValues.get(TEMPLATE_KEY)]
-      : templates[`${changedValues.get(TEMPLATE_KEY)}/index`]
+    utils.getTemplate(changedValues.get(TEMPLATE_KEY), templates)
 )
 
 export const getTemplateChildren = createSelector(
