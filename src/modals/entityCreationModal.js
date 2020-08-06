@@ -20,32 +20,30 @@ function mapStateToProps(state) {
 function EntityCreationModal({ dispatch, newEntity }) {
   return (
     <Modal show={ newEntity.isVisible } onHide={ () => dispatch(cancelEntityCreation()) }>
-      <Form>
+      <Form validated={ newEntity.isValidName }>
         <Modal.Header closeButton>
           <Modal.Title>Add Child</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          <Form.Group validated={ newEntity.isValidName }>
+          <Form.Group>
             <Form.Label>Name</Form.Label>
             <Form.Control
               type="text"
               value={ newEntity.name }
               autoFocus
-              onChange={ event => dispatch(updateEntityCreation({
-                name: event.target.value
-              })) } />
+              onChange={ event => dispatch(updateEntityCreation({ name: event.target.value })) } />
           </Form.Group>
           <Form.Group>
             <Form.Label>Template</Form.Label>
             <Form.Control
-              componentClass="select"
+              as="select"
               value={ newEntity.template }
               disabled={ newEntity.templates.length < 2 }
               onChange={ event => dispatch(updateEntityCreation({
                 template: event.target.value
               })) }>
               { newEntity.templates.map(template =>
-                <option key={ template } value={ template }>{ startCase(template) }</option>
+                <option key={ template } value={ template }>{ template }</option>
               ) }
             </Form.Control>
           </Form.Group>
