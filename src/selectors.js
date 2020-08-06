@@ -74,8 +74,8 @@ export const getNewEntityValues = createSelector(
     ]))
 
     return values
-      .filter((value, name) => {
-        const field = template.fields.find(item => item.name === name)
+      .filter((value, id) => {
+        const field = template.fields.find(item => item.id === id)
         return !field.condition || evaluate(field.condition, values)
       })
       .set("template", newEntity.template)
