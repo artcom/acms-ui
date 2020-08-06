@@ -29,13 +29,13 @@ export const getNewEntity = state => {
   if (!state.newEntity) {
     return {
       isVisible: false,
-      name: "",
+      id: "",
       templates: []
     }
   }
 
   return { ...state.newEntity,
-    isValidName: validateEntityName(state.newEntity.name),
+    isValidId: validateEntityId(state.newEntity.id),
     isVisible: true
   }
 }
@@ -44,42 +44,28 @@ export const getRenamedEntity = state => {
   if (!state.renamedEntity) {
     return {
       isVisible: false,
-      newName: ""
+      newId: ""
     }
   }
 
   return { ...state.renamedEntity,
-    isValidName: validateEntityName(state.renamedEntity.newName),
+    isValidId: validateEntityId(state.renamedEntity.newId),
     isVisible: true
   }
 }
 
-function validateEntityName(name) {
-  return name.length > 0
+function validateEntityId(id) {
+  return id.length > 0
 }
 
 export const getNewEntityPath = createSelector(
   [getNewEntity, getFilePath],
-  (newEntity, path) => [...path, camelCase(newEntity.name)]
+  (newEntity, path) => [...path, camelCase(newEntity.id)]
 )
 
 export const getNewEntityValues = createSelector(
   [getNewEntity, getTemplates],
-  (newEntity, templates) => {
-    const template = utils.getTemplate(newEntity.template, templates)
-
-    const values = new Immutable.Map(template.fields.map(field => [
-      field.id,
-      utils.defaultValue(field)
-    ]))
-
-    return values
-      .filter((value, id) => {
-        const field = template.fields.find(item => item.id === id)
-        return !field.condition || evaluate(field.condition, values)
-      })
-      .set("template", newEntity.template)
-  }
+  (newEntity, templates) => Immutable.fromJS(utils.createEntry(newEntity, templates))
 )
 
 export const getFieldLocalization = state => {
@@ -158,22 +144,22 @@ export const getWhitelistedFields = createSelector(
 const getChildren = createSelector(
   [getTemplate, getOriginalEntity, getChangedEntity, getFilePath],
   (template, originalEntity, changedEntity, path) => {
-    const childNames = new Immutable.Set(originalEntity.keySeq().concat(changedEntity.keySeq()))
+    const childIds = new Immutable.Set(originalEntity.keySeq().concat(changedEntity.keySeq()))
     const fieldIds = template.fields.map(({ id }) => id)
     const fixedChildIds = template.fixedChildren.map(({ id }) => id)
 
-    return childNames
+    return childIds
       .filter(
-        name => name !== TEMPLATE_KEY &&
-        !fieldIds.includes(name) &&
-        !fixedChildIds.includes(name))
+        id => id !== TEMPLATE_KEY &&
+        !fieldIds.includes(id) &&
+        !fixedChildIds.includes(id))
       .sort()
-      .map(child => ({
-        hasChanged: !Immutable.is(originalEntity.get(child), changedEntity.get(child)),
-        isNew: !originalEntity.has(child),
-        isDeleted: !changedEntity.has(child),
-        name: child,
-        path: [...path, child]
+      .map(id => ({
+        hasChanged: !Immutable.is(originalEntity.get(id), changedEntity.get(id)),
+        isNew: !originalEntity.has(id),
+        isDeleted: !changedEntity.has(id),
+        id,
+        path: [...path, id]
       }))
   }
 )
@@ -186,18 +172,18 @@ export const getWhitelistedChildren = createSelector(
 const getFixedChildren = createSelector(
   [getTemplate, getOriginalEntity, getChangedEntity, getFilePath],
   (template, originalEntity, changedEntity, path) => {
-    const childNames = new Immutable.Set(originalEntity.keySeq().concat(changedEntity.keySeq()))
+    const childIds = new Immutable.Set(originalEntity.keySeq().concat(changedEntity.keySeq()))
     const fixedChildIds = template.fixedChildren.map(({ id }) => id)
 
-    return childNames
-      .filter(name => fixedChildIds.includes(name))
+    return childIds
+      .filter(id => fixedChildIds.includes(id))
       .sort()
-      .map(child => ({
-        hasChanged: !Immutable.is(originalEntity.get(child), changedEntity.get(child)),
-        isNew: !originalEntity.has(child),
-        isDeleted: !changedEntity.has(child),
-        name: child,
-        path: [...path, child]
+      .map(id => ({
+        hasChanged: !Immutable.is(originalEntity.get(id), changedEntity.get(id)),
+        isNew: !originalEntity.has(id),
+        isDeleted: !changedEntity.has(id),
+        id,
+        path: [...path, id]
       }))
   }
 )

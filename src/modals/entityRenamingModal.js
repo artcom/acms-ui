@@ -28,7 +28,7 @@ function EntityRenamingModal({ dispatch, renamedEntity }) {
             <Form.Label>Name</Form.Label>
             <Form.Control
               type="text"
-              value={ renamedEntity.newName }
+              value={ renamedEntity.newId }
               autoFocus
               onChange={ event => dispatch(updateEntityRenaming(event.target.value)) } />
           </Form.Group>

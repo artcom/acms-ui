@@ -83,7 +83,7 @@ export function changedContent(state = null, { type, payload }) {
 
     case "FINISH_ENTITY_RENAMING": {
       const parent = state.getIn(payload.path)
-      const renamed = parent.mapKeys(name => name === payload.oldName ? payload.newName : name)
+      const renamed = parent.mapKeys(id => id === payload.oldId ? payload.newId : id)
       return state.setIn(payload.path, renamed.toMap())
     }
 
@@ -150,7 +150,7 @@ export function renamedEntity(state = null, { type, payload }) {
       return payload
 
     case "UPDATE_ENTITY_RENAMING":
-      return { ...state, newName: payload.newName }
+      return { ...state, newId: payload.newId }
 
     case "FINISH_ENTITY_RENAMING":
     case "CANCEL_ENTITY_RENAMING":

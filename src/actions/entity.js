@@ -17,7 +17,7 @@ export function startEntityCreation() {
     dispatch({
       type: "START_ENTITY_CREATION",
       payload: {
-        name: "",
+        id: "",
         template: templates[0],
         templates
       }
@@ -54,21 +54,21 @@ export function cancelEntityCreation() {
   }
 }
 
-export function startEntityRenaming(oldName) {
+export function startEntityRenaming(oldId) {
   return {
     type: "START_ENTITY_RENAMING",
     payload: {
-      oldName,
-      newName: startCase(oldName)
+      oldId,
+      newId: startCase(oldId)
     }
   }
 }
 
-export function updateEntityRenaming(newName) {
+export function updateEntityRenaming(newId) {
   return {
     type: "UPDATE_ENTITY_RENAMING",
     payload: {
-      newName
+      newId
     }
   }
 }
@@ -76,14 +76,14 @@ export function updateEntityRenaming(newName) {
 export function finishEntityRenaming() {
   return (dispatch, getState) => {
     const state = getState()
-    const { oldName, newName } = getRenamedEntity(state)
+    const { oldId, newId } = getRenamedEntity(state)
 
     dispatch({
       type: "FINISH_ENTITY_RENAMING",
       payload: {
         path: getFilePath(state),
-        oldName,
-        newName: camelCase(newName)
+        oldId,
+        newId: camelCase(newId)
       }
     })
   }

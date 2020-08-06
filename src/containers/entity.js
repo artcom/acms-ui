@@ -71,19 +71,19 @@ function renderChildren(children, dispatch) {
 }
 
 function renderChild(child, dispatch) {
-  const displayName = startCase(child.name)
+  const displayName = startCase(child.id)
   const link = child.isDeleted ? displayName : <a href={ fromPath(child.path) }>{ displayName }</a>
 
   return (
-    <ListGroupItem key={ child.name } variant={ childStyle(child) }>
+    <ListGroupItem key={ child.id } variant={ childStyle(child) }>
       { link }
 
-      <Dropdown className="float-right btn-sm" id={ child.name }>
+      <Dropdown className="float-right btn-sm" id={ child.id }>
         <Dropdown.Toggle />
         <Dropdown.Menu>
           <DropDownItem
             disabled={ child.isDeleted }
-            onSelect={ () => dispatch(startEntityRenaming(child.name)) }>
+            onSelect={ () => dispatch(startEntityRenaming(child.id)) }>
             Rename...
           </DropDownItem>
           <DropDownItem
