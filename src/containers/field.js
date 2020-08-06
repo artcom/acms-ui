@@ -52,7 +52,7 @@ function renderHeader({ field, dispatch }) {
   )
 }
 
-function renderContent({ config, dispatch, field, languages }) {
+function renderContent({ assetServer, dispatch, field, languages }) {
   const Editor = editors[field.type]
 
   if (!Editor) {
@@ -65,12 +65,12 @@ function renderContent({ config, dispatch, field, languages }) {
   return {
     style: field.hasChanged ? "warning" : "light",
     content: field.isLocalized
-      ? renderLocalizedEditors(field, languages, config, dispatch, Editor)
-      : renderEditor(field, config, dispatch, Editor)
+      ? renderLocalizedEditors(field, languages, assetServer, dispatch, Editor)
+      : renderEditor(field, assetServer, dispatch, Editor)
   }
 }
 
-function renderLocalizedEditors(field, languages, config, dispatch, Editor) {
+function renderLocalizedEditors(field, languages, assetServer, dispatch, Editor) {
   const items = field.value.map((value, languageId) => {
     const languageField = { ...field,
       path: [...field.path, languageId],
@@ -83,7 +83,7 @@ function renderLocalizedEditors(field, languages, config, dispatch, Editor) {
           { getLanguageName(languageId, languages) }
         </FormLabel>
 
-        { renderEditor(languageField, config, dispatch, Editor) }
+        { renderEditor(languageField, assetServer, dispatch, Editor) }
       </ListGroupItem>
     )
   }).valueSeq()
@@ -91,12 +91,11 @@ function renderLocalizedEditors(field, languages, config, dispatch, Editor) {
   return <ListGroup fill>{ items }</ListGroup>
 }
 
-function renderEditor(field, config, dispatch, Editor) {
+function renderEditor(field, assetServer, dispatch, Editor) {
   return (
     <Editor
-      config={ config }
       field={ field }
       onChange={ event => dispatch(changeValue(field.path, event.target.value)) }
-      onFileSelect={ files => dispatch(uploadFile(field.path, files[0], config.assetServer)) } />
+      onFileSelect={ files => dispatch(uploadFile(field.path, files[0], assetServer)) } />
   )
 }

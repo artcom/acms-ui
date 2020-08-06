@@ -36,7 +36,14 @@ function mapStateToProps(state) {
   }
 }
 
-function Entity({ canHaveChildren, children, fixedChildren, config, dispatch, fields, languages }) {
+function Entity({
+  canHaveChildren,
+  children,
+  fixedChildren,
+  assetServer,
+  dispatch,
+  fields,
+  languages }) {
   return (
     <Row>
       <Col md={ 4 }>
@@ -48,7 +55,7 @@ function Entity({ canHaveChildren, children, fixedChildren, config, dispatch, fi
 
       <Col md={ 8 }>
         <h4>Fields</h4>
-        { renderFields(fields, languages, config, dispatch) }
+        { renderFields(fields, languages, assetServer, dispatch) }
       </Col>
     </Row>
   )
@@ -116,13 +123,13 @@ function childStyle(child) {
   }
 }
 
-function renderFields(fields, languages, config, dispatch) {
+function renderFields(fields, languages, assetServer, dispatch) {
   return fields.map(field =>
     <Field
       key={ field.id }
       field={ field }
       languages={ languages }
-      config={ config }
+      assetServer={ assetServer }
       dispatch={ dispatch } />
   )
 }

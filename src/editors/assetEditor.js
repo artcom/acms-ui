@@ -11,19 +11,18 @@ const PLACEHOLDER = {
   video: "facetime-video"
 }
 
-export default function AssetEditor({ config, field, onFileSelect }) {
+export default function AssetEditor({ field, onFileSelect }) {
   return (
     <div>
-      { field.value ? renderView(field, config) : renderPlaceholder(field) }
+      { field.value ? renderView(field) : renderPlaceholder(field) }
       <hr />
       { renderUpload(field, onFileSelect) }
     </div>
   )
 }
 
-function renderView(field, config) {
-  const key = field.value.get("src")
-  const src = config.assetServer.assetUrl(key)
+function renderView(field) {
+  const src = field.value
   const style = { width: "100%" }
 
   const checkerboard = {
@@ -37,10 +36,10 @@ function renderView(field, config) {
 
   }
   switch (field.type) {
-    case "audio": return <audio controls key={ key } src={ src } style={ style } />
-    case "file": return <div key={ key } style={ style }>{ path.basename(key) }</div>
-    case "image": return <img key={ key } src={ src } style={ checkerboard } />
-    case "video": return <video controls key={ key } src={ src } style={ style } />
+    case "audio": return <audio controls key={ src } src={ src } style={ style } />
+    case "file": return <div key={ src } style={ style }>{ path.basename(src) }</div>
+    case "image": return <img key={ src } src={ src } style={ checkerboard } />
+    case "video": return <video controls key={ src } src={ src } style={ style } />
   }
 }
 

@@ -13,11 +13,11 @@ export function uploadFile(path, file, assetServer) {
 
     try {
       dispatch(startUpload(path))
-      const destination = await hashFile(file)
+      const filename = await hashFile(file)
 
-      await assetServer.uploadFile(destination, file, { onUploadProgress })
+      const url = await assetServer.uploadFile(filename, file, { onUploadProgress })
 
-      dispatch(changeValue(path, { src: destination }))
+      dispatch(changeValue(path, url))
     } catch (error) {
       dispatch(cancelUpload(path))
       dispatch(showError("Failed to Upload File", error))
