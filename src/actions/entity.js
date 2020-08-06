@@ -1,5 +1,5 @@
-import kebabCase from "lodash/kebabCase"
 import startCase from "lodash/startCase"
+import { camelCase } from "lodash"
 
 import {
   getNewEntityPath,
@@ -83,7 +83,7 @@ export function finishEntityRenaming() {
       payload: {
         path: getFilePath(state),
         oldName,
-        newName: kebabCase(newName)
+        newName: camelCase(newName)
       }
     })
   }
