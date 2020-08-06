@@ -63,7 +63,7 @@ function renderContent({ config, dispatch, field, languages }) {
   }
 
   return {
-    style: field.hasChanged ? "info" : "info",
+    style: field.hasChanged ? "warning" : "light",
     content: field.isLocalized
       ? renderLocalizedEditors(field, languages, config, dispatch, Editor)
       : renderEditor(field, config, dispatch, Editor)

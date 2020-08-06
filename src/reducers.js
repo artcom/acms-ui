@@ -67,6 +67,7 @@ export function originalContent(state = null, { type, payload }) {
 export function changedContent(state = null, { type, payload }) {
   switch (type) {
     case "UPDATE_DATA":
+    case "FIX_CONTENT":
       return Immutable.fromJS(payload.content)
 
     case "CHANGE_VALUE":

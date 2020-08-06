@@ -42,9 +42,8 @@ function Entity({ canHaveChildren, children, fixedChildren, config, dispatch, fi
       <Col md={ 4 }>
         <h4>Children</h4>
         { renderFixedChildren(fixedChildren, dispatch) }
-        <h4>Optional Children</h4>
         { renderChildren(children, dispatch) }
-        <Button disabled={ !canHaveChildren } onClick={ () => dispatch(startEntityCreation()) } />
+        { canHaveChildren && <Button onClick={ () => dispatch(startEntityCreation()) } /> }
       </Col>
 
       <Col md={ 8 }>

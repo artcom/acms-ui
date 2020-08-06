@@ -2,7 +2,7 @@ import React from "react"
 import { render } from "react-dom"
 import { Provider } from "react-redux"
 
-import { loadData } from "./actions/data"
+import { loadData, fixContent } from "./actions/data"
 import { updatePath } from "./actions/path"
 import bootstrap from "./bootstrap"
 import { configureStore } from "./store"
@@ -15,9 +15,11 @@ import FieldLocalizationModal from "./modals/fieldLocalizationModal"
 
 import "bootstrap/dist/css/bootstrap.min.css"
 
-bootstrap().then(({ assetServer, cmsConfigPath, configServer }) => {
+bootstrap().then(async ({ assetServer, cmsConfigPath, configServer }) => {
   const store = configureStore()
-  store.dispatch(loadData(configServer, cmsConfigPath))
+  await store.dispatch(loadData(configServer, cmsConfigPath))
+
+  await store.dispatch(fixContent())
 
   window.addEventListener("hashchange", updatePathFromHash)
   updatePathFromHash()
