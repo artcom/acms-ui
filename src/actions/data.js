@@ -1,8 +1,6 @@
-import isUndefined from "lodash/isUndefined"
-
 import { getChangedContent, getVersion } from "../selectors"
 import { showError } from "./error"
-import { getTemplate } from "../utils"
+import { getTemplate, defaultValue } from "../utils"
 
 export function loadData(configServer, cmsConfigPath) {
   return async dispatch => {
@@ -65,28 +63,7 @@ function fixEntries(entity, templates) {
 }
 
 function createValue(entry, templates) {
-  return entry.type ? createFieldValue(entry) : createChild(entry, templates)
-}
-
-function createFieldValue(field) {
-  if (!isUndefined(field.default)) {
-    return field.default
-  }
-
-  switch (field.type) {
-    case "enum":
-      return field.values[0].value
-    case "boolean":
-      return false
-    case "markdown":
-    case "string":
-      return ""
-    case "number":
-      return 0
-
-    default:
-      return null
-  }
+  return entry.type ? defaultValue(entry) : createChild(entry, templates)
 }
 
 function createChild({ template }, templates) {

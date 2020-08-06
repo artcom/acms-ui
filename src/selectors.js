@@ -1,6 +1,5 @@
 import Immutable from "immutable"
 import mapValues from "lodash/mapValues"
-import isUndefined from "lodash/isUndefined"
 import { createSelector } from "reselect"
 
 import { camelCase } from "lodash"
@@ -71,7 +70,7 @@ export const getNewEntityValues = createSelector(
 
     const values = new Immutable.Map(template.fields.map(field => [
       field.id,
-      defaultValue(field)
+      utils.defaultValue(field)
     ]))
 
     return values
@@ -82,25 +81,6 @@ export const getNewEntityValues = createSelector(
       .set("template", newEntity.template)
   }
 )
-
-function defaultValue(field) {
-  if (!isUndefined(field.default)) {
-    return field.default
-  }
-
-  switch (field.type) {
-    case "enum":
-      return field.values[0].value
-    case "boolean":
-      return false
-    case "markdown":
-    case "string":
-      return ""
-
-    default:
-      return null
-  }
-}
 
 export const getFieldLocalization = state => {
   if (!state.fieldLocalization) {
