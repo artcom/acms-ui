@@ -17,16 +17,11 @@ import "bootstrap/dist/css/bootstrap.min.css"
 
 bootstrap().then(async ({ assetServer, cmsConfigPath, configServer }) => {
   const store = configureStore()
-  await store.dispatch(loadData(configServer, cmsConfigPath))
 
+  await store.dispatch(loadData(configServer, cmsConfigPath))
   await store.dispatch(fixContent())
 
-  window.addEventListener("hashchange", updatePathFromHash)
-  updatePathFromHash()
-
-  function updatePathFromHash() {
-    store.dispatch(updatePath(window.location.hash))
-  }
+  window.addEventListener("hashchange", () => store.dispatch(updatePath(window.location.hash)))
 
   render(
     <Provider store={ store } >
