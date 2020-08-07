@@ -34,6 +34,16 @@ export function languages(state = [], { type, payload }) {
   }
 }
 
+export function contentPath(state = "", { type, payload }) {
+  switch (type) {
+    case "UPDATE_DATA":
+      return payload.config.contentPath
+
+    default:
+      return state
+  }
+}
+
 export function templates(state = null, { type, payload }) {
   switch (type) {
     case "UPDATE_DATA":

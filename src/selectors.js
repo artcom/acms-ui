@@ -14,6 +14,7 @@ export const getVersion = state => state.version
 export const getOriginalContent = state => state.originalContent
 export const getChangedContent = state => state.changedContent
 export const getLanguages = state => state.languages
+export const getContentPath = state => state.contentPath
 export const getProgress = state => state.progress
 export const getWhitelist = state => state.user.whiteList
 export const getFilePath = state => state.path
