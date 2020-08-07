@@ -1,19 +1,13 @@
 import axios from "axios"
 
+const DEFAULT_BRANCH = "master"
+
 export default class ConfigServer {
-  constructor(url = "/content") {
+  constructor(url) {
     this.api = axios.create({ baseURL: url })
   }
 
-  async load(configPath) {
-    const { data: config, version } = await this.queryJson(configPath)
-    const { data: templates } = await this.queryFiles(config.templatesPath, version)
-    const { data: content } = await this.queryJson(config.contentPath, version)
-
-    return { config, content, templates, version }
-  }
-
-  async queryJson(path, version = "master") {
+  async queryJson(path, version = DEFAULT_BRANCH) {
     const response = await this.api.get(`${version}/${path}`)
 
     return {
@@ -22,7 +16,7 @@ export default class ConfigServer {
     }
   }
 
-  async queryFiles(path, version = "master") {
+  async queryFiles(path, version = DEFAULT_BRANCH) {
     const response = await this.api.get(`${version}/${path}?listFiles=true`)
 
     return {
@@ -31,7 +25,7 @@ export default class ConfigServer {
     }
   }
 
-  async save(content, templates, version) {
-    await this.api.post(`${version}/content`, content)
+  async save(files, contentPath, version, updateBranch = DEFAULT_BRANCH) {
+    await this.api.put(`${version}/${contentPath}`, { files, updateBranch })
   }
 }

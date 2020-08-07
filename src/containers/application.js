@@ -5,9 +5,6 @@ import Alert from "react-bootstrap/Alert"
 import Breadcrumb from "react-bootstrap/Breadcrumb"
 import Button from "react-bootstrap/Button"
 import Navbar from "react-bootstrap/Navbar"
-import Row from "react-bootstrap/Row"
-import Col from "react-bootstrap/Col"
-import Form from "react-bootstrap/Form"
 import { connect } from "react-redux"
 
 import Container from "react-bootstrap/Container"
@@ -53,7 +50,7 @@ function renderError({ dispatch, flash }) {
   }
 }
 
-function renderHeader({ title, configServer, dispatch, hasChanged, isSaving, path }) {
+function renderHeader({ title, configPath, configServer, dispatch, hasChanged, isSaving, path }) {
   return (
     <Navbar sticky="top" bg="light" variant="light" className={ "flex-column" }>
       <Container>
@@ -61,7 +58,7 @@ function renderHeader({ title, configServer, dispatch, hasChanged, isSaving, pat
         <Button
           style={ { float: "right", width: "100px" } }
           disabled={ !hasChanged || isSaving }
-          onClick={ () => dispatch(saveData(configServer)) }>
+          onClick={ () => dispatch(saveData(configServer, configPath)) }>
           { isSaving ? "Saving..." : "Save" }
         </Button>
       </Container>

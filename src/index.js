@@ -30,7 +30,7 @@ bootstrap().then(async ({ assetServer, cmsConfigPath, configServer }) => {
 
   render(
     <Provider store={ store } >
-      <Application configServer={ configServer }>
+      <Application configServer={ configServer } configPath={ cmsConfigPath }>
         <Entity assetServer={ assetServer } />
         <EntityCreationModal />
         <EntityRenamingModal />

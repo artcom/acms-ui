@@ -1,11 +1,17 @@
-import { getChangedContent, getTemplates, getVersion } from "../selectors"
+import { isPlainObject } from "lodash"
+import { getChangedContent, getTemplates, getVersion, getContentPath } from "../selectors"
 import { showError } from "./error"
-import { createEntry, getTemplate } from "../utils"
+import { createChildValue, createFieldValue, getTemplate, isValid } from "../utils"
 
 export function loadData(configServer, configPath) {
   return async dispatch => {
     try {
-      const { config, content, templates, version } = await configServer.load(configPath)
+      const { data: config, version } = await configServer.queryJson(configPath)
+
+      const [{ data: templates }, { data: content }] = await Promise.all([
+        configServer.queryFiles(config.templatesPath, version),
+        configServer.queryJson(config.contentPath, version)
+      ])
 
       dispatch(updateData(config, content, templates, version))
     } catch (error) {
@@ -35,46 +41,54 @@ export function fixContent() {
 }
 
 function fixEntries(entity, templates) {
-  const allEntries = Object.keys(entity).filter(entry => entry !== "template")
-  const { fields = [], fixedChildren = [], children = [] } = getTemplate(entity.template, templates)
+  const { template, ...allEntries } = entity
+  const { fields = [], fixedChildren = [], children = [] } = getTemplate(template, templates)
 
-  const namedEntries = [...fields, ...fixedChildren]
-
-  // create missing named entries
-  const missingEntries = namedEntries.filter(({ id }) => !allEntries.includes(id))
-  missingEntries.forEach(entry => {
-    // eslint-disable-next-line no-param-reassign
-    entity[entry.id] = createEntry(entry, templates)
+  // fix invalid fields
+  fields.forEach(field => {
+    if (!isValid(entity[field.id], field)) {
+      entity[field.id] = createFieldValue(field) // eslint-disable-line no-param-reassign
+    }
   })
 
-  // fix fixed children
-  fixedChildren.forEach(child => fixEntries(entity[child.id], templates))
+  // fix fixedChildren
+  fixedChildren.forEach(child => {
+    if (!isPlainObject(entity[child.id])) {
+      // eslint-disable-next-line no-param-reassign
+      entity[child.id] = createChildValue(child.template, templates)
+    } else {
+      fixEntries(entity[child.id], templates)
+    }
+  })
 
   // fix additional children
-  const additionalChildren = allEntries
-    .filter(id => namedEntries.findIndex(entry => id === entry.id) === -1)
-  additionalChildren.forEach(child => {
-    if (!children.includes(entity[child].template)) {
+  const namedEntries = [...fields, ...fixedChildren].map(({ id }) => id)
+  const additionalChildIds = Object.keys(allEntries).filter(id => !namedEntries.includes(id))
+  additionalChildIds.forEach(id => {
+    if (!children.includes(entity[id].template)) {
       // delete children with invalid template
-      // eslint-disable-next-line no-param-reassign
-      delete entity[child]
+      delete entity[id] // eslint-disable-line no-param-reassign
     } else {
-      fixEntries(entity[child], templates)
+      fixEntries(entity[id], templates)
     }
   })
 }
 
-export function saveData(configServer) {
+export function saveData(configServer, configPath) {
   return async (dispatch, getState) => {
     const state = getState()
     const version = getVersion(state)
     const content = getChangedContent(state)
     const templates = getTemplates(state)
+    const contentPath = getContentPath(state)
 
     try {
       dispatch(startSaving())
-      await configServer.save(content.toJS(), templates, version)
-      dispatch(loadData(configServer))
+
+      const contentFiles = toFiles(content.toJS(), templates)
+      await configServer.save(contentFiles, contentPath, version)
+
+      dispatch(loadData(configServer, configPath))
     } catch (error) {
       dispatch(showError("Failed to save Data", error))
     }
@@ -97,4 +111,23 @@ function updateData(config, content, templates, version) {
       version
     }
   }
+}
+
+
+function toFiles({ template, ...content }, templates, path = []) {
+  const files = {}
+  const fields = getTemplate(template, templates).fields || []
+
+  // add index file
+  const fieldIds = fields.map(({ id }) => id)
+  files[[...path, "index"].join("/")] = fieldIds.reduce(
+    (result, id) => ({ ...result, [id]: content[id] }),
+    { template }
+  )
+
+  // add all fixed children files
+  const childIds = Object.keys(content).filter(id => !fieldIds.includes(id))
+  childIds.forEach(id => Object.assign(files, toFiles(content[id], templates, [...path, id])))
+
+  return files
 }
