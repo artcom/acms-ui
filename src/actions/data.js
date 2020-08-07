@@ -1,13 +1,11 @@
-import { getChangedContent, getVersion } from "../selectors"
+import { getChangedContent, getTemplates, getVersion } from "../selectors"
 import { showError } from "./error"
 import { createEntry, getTemplate } from "../utils"
 
-export function loadData(configServer, cmsConfigPath) {
+export function loadData(configServer, configPath) {
   return async dispatch => {
     try {
-      const { data: config, version } = await configServer.queryJson(cmsConfigPath)
-      const { data: templates } = await configServer.queryFiles(config.templatesPath, version)
-      const { data: content } = await configServer.queryJson(config.contentPath, version)
+      const { config, content, templates, version } = await configServer.load(configPath)
 
       dispatch(updateData(config, content, templates, version))
     } catch (error) {
@@ -71,10 +69,11 @@ export function saveData(configServer) {
     const state = getState()
     const version = getVersion(state)
     const content = getChangedContent(state)
+    const templates = getTemplates(state)
 
     try {
       dispatch(startSaving())
-      await configServer.updateContent(content.toJS(), version)
+      await configServer.save(content.toJS(), templates, version)
       dispatch(loadData(configServer))
     } catch (error) {
       dispatch(showError("Failed to save Data", error))
