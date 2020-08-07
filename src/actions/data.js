@@ -11,24 +11,28 @@ export function loadData(configServer, cmsConfigPath) {
 
       dispatch(updateData(config, content, templates, version))
     } catch (error) {
-      dispatch(showError("Failed to Load Data", error))
+      dispatch(showError("Failed to load Data", error))
     }
   }
 }
 
 export function fixContent() {
   return async (dispatch, getState) => {
-    const { originalContent, templates } = getState()
+    try {
+      const { originalContent, templates } = getState()
 
-    const content = originalContent.toJS()
-    fixEntries(content, templates)
+      const content = originalContent.toJS()
+      fixEntries(content, templates)
 
-    dispatch({
-      type: "FIX_CONTENT",
-      payload: {
-        content
-      }
-    })
+      dispatch({
+        type: "FIX_CONTENT",
+        payload: {
+          content
+        }
+      })
+    } catch (error) {
+      dispatch(showError("Failed to fix Data", error))
+    }
   }
 }
 
@@ -73,7 +77,7 @@ export function saveData(configServer) {
       await configServer.updateContent(content.toJS(), version)
       dispatch(loadData(configServer))
     } catch (error) {
-      dispatch(showError("Failed to Save Data", error))
+      dispatch(showError("Failed to save Data", error))
     }
   }
 }
