@@ -6,6 +6,10 @@ export function getTemplate(id, templates) {
     : templates[`${id}/index`]
 }
 
+export function createEntry(entry, templates) {
+  return entry.type ? createFieldValue(entry) : createChildValue(entry.template, templates)
+}
+
 export function createChildValue(template, templates) {
   const { fields = [], fixedChildren = [] } = getTemplate(template, templates)
 
@@ -15,10 +19,6 @@ export function createChildValue(template, templates) {
   })
 
   return child
-}
-
-function createEntry(entry, templates) {
-  return entry.type ? createFieldValue(entry) : createChildValue(entry.template, templates)
 }
 
 export function createFieldValue(field) {
