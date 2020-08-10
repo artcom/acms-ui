@@ -1,4 +1,4 @@
-import { isString, isNumber, isUndefined } from "lodash"
+import { get, isString, isNumber, isUndefined } from "lodash"
 
 export function getTemplate(id, templates) {
   return templates[id]
@@ -60,9 +60,10 @@ export function isValid(value, field) {
     case "image":
     case "file":
     case "video":
+      return isString(value)
     case "markdown":
     case "string":
-      return isString(value)
+      return isString(value) && value.length < get(field, "maxLength", Infinity)
     case "number":
     {
       if (!isNumber(value)) {
