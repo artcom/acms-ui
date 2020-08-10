@@ -6,13 +6,13 @@ import Form from "react-bootstrap/Form"
 import Modal from "react-bootstrap/Modal"
 
 import { cancelEntityCreation, finishEntityCreation, updateEntityCreation } from "../actions/entity"
-import { getNewEntity } from "../selectors"
+import { selectNewEntity } from "../selectors"
 
 export default connect(mapStateToProps)(EntityCreationModal)
 
 function mapStateToProps(state) {
   return {
-    newEntity: getNewEntity(state)
+    newEntity: selectNewEntity(state)
   }
 }
 

@@ -1,5 +1,5 @@
 import { isPlainObject } from "lodash"
-import { getChangedContent, getTemplates, getVersion, getContentPath } from "../selectors"
+import { getChangedContent, selectTemplates, getVersion, getContentPath } from "../selectors"
 import { showError } from "./error"
 import { createChildValue, createFieldValue, getTemplate, isValid } from "../utils"
 
@@ -79,7 +79,7 @@ export function saveData(configServer, configPath) {
     const state = getState()
     const version = getVersion(state)
     const content = getChangedContent(state)
-    const templates = getTemplates(state)
+    const templates = selectTemplates(state)
     const contentPath = getContentPath(state)
 
     try {

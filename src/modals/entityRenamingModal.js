@@ -6,20 +6,20 @@ import Form from "react-bootstrap/Form"
 import Modal from "react-bootstrap/Modal"
 
 import { cancelEntityRenaming, finishEntityRenaming, updateEntityRenaming } from "../actions/entity"
-import { getRenamedEntity } from "../selectors"
+import { selectRenamedEntity } from "../selectors"
 
 export default connect(mapStateToProps)(EntityRenamingModal)
 
 function mapStateToProps(state) {
   return {
-    renamedEntity: getRenamedEntity(state)
+    renamedEntity: selectRenamedEntity(state)
   }
 }
 
 function EntityRenamingModal({ dispatch, renamedEntity }) {
   return (
     <Modal show={ renamedEntity.isVisible } onHide={ () => dispatch(cancelEntityRenaming()) }>
-      <Form validated={ renamedEntity.isValidId }>
+      <Form>
         <Modal.Header closeButton>
           <Modal.Title>Rename Child</Modal.Title>
         </Modal.Header>
@@ -29,6 +29,7 @@ function EntityRenamingModal({ dispatch, renamedEntity }) {
             <Form.Control
               type="text"
               value={ renamedEntity.newId }
+              isInvalid={ !renamedEntity.isValidId }
               autoFocus
               onChange={ event => dispatch(updateEntityRenaming(event.target.value)) } />
           </Form.Group>

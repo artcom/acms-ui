@@ -2,17 +2,17 @@ import startCase from "lodash/startCase"
 import { camelCase } from "lodash"
 
 import {
-  getNewEntityPath,
-  getNewEntityValues,
+  selectNewEntityPath,
+  selectNewEntityValues,
   getFilePath,
-  getRenamedEntity,
-  getTemplateChildren
+  selectRenamedEntity,
+  selectTemplateChildren
 } from "../selectors"
 
 export function startEntityCreation() {
   return (dispatch, getState) => {
     const state = getState()
-    const templates = getTemplateChildren(state)
+    const templates = selectTemplateChildren(state)
 
     dispatch({
       type: "START_ENTITY_CREATION",
@@ -41,8 +41,8 @@ export function finishEntityCreation() {
     dispatch({
       type: "FINISH_ENTITY_CREATION",
       payload: {
-        path: getNewEntityPath(state),
-        values: getNewEntityValues(state)
+        path: selectNewEntityPath(state),
+        values: selectNewEntityValues(state)
       }
     })
   }
@@ -76,7 +76,7 @@ export function updateEntityRenaming(newId) {
 export function finishEntityRenaming() {
   return (dispatch, getState) => {
     const state = getState()
-    const { oldId, newId } = getRenamedEntity(state)
+    const { oldId, newId } = selectRenamedEntity(state)
 
     dispatch({
       type: "FINISH_ENTITY_RENAMING",

@@ -18,20 +18,20 @@ import { fromPath } from "../hash"
 
 import {
   getLanguages,
-  getTemplateChildren,
-  getWhitelistedFixedChildren,
-  getWhitelistedChildren,
-  getWhitelistedFields
+  selectTemplateChildren,
+  selectWhitelistedFixedChildren,
+  selectWhitelistedChildren,
+  selectWhitelistedFields
 } from "../selectors"
 
 export default connect(mapStateToProps)(Entity)
 
 function mapStateToProps(state) {
   return {
-    canHaveChildren: getTemplateChildren(state).length > 0,
-    children: getWhitelistedChildren(state),
-    fixedChildren: getWhitelistedFixedChildren(state),
-    fields: getWhitelistedFields(state),
+    canHaveChildren: selectTemplateChildren(state).length > 0,
+    children: selectWhitelistedChildren(state),
+    fixedChildren: selectWhitelistedFixedChildren(state),
+    fields: selectWhitelistedFields(state),
     languages: getLanguages(state)
   }
 }

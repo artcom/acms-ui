@@ -19,14 +19,14 @@ export const getProgress = state => state.progress
 export const getWhitelist = state => state.user.whiteList
 export const getFilePath = state => state.path
 
-export const getTemplates = state => mapValues(state.templates, template => ({
+export const selectTemplates = state => mapValues(state.templates, template => ({
   fields: [],
   children: [],
   fixedChildren: [],
   ...template
 }))
 
-export const getNewEntity = state => {
+export const selectNewEntity = state => {
   if (!state.newEntity) {
     return {
       isVisible: false,
@@ -36,12 +36,12 @@ export const getNewEntity = state => {
   }
 
   return { ...state.newEntity,
-    isValidId: validateEntityId(state.newEntity.id),
+    isValidId: utils.isValidId(state.newEntity.id),
     isVisible: true
   }
 }
 
-export const getRenamedEntity = state => {
+export const selectRenamedEntity = state => {
   if (!state.renamedEntity) {
     return {
       isVisible: false,
@@ -50,26 +50,22 @@ export const getRenamedEntity = state => {
   }
 
   return { ...state.renamedEntity,
-    isValidId: validateEntityId(state.renamedEntity.newId),
+    isValidId: utils.isValidId(state.renamedEntity.newId),
     isVisible: true
   }
 }
 
-function validateEntityId(id) {
-  return id.length > 0
-}
-
-export const getNewEntityPath = createSelector(
-  [getNewEntity, getFilePath],
+export const selectNewEntityPath = createSelector(
+  [selectNewEntity, getFilePath],
   (newEntity, path) => [...path, camelCase(newEntity.id)]
 )
 
-export const getNewEntityValues = createSelector(
-  [getNewEntity, getTemplates],
+export const selectNewEntityValues = createSelector(
+  [selectNewEntity, selectTemplates],
   (newEntity, templates) => Immutable.fromJS(utils.createEntry(newEntity, templates))
 )
 
-export const getFieldLocalization = state => {
+export const selectFieldLocalization = state => {
   if (!state.fieldLocalization) {
     return {
       languageIds: new Immutable.OrderedMap(),
@@ -82,44 +78,51 @@ export const getFieldLocalization = state => {
   }
 }
 
-export const getOriginalEntity = createSelector(
+export const selectOriginalEntity = createSelector(
   [getOriginalContent, getFilePath],
   (originalContent, path) => originalContent.getIn(path, new Immutable.Map())
 )
 
-export const getChangedEntity = createSelector(
+export const selectChangedEntity = createSelector(
   [getChangedContent, getFilePath],
   (changedContent, path) => changedContent.getIn(path)
 )
 
-export const getOriginalValues = createSelector(
-  [getOriginalEntity],
+export const selectOriginalValues = createSelector(
+  [selectOriginalEntity],
   originalEntity => new Immutable.Map(originalEntity.toJS())
 )
 
-export const getChangedValues = createSelector(
-  [getChangedEntity],
+export const selectChangedValues = createSelector(
+  [selectChangedEntity],
   changedEntity => new Immutable.Map(changedEntity.toJS())
 )
 
-export const getTemplate = createSelector(
-  [getTemplates, getChangedValues],
+export const selectTemplate = createSelector(
+  [selectTemplates, selectChangedValues],
   (templates, changedValues) =>
     utils.getTemplate(changedValues.get(TEMPLATE_KEY), templates)
 )
 
-export const getTemplateChildren = createSelector(
-  [getTemplate],
+export const selectTemplateChildren = createSelector(
+  [selectTemplate],
   template => template.children
 )
 
-export const getTemplateFixedChildren = createSelector(
-  [getTemplate],
+export const selectTemplateFixedChildren = createSelector(
+  [selectTemplate],
   template => template.fixedChildren
 )
 
-const getFields = createSelector(
-  [getTemplate, getOriginalValues, getChangedValues, getFilePath, getLanguages, getProgress],
+const selectFields = createSelector(
+  [
+    selectTemplate,
+    selectOriginalValues,
+    selectChangedValues,
+    getFilePath,
+    getLanguages,
+    getProgress
+  ],
   (template, originalValues, changedValues, path, languages, progress) => template.fields
     .filter(field => !field.condition || evaluate(field.condition, changedValues))
     .map(field => {
@@ -137,13 +140,13 @@ const getFields = createSelector(
     })
 )
 
-export const getWhitelistedFields = createSelector(
-  [getFields, getWhitelist],
+export const selectWhitelistedFields = createSelector(
+  [selectFields, getWhitelist],
   (fields, whitelist) => fields.filter(field => isWhitelisted(whitelist, field.path))
 )
 
-const getChildren = createSelector(
-  [getTemplate, getOriginalEntity, getChangedEntity, getFilePath],
+const selectChildren = createSelector(
+  [selectTemplate, selectOriginalEntity, selectChangedEntity, getFilePath],
   (template, originalEntity, changedEntity, path) => {
     const childIds = new Immutable.Set(originalEntity.keySeq().concat(changedEntity.keySeq()))
     const fieldIds = template.fields.map(({ id }) => id)
@@ -165,13 +168,13 @@ const getChildren = createSelector(
   }
 )
 
-export const getWhitelistedChildren = createSelector(
-  [getChildren, getWhitelist],
+export const selectWhitelistedChildren = createSelector(
+  [selectChildren, getWhitelist],
   (children, whitelist) => children.filter(child => isWhitelisted(whitelist, child.path))
 )
 
-const getFixedChildren = createSelector(
-  [getTemplate, getOriginalEntity, getChangedEntity, getFilePath],
+const selectFixedChildren = createSelector(
+  [selectTemplate, selectOriginalEntity, selectChangedEntity, getFilePath],
   (template, originalEntity, changedEntity, path) => {
     const childIds = new Immutable.Set(originalEntity.keySeq().concat(changedEntity.keySeq()))
     const fixedChildIds = template.fixedChildren.map(({ id }) => id)
@@ -189,7 +192,7 @@ const getFixedChildren = createSelector(
   }
 )
 
-export const getWhitelistedFixedChildren = createSelector(
-  [getFixedChildren, getWhitelist],
+export const selectWhitelistedFixedChildren = createSelector(
+  [selectFixedChildren, getWhitelist],
   (children, whitelist) => children.filter(child => isWhitelisted(whitelist, child.path))
 )

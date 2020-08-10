@@ -81,3 +81,7 @@ export function isValid(value, field) {
       return true
   }
 }
+
+export function isValidId(id) {
+  return isString(id) && id.length > 0
+}

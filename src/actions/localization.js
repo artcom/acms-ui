@@ -1,6 +1,6 @@
 import Immutable from "immutable"
 
-import { getFieldLocalization, getLanguages } from "../selectors"
+import { selectFieldLocalization, getLanguages } from "../selectors"
 
 export function startFieldLocalization(field) {
   return (dispatch, getState) => {
@@ -32,7 +32,7 @@ export function updateFieldLocalization(languageId, hasLocalization) {
 export function finishFieldLocalization() {
   return (dispatch, getState) => {
     const state = getState()
-    const fieldLocalization = getFieldLocalization(state)
+    const fieldLocalization = selectFieldLocalization(state)
     const languages = getLanguages(state)
     const defaultLanguageId = languages[0].id
 

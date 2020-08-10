@@ -15,13 +15,13 @@ import {
   updateFieldLocalization
 } from "../actions/localization"
 
-import { getFieldLocalization, getLanguages } from "../selectors"
+import { selectFieldLocalization, getLanguages } from "../selectors"
 
 export default connect(mapStateToProps)(FieldLocalizationModal)
 
 function mapStateToProps(state) {
   return {
-    fieldLocalization: getFieldLocalization(state),
+    fieldLocalization: selectFieldLocalization(state),
     languages: getLanguages(state)
   }
 }
