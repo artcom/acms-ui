@@ -82,6 +82,6 @@ export function isValid(value, field) {
   }
 }
 
-export function isValidId(id) {
-  return isString(id) && id.length > 0
+export function isValidId(id, parentEntity) {
+  return isString(id) && id.length > 0 && !parentEntity.get(id)
 }

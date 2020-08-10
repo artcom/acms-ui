@@ -143,7 +143,7 @@ export function newEntity(state = null, { type, payload }) {
       return payload
 
     case "UPDATE_ENTITY_CREATION":
-      return { ...state, ...payload.params }
+      return { ...state, ...payload }
 
     case "FINISH_ENTITY_CREATION":
     case "CANCEL_ENTITY_CREATION":

@@ -5,7 +5,11 @@ import Button from "react-bootstrap/Button"
 import Form from "react-bootstrap/Form"
 import Modal from "react-bootstrap/Modal"
 
-import { cancelEntityCreation, finishEntityCreation, updateEntityCreation } from "../actions/entity"
+import { cancelEntityCreation,
+  finishEntityCreation,
+  updateEntityCreationId,
+  updateEntityCreationTemplate
+} from "../actions/entity"
 import { selectNewEntity } from "../selectors"
 
 export default connect(mapStateToProps)(EntityCreationModal)
@@ -19,7 +23,7 @@ function mapStateToProps(state) {
 function EntityCreationModal({ dispatch, newEntity }) {
   return (
     <Modal show={ newEntity.isVisible } onHide={ () => dispatch(cancelEntityCreation()) }>
-      <Form validated={ newEntity.isValidId }>
+      <Form>
         <Modal.Header closeButton>
           <Modal.Title>Add Child</Modal.Title>
         </Modal.Header>
@@ -29,8 +33,11 @@ function EntityCreationModal({ dispatch, newEntity }) {
             <Form.Control
               type="text"
               value={ newEntity.id }
+              isInvalid={ !newEntity.isValidId }
               autoFocus
-              onChange={ event => dispatch(updateEntityCreation({ id: event.target.value })) } />
+              onChange={
+                event => dispatch(updateEntityCreationId(event.target.value))
+              } />
           </Form.Group>
           <Form.Group>
             <Form.Label>Template</Form.Label>
@@ -38,9 +45,7 @@ function EntityCreationModal({ dispatch, newEntity }) {
               as="select"
               value={ newEntity.template }
               disabled={ newEntity.templates.length < 2 }
-              onChange={ event => dispatch(updateEntityCreation({
-                template: event.target.value
-              })) }>
+              onChange={ event => dispatch(updateEntityCreationTemplate(event.target.value)) }>
               { newEntity.templates.map(template =>
                 <option key={ template } value={ template }>{ template }</option>
               ) }

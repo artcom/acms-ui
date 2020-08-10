@@ -25,11 +25,20 @@ export function startEntityCreation() {
   }
 }
 
-export function updateEntityCreation(params) {
+export function updateEntityCreationId(id) {
   return {
     type: "UPDATE_ENTITY_CREATION",
     payload: {
-      params
+      id
+    }
+  }
+}
+
+export function updateEntityCreationTemplate(template) {
+  return {
+    type: "UPDATE_ENTITY_CREATION",
+    payload: {
+      template
     }
   }
 }

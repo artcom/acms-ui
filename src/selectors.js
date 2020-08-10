@@ -18,43 +18,48 @@ export const getContentPath = state => state.contentPath
 export const getProgress = state => state.progress
 export const getWhitelist = state => state.user.whiteList
 export const getFilePath = state => state.path
+export const getNewEntity = state => state.newEntity
+export const getRenamedEntity = state => state.renamedEntity
+export const getTemplates = state => state.templates
 
-export const selectTemplates = state => mapValues(state.templates, template => ({
-  fields: [],
-  children: [],
-  fixedChildren: [],
-  ...template
-}))
+export const selectTemplates = createSelector(
+  [getTemplates],
+  templates => mapValues(templates, template => ({
+    fields: [],
+    children: [],
+    fixedChildren: [],
+    ...template
+  }))
+)
 
-export const selectNewEntity = state => {
-  if (!state.newEntity) {
-    return {
-      isVisible: false,
-      id: "",
-      templates: []
+export const selectChangedEntity = createSelector(
+  [getChangedContent, getFilePath],
+  (changedContent, path) => changedContent.getIn(path)
+)
+
+export const selectNewEntity = createSelector(
+  [getNewEntity, selectChangedEntity],
+  (newEntity, changedEntity) => newEntity
+    ? {
+      ...newEntity,
+      isValidId: utils.isValidId(camelCase(newEntity.id), changedEntity),
+      isVisible: true
     }
-  }
+    : { isVisible: false, id: "", templates: [] }
+)
 
-  return { ...state.newEntity,
-    isValidId: utils.isValidId(state.newEntity.id),
-    isVisible: true
-  }
-}
-
-export const selectRenamedEntity = state => {
-  if (!state.renamedEntity) {
-    return {
-      isVisible: false,
-      newId: ""
+export const selectRenamedEntity = createSelector(
+  [getRenamedEntity, selectChangedEntity],
+  (renamedEntity, changedEntity) => renamedEntity ?
+    {
+      ...renamedEntity,
+      isValidId:
+        renamedEntity.oldId === camelCase(renamedEntity.newId) ||
+        utils.isValidId(camelCase(renamedEntity.newId), changedEntity),
+      isVisible: true
     }
-  }
-
-  return { ...state.renamedEntity,
-    isValidId: utils.isValidId(state.renamedEntity.newId),
-    isVisible: true
-  }
-}
-
+    : { isVisible: false, newId: "" }
+)
 export const selectNewEntityPath = createSelector(
   [selectNewEntity, getFilePath],
   (newEntity, path) => [...path, camelCase(newEntity.id)]
@@ -83,11 +88,6 @@ export const selectOriginalEntity = createSelector(
   (originalContent, path) => originalContent.getIn(path, new Immutable.Map())
 )
 
-export const selectChangedEntity = createSelector(
-  [getChangedContent, getFilePath],
-  (changedContent, path) => changedContent.getIn(path)
-)
-
 export const selectOriginalValues = createSelector(
   [selectOriginalEntity],
   originalEntity => new Immutable.Map(originalEntity.toJS())
@@ -99,7 +99,7 @@ export const selectChangedValues = createSelector(
 )
 
 export const selectTemplate = createSelector(
-  [selectTemplates, selectChangedValues],
+  [selectTemplates, selectChangedEntity],
   (templates, changedValues) =>
     utils.getTemplate(changedValues.get(TEMPLATE_KEY), templates)
 )
