@@ -1,13 +1,13 @@
 import get from "lodash/get"
-import isNumber from "lodash/isNumber"
 import React from "react"
 import Form from "react-bootstrap/Form"
 
+import { isValid } from "../utils"
+
 export default function NumberEditor({ field, onChange }) {
-  const value = field.value
   const min = get(field, "min", -Infinity)
   const max = get(field, "max", Infinity)
-  const isValid = isNumber(value) && value >= min && value <= max
+  const valid = isValid(field.value, field)
 
   function onChangeFloat(event) {
     onChange({
@@ -19,8 +19,15 @@ export default function NumberEditor({ field, onChange }) {
 
   return (
     <Form>
-      <Form.Control type="number" value={ value } onChange={ onChangeFloat } />
-      { isValid || <div>The number should be between { min } and { max }.</div> }
+      <Form.Control
+        isInvalid={ !valid }
+        type="number"
+        value={ field.value }
+        onChange={ onChangeFloat } />
+
+      <Form.Control.Feedback type="invalid" tooltip>
+        The number should be between { min } and { max }.
+      </Form.Control.Feedback>
     </Form>
   )
 }
