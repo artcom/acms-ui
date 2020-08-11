@@ -12,7 +12,7 @@ export function startFieldLocalization(field) {
       payload: {
         field,
         languageIds: new Immutable.OrderedMap(languages.map((language, i) =>
-          [language.id, i === 0 || field.isLocalized && field.value.has(language.id)]
+          [language.id, i === 0 || field.isLocalized && field.value[language.id]]
         ))
       }
     })

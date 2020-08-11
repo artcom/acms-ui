@@ -111,7 +111,7 @@ export function changedContent(state = null, { type, payload }) {
         if (shouldBeLocalized) {
           // Update localization
           const localizedValues = localizedLanguageIds
-            .map((_, languageId) => field.value.get(languageId))
+            .map((_, languageId) => field.value[languageId])
 
           return state.setIn(field.path, new Immutable.Map(localizedValues))
         } else {

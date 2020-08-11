@@ -4,9 +4,8 @@ import React from "react"
 import Card from "react-bootstrap/Card"
 import Dropdown from "react-bootstrap/Dropdown"
 import DropdownItem from "react-bootstrap/DropdownItem"
-import FormLabel from "react-bootstrap/FormLabel"
+import Form from "react-bootstrap/Form"
 import ListGroup from "react-bootstrap/ListGroup"
-import ListGroupItem from "react-bootstrap/ListGroupItem"
 
 import { getLanguageName } from "../language"
 
@@ -71,24 +70,24 @@ function renderContent({ assetServer, dispatch, field, languages }) {
 }
 
 function renderLocalizedEditors(field, languages, assetServer, dispatch, Editor) {
-  const items = field.value.map((value, languageId) => {
+  const items = Object.keys(field.value).map(languageId => {
     const languageField = { ...field,
       path: [...field.path, languageId],
-      value: field.value.get(languageId)
+      value: field.value[languageId]
     }
 
     return (
-      <ListGroupItem key={ languageId }>
-        <FormLabel>
+      <ListGroup.Item key={ languageId }>
+        <Form.Label text={ "dark" }>
           { getLanguageName(languageId, languages) }
-        </FormLabel>
+        </Form.Label>
 
         { renderEditor(languageField, assetServer, dispatch, Editor) }
-      </ListGroupItem>
+      </ListGroup.Item>
     )
-  }).valueSeq()
+  })
 
-  return <ListGroup fill>{ items }</ListGroup>
+  return <ListGroup>{ items }</ListGroup>
 }
 
 function renderEditor(field, assetServer, dispatch, Editor) {

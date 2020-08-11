@@ -1,7 +1,7 @@
-import Immutable from "immutable"
+import { isPlainObject } from "lodash"
 
 export function isLocalized(value, languages) {
-  return Immutable.Map.isMap(value) && value.keySeq().every(key => isLanguage(key, languages))
+  return isPlainObject(value) && Object.keys(value).every(key => isLanguage(key, languages))
 }
 
 function isLanguage(id, languages) {
