@@ -13,7 +13,7 @@ export function uploadFile(path, file, assetServer) {
 
     try {
       dispatch(startUpload(path))
-      const filename = await hashFile(file)
+      const filename = await generateFilename(file)
 
       const url = await assetServer.uploadFile(filename, file, { onUploadProgress })
 
@@ -25,11 +25,11 @@ export function uploadFile(path, file, assetServer) {
   }
 }
 
-async function hashFile(file) {
+async function generateFilename(file) {
   const extension = extname(file.name)
   const name = basename(file.name, extension)
   const hash = await sha256(file)
-  return `${name}-${hash}${extension}`
+  return `${name}-${hash}${extension}`.replace(/([^a-z0-9\-.])/gi, "_")
 }
 
 function startUpload(path) {
