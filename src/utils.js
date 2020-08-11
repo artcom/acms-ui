@@ -82,6 +82,8 @@ export function isValid(value, field) {
   }
 }
 
-export function isValidId(id, parentEntity) {
-  return isString(id) && id.length > 0 && !parentEntity.get(id)
+export function isValidId(id) {
+  return isString(id)
+    && id.length > 0
+    && id === id.replace(/([^a-z0-9\s])/gi, "_")
 }

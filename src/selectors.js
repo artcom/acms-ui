@@ -1,8 +1,7 @@
 import Immutable from "immutable"
-import mapValues from "lodash/mapValues"
 import { createSelector } from "reselect"
 
-import { camelCase } from "lodash"
+import { camelCase, mapValues } from "lodash"
 import { evaluate } from "./condition"
 import { isLocalized } from "./language"
 import { isWhitelisted } from "./whitelist"
@@ -42,7 +41,9 @@ export const selectNewEntity = createSelector(
   (newEntity, changedEntity) => newEntity
     ? {
       ...newEntity,
-      isValidId: utils.isValidId(camelCase(newEntity.id), changedEntity),
+      isValidId:
+        utils.isValidId(newEntity.id) &&
+        !changedEntity.get(camelCase(newEntity.id)),
       isVisible: true
     }
     : { isVisible: false, id: "", templates: [] }
@@ -54,8 +55,9 @@ export const selectRenamedEntity = createSelector(
     {
       ...renamedEntity,
       isValidId:
-        renamedEntity.oldId === camelCase(renamedEntity.newId) ||
-        utils.isValidId(camelCase(renamedEntity.newId), changedEntity),
+        utils.isValidId(renamedEntity.newId) &&
+        (renamedEntity.oldId === camelCase(renamedEntity.newId) ||
+        !changedEntity.get(camelCase(renamedEntity.newId))),
       isVisible: true
     }
     : { isVisible: false, newId: "" }
