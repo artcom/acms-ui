@@ -18,7 +18,7 @@ export default function Field(props) {
   const { style, content } = renderContent(props)
 
   return (
-    <Card border={ style }>
+    <Card border={ style } className="mb-3">
       <Card.Header>{ renderHeader(props) }</Card.Header>
       { content }
     </Card>
