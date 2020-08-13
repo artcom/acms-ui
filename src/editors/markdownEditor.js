@@ -1,10 +1,10 @@
 import React from "react"
-import FormControl from "react-bootstrap/FormControl"
+import Form from "react-bootstrap/Form"
 
 
 export default function MarkdownEditor({ field, onChange }) {
   return (
-    <FormControl
+    <Form.Control
       style={ { border: "0px", boxShadow: "none" } }
       componentClass="textarea"
       rows={ 8 }

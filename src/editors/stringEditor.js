@@ -15,7 +15,7 @@ export default function StringEditor({ field, onChange }) {
 
 
   return (
-    <Form>
+    <>
       <Form.Control
         style={ { border: "0px", boxShadow: "none" } }
         isInvalid={ !valid }
@@ -25,6 +25,6 @@ export default function StringEditor({ field, onChange }) {
       <Form.Control.Feedback type="invalid" tooltip>
         Maximum length should be { maxLength }.
       </Form.Control.Feedback>
-    </Form>
+    </>
   )
 }

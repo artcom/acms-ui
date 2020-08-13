@@ -18,7 +18,7 @@ export default function NumberEditor({ field, onChange }) {
   }
 
   return (
-    <Form>
+    <>
       <Form.Control
         style={ { border: "0px", boxShadow: "none" } }
         isInvalid={ !valid }
@@ -29,6 +29,6 @@ export default function NumberEditor({ field, onChange }) {
       <Form.Control.Feedback type="invalid" tooltip>
         The number should be between { min } and { max }.
       </Form.Control.Feedback>
-    </Form>
+    </>
   )
 }

@@ -1,5 +1,5 @@
 import React from "react"
-import FormControl from "react-bootstrap/FormControl"
+import Form from "react-bootstrap/Form"
 
 const values = ["true", "false"]
 
@@ -15,12 +15,12 @@ export default function BooleanEditor({ field, onChange }) {
   const selected = field.value ? "true" : "false"
 
   return (
-    <FormControl
+    <Form.Control
       style={ { border: "0px", boxShadow: "none" } }
       componentClass="select"
       value={ selected }
       onChange={ onChangeBoolean }>
       { values.map((value, index) => <option key={ index } value={ value }>{ value }</option>) }
-    </FormControl>
+    </Form.Control>
   )
 }
