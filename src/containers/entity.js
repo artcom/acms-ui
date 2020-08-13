@@ -84,7 +84,10 @@ function renderChild(child, dispatch) {
   const link = child.isDeleted ? displayName : <a href={ fromPath(child.path) }>{ displayName }</a>
 
   return (
-    <ListGroupItem key={ child.id } variant={ childStyle(child) }>
+    <ListGroupItem
+      key={ child.id }
+      variant={ childStyle(child) }
+      style={ { display: "flex", justifyContent: "space-between", alignItems: "center" } }>
       { link }
 
       <Dropdown className="float-right btn-sm" id={ child.id } drop="right">
