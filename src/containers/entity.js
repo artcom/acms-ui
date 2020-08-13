@@ -12,6 +12,8 @@ import Row from "react-bootstrap/Row"
 
 import Field from "./field"
 
+import ToggleButton from "../components/toggleButton"
+
 import { deleteEntity, startEntityCreation, startEntityRenaming } from "../actions/entity"
 import { undoChanges } from "../actions/value"
 import { fromPath } from "../hash"
@@ -85,8 +87,8 @@ function renderChild(child, dispatch) {
     <ListGroupItem key={ child.id } variant={ childStyle(child) }>
       { link }
 
-      <Dropdown className="float-right btn-sm" id={ child.id }>
-        <Dropdown.Toggle />
+      <Dropdown className="float-right btn-sm" id={ child.id } drop="right">
+        <Dropdown.Toggle as={ ToggleButton } />
         <Dropdown.Menu>
           <DropDownItem
             disabled={ child.isDeleted }
