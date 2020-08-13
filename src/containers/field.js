@@ -6,6 +6,7 @@ import Dropdown from "react-bootstrap/Dropdown"
 import DropdownItem from "react-bootstrap/DropdownItem"
 import ListGroup from "react-bootstrap/ListGroup"
 
+import { Button } from "react-bootstrap"
 import { getLanguageName } from "../language"
 
 import { startFieldLocalization } from "../actions/localization"
@@ -31,14 +32,14 @@ function renderHeader({ field, dispatch }) {
       { startCase(field.id ? field.id : field.id) }
 
       <Dropdown style={ { float: "right" } } id={ field.id }>
-        <Dropdown.Toggle />
+        <Dropdown.Toggle as={ CustomToggle } />
         <Dropdown.Menu>
           <DropdownItem
             key="undo"
             disabled={ !field.hasChanged }
             onSelect={ () => dispatch(undoChanges(field.path)) }>
             Undo Changes
-          </DropdownItem>,
+          </DropdownItem>
           <DropdownItem
             key="localize"
             onSelect={ () => dispatch(startFieldLocalization(field)) }>
@@ -98,3 +99,20 @@ function renderEditor(field, assetServer, dispatch, Editor) {
       onFileSelect={ files => dispatch(uploadFile(field.path, files[0], assetServer)) } />
   )
 }
+
+// The forwardRef is important!!
+// Dropdown needs access to the DOM node in order to position the Menu
+const CustomToggle = React.forwardRef(({ children, onClick }, ref) =>
+  <Button
+    variant="outline-secondary"
+    style={ { padding: "0px 5px" } }
+    href=""
+    ref={ ref }
+    onClick={ e => {
+      e.preventDefault()
+      onClick(e)
+    } }>
+    { children }
+    &#9776;
+  </Button>
+)
