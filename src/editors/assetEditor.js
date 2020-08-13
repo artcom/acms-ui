@@ -4,18 +4,10 @@ import path from "path"
 
 import FileSelector from "../components/fileSelector"
 
-const PLACEHOLDER = {
-  audio: "music",
-  file: "file",
-  image: "picture",
-  video: "facetime-video"
-}
-
 export default function AssetEditor({ field, onFileSelect }) {
   return (
     <div>
-      { field.value ? renderView(field) : renderPlaceholder(field) }
-      <hr />
+      { field.value && renderView(field) }
       { renderUpload(field, onFileSelect) }
     </div>
   )
@@ -41,11 +33,6 @@ function renderView(field) {
     case "image": return <img key={ src } src={ src } style={ checkerboard } />
     case "video": return <video controls key={ src } src={ src } style={ style } />
   }
-}
-
-function renderPlaceholder(field) {
-  const placeholder = PLACEHOLDER[field.type]
-  return <div style={ { width: "100%", textAlign: "center" } }>{ placeholder }</div>
 }
 
 function renderUpload(field, onFileSelect) {
