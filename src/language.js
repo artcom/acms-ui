@@ -9,6 +9,6 @@ function isLanguage(id, languages) {
 }
 
 export function getLanguageName(id, languages) {
-  const language = languages.find(language => language.id === id)
+  const language = languages.find(lang => lang.id === id)
   return language ? language.name : `Unknown Language (${id})`
 }
