@@ -27,7 +27,7 @@ export default function NumberEditor({ field, onChange }) {
         onChange={ onChangeFloat } />
 
       <Form.Control.Feedback type="invalid" tooltip>
-        The number should be between { min } and { max }.
+        The number should be between { min } and { max }
       </Form.Control.Feedback>
     </>
   )

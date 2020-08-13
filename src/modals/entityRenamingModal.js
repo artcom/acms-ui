@@ -24,15 +24,19 @@ function EntityRenamingModal({ dispatch, renamedEntity }) {
           <Modal.Title>Rename Child</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          <Form.Group>
-            <Form.Label>Name</Form.Label>
+          <Form.Label>Name</Form.Label>
+          <div style={ { position: "relative" } }>
             <Form.Control
               type="text"
+              style={ { boxShadow: "none" } }
               value={ renamedEntity.newId }
               isInvalid={ !renamedEntity.isValidId }
               autoFocus
               onChange={ event => dispatch(updateEntityRenaming(event.target.value)) } />
-          </Form.Group>
+            <Form.Control.Feedback type="invalid" tooltip>
+              Contains invalid characters or id already exists
+            </Form.Control.Feedback>
+          </div>
         </Modal.Body>
         <Modal.Footer>
           <Button

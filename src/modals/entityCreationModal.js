@@ -28,17 +28,21 @@ function EntityCreationModal({ dispatch, newEntity }) {
           <Modal.Title>Add Child</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          <Form.Group>
-            <Form.Label>Name</Form.Label>
+          <Form.Label>Name</Form.Label>
+          <div style={ { position: "relative" } }>
             <Form.Control
               type="text"
+              style={ { boxShadow: "none" } }
               value={ newEntity.id }
               isInvalid={ !newEntity.isValidId }
               autoFocus
               onChange={
                 event => dispatch(updateEntityCreationId(event.target.value))
               } />
-          </Form.Group>
+            <Form.Control.Feedback type="invalid" tooltip>
+              Contains invalid characters or id already exists
+            </Form.Control.Feedback>
+          </div>
           <Form.Group>
             <Form.Label>Template</Form.Label>
             <Form.Control

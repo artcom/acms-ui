@@ -23,7 +23,7 @@ export default function StringEditor({ field, onChange }) {
         value={ field.value }
         onChange={ onChange } />
       <Form.Control.Feedback type="invalid" tooltip>
-        Maximum length should be { maxLength }.
+        Maximum length should be { maxLength }
       </Form.Control.Feedback>
     </>
   )
