@@ -5,6 +5,7 @@ import FormControl from "react-bootstrap/FormControl"
 export default function MarkdownEditor({ field, onChange }) {
   return (
     <FormControl
+      style={ { border: "0px", boxShadow: "none" } }
       componentClass="textarea"
       rows={ 8 }
       value={ field.value }

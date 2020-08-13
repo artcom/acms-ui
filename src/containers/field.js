@@ -4,7 +4,6 @@ import React from "react"
 import Card from "react-bootstrap/Card"
 import Dropdown from "react-bootstrap/Dropdown"
 import DropdownItem from "react-bootstrap/DropdownItem"
-import Form from "react-bootstrap/Form"
 import ListGroup from "react-bootstrap/ListGroup"
 
 import { getLanguageName } from "../language"
@@ -19,7 +18,7 @@ export default function Field(props) {
   const { style, content } = renderContent(props)
 
   return (
-    <Card bg={ style } text={ style === "light" ? "dark" : "white" }>
+    <Card border={ style }>
       <Card.Header>{ renderHeader(props) }</Card.Header>
       { content }
     </Card>
@@ -62,7 +61,7 @@ function renderContent({ assetServer, dispatch, field, languages }) {
   }
 
   return {
-    style: field.hasChanged ? "warning" : "light",
+    style: field.hasChanged ? "warning" : "secondary",
     content: field.isLocalized
       ? renderLocalizedEditors(field, languages, assetServer, dispatch, Editor)
       : renderEditor(field, assetServer, dispatch, Editor)
@@ -77,17 +76,18 @@ function renderLocalizedEditors(field, languages, assetServer, dispatch, Editor)
     }
 
     return (
-      <ListGroup.Item key={ languageId }>
-        <Form.Label text={ "dark" }>
+      <ListGroup.Item key={ languageId } style={ { padding: "0px" } }>
+        <Card.Header className="text-muted"
+          style={ { paddingTop: "0.3rem", paddingBottom: "0.3rem" } }>
           { getLanguageName(languageId, languages) }
-        </Form.Label>
+        </Card.Header>
 
         { renderEditor(languageField, assetServer, dispatch, Editor) }
       </ListGroup.Item>
     )
   })
 
-  return <ListGroup>{ items }</ListGroup>
+  return <ListGroup variant="flush">{ items }</ListGroup>
 }
 
 function renderEditor(field, assetServer, dispatch, Editor) {

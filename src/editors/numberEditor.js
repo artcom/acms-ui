@@ -20,6 +20,7 @@ export default function NumberEditor({ field, onChange }) {
   return (
     <Form>
       <Form.Control
+        style={ { border: "0px", boxShadow: "none" } }
         isInvalid={ !valid }
         type="number"
         value={ field.value }

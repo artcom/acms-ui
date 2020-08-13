@@ -17,6 +17,7 @@ export default function StringEditor({ field, onChange }) {
   return (
     <Form>
       <Form.Control
+        style={ { border: "0px", boxShadow: "none" } }
         isInvalid={ !valid }
         { ...(multiline ? MULTI_LINE_STYLE : SINGLE_LINE_STYLE) }
         value={ field.value }
