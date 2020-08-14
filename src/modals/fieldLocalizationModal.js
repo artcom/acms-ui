@@ -27,11 +27,11 @@ function FieldLocalizationModal({ dispatch, fieldLocalization, languages }) {
     <Modal
       show={ fieldLocalization.isVisible }
       onHide={ () => dispatch(cancelFieldLocalization()) }>
-      <Form>
-        <Modal.Header closeButton>
-          <Modal.Title>Languages</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
+      <Modal.Header closeButton>
+        <Modal.Title>Languages</Modal.Title>
+      </Modal.Header>
+      <Modal.Body>
+        <Form>
           {
             languages.map((language, index) =>
               <Form.Check
@@ -45,16 +45,16 @@ function FieldLocalizationModal({ dispatch, fieldLocalization, languages }) {
                 label={ language.name } />
             )
           }
-        </Modal.Body>
-        <Modal.Footer>
-          <Button
-            type="submit"
-            variant="info"
-            onClick={ event => { event.preventDefault(); dispatch(finishFieldLocalization()) } }>
-            Localize
-          </Button>
-        </Modal.Footer>
-      </Form>
+        </Form>
+      </Modal.Body>
+      <Modal.Footer>
+        <Button
+          type="submit"
+          variant="info"
+          onClick={ event => { event.preventDefault(); dispatch(finishFieldLocalization()) } }>
+          Localize
+        </Button>
+      </Modal.Footer>
     </Modal>
   )
 }

@@ -23,11 +23,11 @@ function mapStateToProps(state) {
 function EntityCreationModal({ dispatch, newEntity }) {
   return (
     <Modal show={ newEntity.isVisible } onHide={ () => dispatch(cancelEntityCreation()) }>
-      <Form>
-        <Modal.Header closeButton>
-          <Modal.Title>Add Child</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
+      <Modal.Header closeButton>
+        <Modal.Title>Add Child</Modal.Title>
+      </Modal.Header>
+      <Modal.Body>
+        <Form>
           <Form.Label>Name</Form.Label>
           <div style={ { position: "relative" } }>
             <Form.Control
@@ -55,17 +55,17 @@ function EntityCreationModal({ dispatch, newEntity }) {
               ) }
             </Form.Control>
           </Form.Group>
-        </Modal.Body>
-        <Modal.Footer>
-          <Button
-            type="submit"
-            variant="info"
-            disabled={ !newEntity.isValidId }
-            onClick={ event => { event.preventDefault(); dispatch(finishEntityCreation()) } }>
-            Create
-          </Button>
-        </Modal.Footer>
-      </Form>
+        </Form>
+      </Modal.Body>
+      <Modal.Footer>
+        <Button
+          type="submit"
+          variant="info"
+          disabled={ !newEntity.isValidId }
+          onClick={ event => { event.preventDefault(); dispatch(finishEntityCreation()) } }>
+          Create
+        </Button>
+      </Modal.Footer>
     </Modal>
   )
 }

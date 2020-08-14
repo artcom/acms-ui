@@ -17,14 +17,13 @@ function mapStateToProps(state) {
 }
 
 function EntityRenamingModal({ dispatch, renamedEntity }) {
-  console.log(renamedEntity)
   return (
     <Modal show={ renamedEntity.isVisible } onHide={ () => dispatch(cancelEntityRenaming()) }>
-      <Form>
-        <Modal.Header closeButton>
-          <Modal.Title>Rename Child</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
+      <Modal.Header closeButton>
+        <Modal.Title>Rename Child</Modal.Title>
+      </Modal.Header>
+      <Modal.Body>
+        <Form>
           <Form.Label>Name</Form.Label>
           <div style={ { position: "relative" } }>
             <Form.Control
@@ -38,17 +37,17 @@ function EntityRenamingModal({ dispatch, renamedEntity }) {
               Contains invalid characters or id already exists
             </Form.Control.Feedback>
           </div>
-        </Modal.Body>
-        <Modal.Footer>
-          <Button
-            type="submit"
-            variant="info"
-            disabled={ !renamedEntity.isValidId }
-            onClick={ event => { event.preventDefault(); dispatch(finishEntityRenaming()) } }>
-            Rename
-          </Button>
-        </Modal.Footer>
-      </Form>
+        </Form>
+      </Modal.Body>
+      <Modal.Footer>
+        <Button
+          type="submit"
+          variant="info"
+          disabled={ !renamedEntity.isValidId }
+          onClick={ event => { event.preventDefault(); dispatch(finishEntityRenaming()) } }>
+          Rename
+        </Button>
+      </Modal.Footer>
     </Modal>
   )
 }
