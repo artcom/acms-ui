@@ -65,7 +65,7 @@ function Entity({
 
 function renderFixedChildren(children, dispatch) {
   return (
-    <ListGroup>
+    <ListGroup className="mb-3">
       { children.map(child => renderChild(child, dispatch)) }
     </ListGroup>
   )
@@ -126,6 +126,8 @@ function childStyle(child) {
   if (child.hasChanged) {
     return "warning"
   }
+
+  return ""
 }
 
 function renderFields(fields, languages, assetServer, dispatch) {
