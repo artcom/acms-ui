@@ -48,13 +48,13 @@ function Entity({
   return (
     <Row>
       <Col md={ 4 }>
-        <h4>Children</h4>
-        { renderFixedChildren(fixedChildren, dispatch) }
+        { (fixedChildren.size + children.size > 0 || canHaveChildren) && <h4>Children</h4> }
+        { fixedChildren.size > 0 && renderFixedChildren(fixedChildren, dispatch) }
         { canHaveChildren && renderChildren(children, dispatch) }
       </Col>
 
       <Col md={ 8 }>
-        <h4>Fields</h4>
+        { fields.length > 0 && <h4>Fields</h4> }
         { renderFields(fields, languages, assetServer, dispatch) }
       </Col>
     </Row>
