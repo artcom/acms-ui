@@ -5,38 +5,30 @@ import { createChildValue, createFieldValue, getTemplate, isValid } from "../uti
 
 export function loadData(configServer, configPath) {
   return async dispatch => {
-    try {
-      const { data: config, version } = await configServer.queryJson(configPath)
+    const { data: config, version } = await configServer.queryJson(configPath)
 
-      const [{ data: templates }, { data: content }] = await Promise.all([
-        configServer.queryFiles(config.templatesPath, version),
-        configServer.queryJson(config.contentPath, version)
-      ])
+    const [{ data: templates }, { data: content }] = await Promise.all([
+      configServer.queryFiles(config.templatesPath, version),
+      configServer.queryJson(config.contentPath, version)
+    ])
 
-      dispatch(updateData(config, content, templates, version))
-    } catch (error) {
-      dispatch(showError("Failed to load Data", error))
-    }
+    dispatch(updateData(config, content, templates, version))
   }
 }
 
 export function fixContent() {
   return async (dispatch, getState) => {
-    try {
-      const { originalContent, templates } = getState()
+    const { originalContent, templates } = getState()
 
-      const content = originalContent.toJS()
-      fixEntries(content, templates)
+    const content = originalContent.toJS()
+    fixEntries(content, templates)
 
-      dispatch({
-        type: "FIX_CONTENT",
-        payload: {
-          content
-        }
-      })
-    } catch (error) {
-      dispatch(showError("Failed to fix Data", error))
-    }
+    dispatch({
+      type: "FIX_CONTENT",
+      payload: {
+        content
+      }
+    })
   }
 }
 

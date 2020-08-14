@@ -11,15 +11,19 @@ import Application from "./containers/application"
 import Entity from "./containers/entity"
 import EntityCreationModal from "./modals/entityCreationModal"
 import EntityRenamingModal from "./modals/entityRenamingModal"
+import { showError } from "./actions/error"
 import FieldLocalizationModal from "./modals/fieldLocalizationModal"
 
 import "bootstrap/dist/css/bootstrap.min.css"
 
 bootstrap().then(async ({ assetServer, cmsConfigPath, configServer }) => {
   const store = configureStore()
-  await store.dispatch(loadData(configServer, cmsConfigPath))
-
-  await store.dispatch(fixContent())
+  try {
+    await store.dispatch(loadData(configServer, cmsConfigPath))
+    await store.dispatch(fixContent())
+  } catch (error) {
+    store.dispatch(showError("Failed to load Data", error))
+  }
 
   window.addEventListener("hashchange", updatePathFromHash)
   updatePathFromHash()
