@@ -6,7 +6,7 @@ import FileSelector from "../components/fileSelector"
 
 export default function AssetEditor({ field, onFileSelect }) {
   return (
-    <div>
+    <div style={ { display: "flex", flexDirection: "column", alignItems: "center" } }>
       { field.value && renderView(field) }
       { renderUpload(field, onFileSelect) }
     </div>
@@ -15,10 +15,10 @@ export default function AssetEditor({ field, onFileSelect }) {
 
 function renderView(field) {
   const src = field.value
-  const style = { width: "100%" }
+  const style = { width: "100%", fontSize: "0.7rem", lineHeight: "2.5", textAlign: "center" }
 
   const checkerboard = {
-    width: "100%",
+    maxWidth: "100%",
     backgroundImage: `
       linear-gradient(to right, rgba(150, 150, 150, 0.75), rgba(150, 150, 150, 0.75)),
       linear-gradient(to right, black 50%, white 50%),

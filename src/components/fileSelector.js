@@ -7,7 +7,8 @@ const style = {
   borderStyle: "dashed",
   borderRadius: "0.3rem",
   padding: "1rem",
-  textAlign: "center"
+  textAlign: "center",
+  width: "100%"
 }
 
 const activeStyle = {
