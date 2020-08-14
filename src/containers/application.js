@@ -4,9 +4,11 @@ import React from "react"
 import Alert from "react-bootstrap/Alert"
 import Breadcrumb from "react-bootstrap/Breadcrumb"
 import Button from "react-bootstrap/Button"
+import ButtonGroup from "react-bootstrap/ButtonGroup"
 import Navbar from "react-bootstrap/Navbar"
 import { connect } from "react-redux"
 
+import Col from "react-bootstrap/Col"
 import Container from "react-bootstrap/Container"
 import { saveData } from "../actions/data"
 import { hideError } from "../actions/error"
@@ -27,11 +29,13 @@ function mapStateToProps(state) {
 
 function Application(props) {
   return (
-    <Container>
-      { renderError(props) }
+    <>
       { !props.isLoading && renderHeader(props) }
-      { !props.isLoading && props.children }
-    </Container>
+      <Container>
+        { renderError(props) }
+        { !props.isLoading && props.children }
+      </Container>
+    </>
   )
 }
 
@@ -52,30 +56,36 @@ function renderError({ dispatch, flash }) {
 
 function renderHeader({ title, configPath, configServer, dispatch, hasChanged, isSaving, path }) {
   return (
-    <Navbar sticky="top" bg="light" variant="light" className={ "flex-column" }>
+    <Navbar sticky="top" bg="light" variant="light" className={ "flex-column mb-2" }>
       <Container>
-        <Navbar.Text className={ "h2" } style={ { paddingBottom: "0px" } }>{ title }</Navbar.Text>
-        <Button
-          style={ { float: "right", width: "100px" } }
-          disabled={ !hasChanged || isSaving }
-          onClick={ () => dispatch(saveData(configServer, configPath)) }>
-          { isSaving ? "Saving..." : "Save" }
-        </Button>
-      </Container>
-      <Container>
-        <Breadcrumb style={ { marginBottom: "-16px", width: "100%" } }>
-          <Breadcrumb.Item href={ fromPath([]) }>
-            Exhibition
-          </Breadcrumb.Item>
-          { path.map((item, i) =>
-            <Breadcrumb.Item
-              key={ item }
-              href={ fromPath(path.slice(0, i + 1)) }
-              active={ i === path.length - 1 }>
-              { startCase(item) }
-            </Breadcrumb.Item>
-          ) }
-        </Breadcrumb>
+        <Col>
+          <Navbar.Text className={ "h2" }>{ title }</Navbar.Text>
+          <ButtonGroup aria-label="First group" style={ { width: "100%", height: "3em" } }>
+            <Button
+              href={ fromPath([]) }
+              disabled={ path.length === 0 }
+              style={ { fontSize: "2em", lineHeight: "1em" } }>&#8962;
+            </Button>
+            <Breadcrumb
+              style={ { marginBottom: "-16px", width: "100%" } }
+              listProps={ { style: { height: "3em" } } }>
+              { path.map((item, i) =>
+                <Breadcrumb.Item
+                  key={ item }
+                  href={ fromPath(path.slice(0, i + 1)) }
+                  active={ i === path.length - 1 }>
+                  { startCase(item) }
+                </Breadcrumb.Item>
+              ) }
+            </Breadcrumb>
+            <Button
+              style={ { float: "right", width: "100px" } }
+              disabled={ !hasChanged || isSaving }
+              onClick={ () => dispatch(saveData(configServer, configPath)) }>
+              { isSaving ? "Saving..." : "Save" }
+            </Button>
+          </ButtonGroup>
+        </Col>
       </Container>
     </Navbar>
   )
