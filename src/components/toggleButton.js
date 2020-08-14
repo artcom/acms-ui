@@ -7,7 +7,6 @@ export default React.forwardRef(({ children, onClick }, ref) =>
   <Button
     variant="outline-secondary"
     style={ { padding: "0px 5px" } }
-    href=""
     ref={ ref }
     onClick={ e => {
       e.preventDefault()
