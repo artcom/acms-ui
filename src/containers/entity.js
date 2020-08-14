@@ -2,7 +2,6 @@ import startCase from "lodash/startCase"
 import React from "react"
 import { connect } from "react-redux"
 
-import Button from "react-bootstrap/Button"
 import Col from "react-bootstrap/Col"
 import Dropdown from "react-bootstrap/Dropdown"
 import DropDownItem from "react-bootstrap/DropDownItem"
@@ -51,8 +50,7 @@ function Entity({
       <Col md={ 4 }>
         <h4>Children</h4>
         { renderFixedChildren(fixedChildren, dispatch) }
-        { renderChildren(children, dispatch) }
-        { canHaveChildren && <Button onClick={ () => dispatch(startEntityCreation()) } /> }
+        { canHaveChildren && renderChildren(children, dispatch) }
       </Col>
 
       <Col md={ 8 }>
@@ -73,8 +71,14 @@ function renderFixedChildren(children, dispatch) {
 
 function renderChildren(children, dispatch) {
   return (
-    <ListGroup>
+    <ListGroup className="mb-3">
       { children.map(child => renderChild(child, dispatch)) }
+      <ListGroupItem
+        variant="secondary"
+        style={ { padding: "0px", textAlign: "center", outline: "none" } }
+        action
+        onClick={ () => dispatch(startEntityCreation()) }>+
+      </ListGroupItem>
     </ListGroup>
   )
 }
