@@ -62,6 +62,7 @@ function renderHeader({ title, configPath, configServer, dispatch, hasChanged, i
           <Navbar.Text className={ "h2" }>{ title }</Navbar.Text>
           <ButtonGroup aria-label="First group" style={ { width: "100%", height: "3em" } }>
             <Button
+              variant="secondary"
               href={ fromPath([]) }
               disabled={ path.length === 0 }
               style={ { fontSize: "2em", lineHeight: "1em" } }>&#8962;
