@@ -34,7 +34,7 @@ function EntityCreationModal({ dispatch, newEntity }) {
               type="text"
               style={ { boxShadow: "none" } }
               value={ newEntity.id }
-              isInvalid={ !newEntity.isValidId }
+              isInvalid={ newEntity.isVisible && !newEntity.isValidId }
               autoFocus
               onChange={
                 event => dispatch(updateEntityCreationId(event.target.value))

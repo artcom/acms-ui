@@ -17,6 +17,7 @@ function mapStateToProps(state) {
 }
 
 function EntityRenamingModal({ dispatch, renamedEntity }) {
+  console.log(renamedEntity)
   return (
     <Modal show={ renamedEntity.isVisible } onHide={ () => dispatch(cancelEntityRenaming()) }>
       <Form>
@@ -30,7 +31,7 @@ function EntityRenamingModal({ dispatch, renamedEntity }) {
               type="text"
               style={ { boxShadow: "none" } }
               value={ renamedEntity.newId }
-              isInvalid={ !renamedEntity.isValidId }
+              isInvalid={ renamedEntity.isVisible && !renamedEntity.isValidId }
               autoFocus
               onChange={ event => dispatch(updateEntityRenaming(event.target.value)) } />
             <Form.Control.Feedback type="invalid" tooltip>
