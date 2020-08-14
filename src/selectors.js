@@ -1,7 +1,7 @@
 import Immutable from "immutable"
 import { createSelector } from "reselect"
 
-import { camelCase, mapValues } from "lodash"
+import { camelCase, mapValues, isUndefined } from "lodash"
 import { evaluate } from "./condition"
 import { isLocalized } from "./language"
 import { isWhitelisted } from "./whitelist"
@@ -134,6 +134,7 @@ const selectFields = createSelector(
 
       return { ...field,
         hasChanged: !Immutable.is(originalValue, changedValue),
+        isNew: isUndefined(originalValue),
         isLocalized: isLocalized(changedValue, languages),
         path: fieldPath,
         value: changedValue,

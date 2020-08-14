@@ -63,7 +63,7 @@ function renderContent({ assetServer, dispatch, field, languages }) {
   }
 
   return {
-    style: field.hasChanged ? "warning" : "",
+    style: fieldStyle(field),
     content: field.isLocalized
       ? renderLocalizedEditors(field, languages, assetServer, dispatch, Editor)
       : renderEditor(field, assetServer, dispatch, Editor)
@@ -99,4 +99,16 @@ function renderEditor(field, assetServer, dispatch, Editor) {
       onChange={ event => dispatch(changeValue(field.path, event.target.value)) }
       onFileSelect={ files => dispatch(uploadFile(field.path, files[0], assetServer)) } />
   )
+}
+
+function fieldStyle({ hasChanged, isNew }) {
+  if (isNew) {
+    return "success"
+  }
+
+  if (hasChanged) {
+    return "warning"
+  }
+
+  return ""
 }
