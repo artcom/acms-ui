@@ -1,4 +1,7 @@
 import Immutable from "immutable"
+import { isUndefined } from "lodash"
+
+import { createFieldValue } from "./utils"
 
 export function isSaving(state = false, { type }) {
   switch (type) {
@@ -104,14 +107,16 @@ export function changedContent(state = null, { type, payload }) {
       // eslint-disable-next-line no-shadow
       const { defaultLanguageId, fieldLocalization } = payload
       const { field, languageIds } = fieldLocalization
-      const localizedLanguageIds = languageIds.filter(hasLocalization => hasLocalization)
-      const shouldBeLocalized = localizedLanguageIds.size > 1
+      const selectedLanguageIds = languageIds.filter(selected => selected)
+      const shouldBeLocalized = selectedLanguageIds.size > 1
 
       if (field.isLocalized) {
         if (shouldBeLocalized) {
           // Update localization
-          const localizedValues = localizedLanguageIds
-            .map((_, languageId) => field.value[languageId])
+          const localizedValues = selectedLanguageIds.map((_, languageId) =>
+            isUndefined(field.value[languageId])
+              ? createFieldValue(field)
+              : field.value[languageId])
 
           return state.setIn(field.path, new Immutable.Map(localizedValues))
         } else {
@@ -121,8 +126,10 @@ export function changedContent(state = null, { type, payload }) {
       } else {
         if (shouldBeLocalized) {
           // Localize field
-          const localizedValues = localizedLanguageIds
-            .map((_, languageId) => languageId === defaultLanguageId ? field.value : undefined)
+          const localizedValues = selectedLanguageIds.map((_, languageId) =>
+            languageId === defaultLanguageId
+              ? field.value
+              : createFieldValue(field))
 
           return state.setIn(field.path, new Immutable.Map(localizedValues))
         } else {
