@@ -2,6 +2,8 @@ import { isPlainObject } from "lodash"
 import { getChangedContent, selectTemplates, getVersion, getContentPath } from "../selectors"
 import { showError } from "./error"
 import { createChildValue, createFieldValue, getTemplate, isValid } from "../utils"
+import { isLocalized } from "../language"
+
 
 export function loadData(configServer, configPath) {
   return async dispatch => {
@@ -18,10 +20,10 @@ export function loadData(configServer, configPath) {
 
 export function fixContent() {
   return async (dispatch, getState) => {
-    const { originalContent, templates } = getState()
+    const { originalContent, templates, languages } = getState()
 
     const content = originalContent.toJS()
-    fixEntries(content, templates)
+    fixEntries(content, templates, languages)
 
     dispatch({
       type: "FIX_CONTENT",
@@ -32,14 +34,24 @@ export function fixContent() {
   }
 }
 
-function fixEntries(entity, templates) {
+function fixEntries(entity, templates, languages) {
   const { template, ...allEntries } = entity
   const { fields = [], fixedChildren = [], children = [] } = getTemplate(template, templates)
 
   // fix invalid fields
   fields.forEach(field => {
-    if (!isValid(entity[field.id], field)) {
-      entity[field.id] = createFieldValue(field) // eslint-disable-line no-param-reassign
+    if (isLocalized(entity[field.id], languages)) {
+      for (const [language, value] of Object.entries(entity[field.id])) {
+        if (!isValid(value, field)) {
+          // eslint-disable-next-line no-param-reassign
+          entity[field.id][language] = createFieldValue(field)
+        }
+      }
+    } else {
+      if (!isValid(entity[field.id], field)) {
+        // eslint-disable-next-line no-param-reassign
+        entity[field.id] = createFieldValue(field)
+      }
     }
   })
 
@@ -49,7 +61,7 @@ function fixEntries(entity, templates) {
       // eslint-disable-next-line no-param-reassign
       entity[child.id] = createChildValue(child.template, templates)
     } else {
-      fixEntries(entity[child.id], templates)
+      fixEntries(entity[child.id], templates, languages)
     }
   })
 
