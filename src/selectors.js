@@ -59,7 +59,7 @@ export const selectRenamedEntity = createSelector(
       isValidId:
         utils.isValidId(renamedEntity.newId) &&
         (renamedEntity.oldId === camelCase(renamedEntity.newId) ||
-        !changedEntity[camelCase(renamedEntity.newId)]),
+        isUndefined(changedEntity[camelCase(renamedEntity.newId)])),
       isVisible: true
     }
     : { isVisible: false, newId: "" }
