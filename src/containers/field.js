@@ -37,7 +37,7 @@ function renderHeader({ field, dispatch }) {
         <Dropdown.Menu>
           <DropdownItem
             key="undo"
-            disabled={ !field.hasChanged }
+            disabled={ !field.hasChanged || field.isNew }
             onSelect={ () => dispatch(undoChanges(field.path)) }>
             Undo Changes
           </DropdownItem>
