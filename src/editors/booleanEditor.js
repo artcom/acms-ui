@@ -1,27 +1,22 @@
 import React from "react"
-import Form from "react-bootstrap/Form"
-
-const values = ["true", "false"]
+import FormCheck from "react-bootstrap/FormCheck"
 
 export default function BooleanEditor({ field, onChange }) {
   function onChangeBoolean(event) {
     onChange({
       target: {
-        value: event.target.value === "0"
+        value: event.target.checked
       }
     })
   }
 
-  const selectedIndex = field.value ? 0 : 1
-
   return (
-    <Form.Control style={ { border: "0px", boxShadow: "none" } }
-      as="select"
-      value={ selectedIndex }
-      onChange={ onChangeBoolean }>
-      { values.map((value, index) =>
-        <option key={ index } value={ index }>{ value }</option>
-      ) }
-    </Form.Control>
+    <FormCheck style={ { height: "2em", paddingTop: "5px", paddingLeft: "35px" } }>
+      <FormCheck.Input
+        type="checkbox"
+        checked={ field.value }
+        style={ { transform: "scale(1.3)" } }
+        onChange={ onChangeBoolean } />
+    </FormCheck>
   )
 }
