@@ -45,7 +45,7 @@ export const selectNewEntity = createSelector(
       ...newEntity,
       isValidId:
         utils.isValidId(newEntity.id) &&
-        !changedEntity[camelCase(newEntity.id)],
+        isUndefined(changedEntity[camelCase(newEntity.id)]),
       isVisible: true
     }
     : { isVisible: false, id: "", templates: [] }
