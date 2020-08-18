@@ -21,7 +21,9 @@ export default function Field(props) {
 
   return (
     <Card border={ style } className="mb-3">
-      <Card.Header>{ renderHeader(props) }</Card.Header>
+      <Card.Header className={ style ? `list-group-item-${style}` : "" }>
+        { renderHeader(props) }
+      </Card.Header>
       { content }
     </Card>
   )
@@ -109,6 +111,4 @@ function fieldStyle({ hasChanged, isNew }) {
   if (hasChanged) {
     return "warning"
   }
-
-  return ""
 }
