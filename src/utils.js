@@ -63,7 +63,7 @@ export function isValid(value, field) {
       return isString(value)
     case "markdown":
     case "string":
-      return isString(value) && value.length < get(field, "maxLength", Infinity)
+      return isString(value) && value.length <= get(field, "maxLength", Infinity)
     case "number":
     {
       if (!isNumber(value)) {
