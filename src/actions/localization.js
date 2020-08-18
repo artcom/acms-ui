@@ -1,4 +1,5 @@
 import fromPairs from "lodash/fromPairs"
+import isUndefined from "lodash/isUndefined"
 import { selectFieldLocalization, getLanguages } from "../selectors"
 
 export function startFieldLocalization(field) {
@@ -11,7 +12,7 @@ export function startFieldLocalization(field) {
       payload: {
         field,
         languageIds: fromPairs(languages.map((language, i) =>
-          [language.id, i === 0 || field.isLocalized && field.value[language.id]]
+          [language.id, i === 0 || field.isLocalized && !isUndefined(field.value[language.id])]
         ))
       }
     })
