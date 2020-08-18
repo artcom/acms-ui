@@ -7,20 +7,21 @@ export default function BooleanEditor({ field, onChange }) {
   function onChangeBoolean(event) {
     onChange({
       target: {
-        value: event.target.value === "true"
+        value: event.target.value === "0"
       }
     })
   }
 
-  const selected = field.value ? "true" : "false"
+  const selectedIndex = field.value ? 0 : 1
 
   return (
-    <Form.Control
-      style={ { border: "0px", boxShadow: "none" } }
-      componentClass="select"
-      value={ selected }
+    <Form.Control style={ { border: "0px", boxShadow: "none" } }
+      as="select"
+      value={ selectedIndex }
       onChange={ onChangeBoolean }>
-      { values.map((value, index) => <option key={ index } value={ value }>{ value }</option>) }
+      { values.map((value, index) =>
+        <option key={ index } value={ index }>{ value }</option>
+      ) }
     </Form.Control>
   )
 }
