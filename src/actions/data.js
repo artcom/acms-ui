@@ -87,7 +87,7 @@ export function saveData(configServer, configPath) {
     try {
       dispatch({ type: "START_SAVING" })
 
-      const contentFiles = toFiles(content.toJS(), templates)
+      const contentFiles = toFiles(content, templates)
       await configServer.save(contentFiles, contentPath, version)
 
       dispatch(loadData(configServer, configPath))
