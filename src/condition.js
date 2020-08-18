@@ -1,6 +1,8 @@
+import get from "lodash/get"
+
 const handlers = {
   EQUALS: ([value1, value2]) => value1 === value2,
-  GET: ([key], values) => values.get(key),
+  GET: ([key], values) => get(values, key),
   IN: ([item, list]) => list.includes(item),
   LIST: args => args
 }
