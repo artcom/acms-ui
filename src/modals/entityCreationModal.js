@@ -27,35 +27,33 @@ function EntityCreationModal({ dispatch, newEntity }) {
         <Modal.Title>Add Child</Modal.Title>
       </Modal.Header>
       <Modal.Body>
-        <Form>
-          <Form.Label>Name</Form.Label>
-          <div style={ { position: "relative" } }>
-            <Form.Control
-              type="text"
-              style={ { boxShadow: "none" } }
-              value={ newEntity.id }
-              isInvalid={ newEntity.isVisible && !newEntity.isValidId }
-              autoFocus
-              onChange={
-                event => dispatch(updateEntityCreationId(event.target.value))
-              } />
-            <Form.Control.Feedback type="invalid" tooltip>
-              Contains invalid characters or id already exists
-            </Form.Control.Feedback>
-          </div>
-          <Form.Group>
-            <Form.Label>Template</Form.Label>
-            <Form.Control
-              as="select"
-              value={ newEntity.template }
-              disabled={ newEntity.templates.length < 2 }
-              onChange={ event => dispatch(updateEntityCreationTemplate(event.target.value)) }>
-              { newEntity.templates.map(template =>
-                <option key={ template } value={ template }>{ template }</option>
-              ) }
-            </Form.Control>
-          </Form.Group>
-        </Form>
+        <Form.Label>Name</Form.Label>
+        <div style={ { position: "relative" } }>
+          <Form.Control
+            type="text"
+            style={ { boxShadow: "none" } }
+            value={ newEntity.id }
+            isInvalid={ newEntity.isVisible && !newEntity.isValidId }
+            autoFocus
+            onChange={
+              event => dispatch(updateEntityCreationId(event.target.value))
+            } />
+          <Form.Control.Feedback type="invalid" tooltip>
+            Contains invalid characters or id already exists
+          </Form.Control.Feedback>
+        </div>
+        <Form.Group>
+          <Form.Label>Template</Form.Label>
+          <Form.Control
+            as="select"
+            value={ newEntity.template }
+            disabled={ newEntity.templates.length < 2 }
+            onChange={ event => dispatch(updateEntityCreationTemplate(event.target.value)) }>
+            { newEntity.templates.map(template =>
+              <option key={ template } value={ template }>{ template }</option>
+            ) }
+          </Form.Control>
+        </Form.Group>
       </Modal.Body>
       <Modal.Footer>
         <Button

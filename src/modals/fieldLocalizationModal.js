@@ -31,21 +31,19 @@ function FieldLocalizationModal({ dispatch, fieldLocalization, languages }) {
         <Modal.Title>Languages</Modal.Title>
       </Modal.Header>
       <Modal.Body>
-        <Form>
-          {
-            languages.map((language, index) =>
-              <Form.Check
-                key={ language.id }
-                type="checkbox"
-                disabled={ index === 0 }
-                checked={ fieldLocalization.languageIds[language.id] || false }
-                onChange={ event =>
-                  dispatch(updateFieldLocalization(language.id, event.target.checked))
-                }
-                label={ language.name } />
-            )
-          }
-        </Form>
+        {
+          languages.map((language, index) =>
+            <Form.Check
+              key={ language.id }
+              type="checkbox"
+              disabled={ index === 0 }
+              checked={ fieldLocalization.languageIds[language.id] || false }
+              onChange={ event =>
+                dispatch(updateFieldLocalization(language.id, event.target.checked))
+              }
+              label={ language.name } />
+          )
+        }
       </Modal.Body>
       <Modal.Footer>
         <Button
