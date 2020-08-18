@@ -1,3 +1,5 @@
+import get from "lodash/get"
+
 export function changeValue(path, value) {
   return {
     type: "CHANGE_VALUE",
@@ -10,7 +12,7 @@ export function changeValue(path, value) {
 
 export function undoChanges(path) {
   return (dispatch, getState) => {
-    const originalValue = getState().originalContent.getIn(path)
+    const originalValue = get(getState().originalContent, path)
 
     dispatch({
       type: "UNDO_CHANGES",

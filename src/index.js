@@ -2,7 +2,7 @@ import React from "react"
 import { render } from "react-dom"
 import { Provider } from "react-redux"
 
-import { loadData, fixContent } from "./actions/data"
+import { loadData } from "./actions/data"
 import { updatePath } from "./actions/path"
 import bootstrap from "./bootstrap"
 import { configureStore } from "./store"
@@ -20,7 +20,6 @@ bootstrap().then(async ({ assetServer, cmsConfigPath, configServer }) => {
   const store = configureStore()
   try {
     await store.dispatch(loadData(configServer, cmsConfigPath))
-    await store.dispatch(fixContent())
   } catch (error) {
     store.dispatch(showError("Failed to load Data", error))
   }

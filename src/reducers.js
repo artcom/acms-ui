@@ -1,5 +1,6 @@
-import Immutable from "immutable"
-import { isUndefined } from "lodash"
+/* eslint-disable no-param-reassign */
+import { original, produce } from "immer"
+import { isUndefined, get, set, unset } from "lodash"
 
 import { createFieldValue } from "./utils"
 
@@ -70,79 +71,73 @@ export function title(state = "", { type, payload }) {
 export function originalContent(state = null, { type, payload }) {
   switch (type) {
     case "UPDATE_DATA":
-      return Immutable.fromJS(payload.content)
+      return payload.originalContent
 
     default:
       return state
   }
 }
 
-export function changedContent(state = null, { type, payload }) {
+export const changedContent = produce((draft, { type, payload }) => {
   switch (type) {
     case "UPDATE_DATA":
-    case "FIX_CONTENT":
-      return Immutable.fromJS(payload.content)
+      return payload.changedContent
 
     case "CHANGE_VALUE":
-      return state.setIn(payload.path, Immutable.fromJS(payload.value))
-
+      set(draft, payload.path, payload.value)
+      break
     case "UNDO_CHANGES":
-      return payload.originalValue === undefined
-        ? state.deleteIn(payload.path)
-        : state.setIn(payload.path, payload.originalValue)
-
+      if (isUndefined(payload.originalValue)) {
+        unset(draft, payload.path)
+      } else {
+        set(draft, payload.path, payload.originalValue)
+      }
+      break
     case "FINISH_ENTITY_CREATION":
-      return state.setIn(payload.path, payload.values)
-
+      set(draft, payload.path, payload.values)
+      break
     case "FINISH_ENTITY_RENAMING": {
-      const parent = state.getIn(payload.path)
-      const renamed = parent.mapKeys(id => id === payload.oldId ? payload.newId : id)
-      return state.setIn(payload.path, renamed.toMap())
-    }
-
+      const oldPath = [...payload.path, payload.oldId]
+      const newPath = [...payload.path, payload.newId]
+      set(draft, newPath, get(original(draft), oldPath))
+      unset(draft, oldPath)
+    } break
     case "DELETE_ENTITY":
-      return state.deleteIn(payload.path)
-
+      unset(draft, payload.path)
+      break
     case "FINISH_FIELD_LOCALIZATION": {
       // eslint-disable-next-line no-shadow
       const { defaultLanguageId, fieldLocalization } = payload
       const { field, languageIds } = fieldLocalization
-      const selectedLanguageIds = languageIds.filter(selected => selected)
-      const shouldBeLocalized = selectedLanguageIds.size > 1
+      const selectedLanguageIds = Object.keys(languageIds).filter(id => languageIds[id])
+      const shouldBeLocalized = selectedLanguageIds.length > 1
 
       if (field.isLocalized) {
         if (shouldBeLocalized) {
           // Update localization
-          const localizedValues = selectedLanguageIds.map((_, languageId) =>
-            isUndefined(field.value[languageId])
-              ? createFieldValue(field)
-              : field.value[languageId])
-
-          return state.setIn(field.path, new Immutable.Map(localizedValues))
+          const values = {}
+          for (const id of selectedLanguageIds) {
+            values[id] = isUndefined(field.value[id]) ? createFieldValue(field) : field.value[id]
+          }
+          set(draft, field.path, values)
         } else {
           // Unlocalize field
-          return state.setIn(field.path, state.getIn([...field.path, defaultLanguageId]))
+          const defaultLanguageValue = get(original(draft), [...field.path, defaultLanguageId])
+          set(draft, field.path, defaultLanguageValue)
         }
       } else {
         if (shouldBeLocalized) {
           // Localize field
-          const localizedValues = selectedLanguageIds.map((_, languageId) =>
-            languageId === defaultLanguageId
-              ? field.value
-              : createFieldValue(field))
-
-          return state.setIn(field.path, new Immutable.Map(localizedValues))
-        } else {
-          // Leave field unlocalized
-          return state
+          const values = {}
+          for (const id of selectedLanguageIds) {
+            values[id] = id === defaultLanguageId ? field.value : createFieldValue(field)
+          }
+          set(draft, field.path, values)
         }
       }
     }
-
-    default:
-      return state
   }
-}
+}, null)
 
 export function newEntity(state = null, { type, payload }) {
   switch (type) {
@@ -178,24 +173,19 @@ export function renamedEntity(state = null, { type, payload }) {
   }
 }
 
-export function fieldLocalization(state = null, { type, payload }) {
+export const fieldLocalization = produce((draft, { type, payload }) => {
   switch (type) {
     case "START_FIELD_LOCALIZATION":
       return payload
 
     case "UPDATE_FIELD_LOCALIZATION":
-      return { ...state,
-        languageIds: state.languageIds.set(payload.languageId, payload.hasLocalization)
-      }
-
+      draft.languageIds[payload.languageId] = payload.hasLocalization
+      break
     case "FINISH_FIELD_LOCALIZATION":
     case "CANCEL_FIELD_LOCALIZATION":
       return null
-
-    default:
-      return state
   }
-}
+}, null)
 
 export function path(state = [], { type, payload }) {
   switch (type) {
@@ -220,22 +210,20 @@ export function flash(state = null, { type, payload }) {
   }
 }
 
-export function progress(state = new Immutable.Map(), { type, payload }) {
+export const progress = produce((draft, { type, payload }) => {
   switch (type) {
     case "START_UPLOAD":
-      return state.set(payload.path.toString(), 0)
-
+      draft[payload.path.toString()] = 0
+      break
     case "PROGRESS_UPLOAD":
-      return state.set(payload.path.toString(), payload.progress)
-
+      draft[payload.path.toString()] = payload.progress
+      break
     case "CHANGE_VALUE":
     case "CANCEL_UPLOAD":
-      return state.delete(payload.path.toString())
-
-    default:
-      return state
+      delete draft[payload.path.toString()]
+      break
   }
-}
+}, {})
 
 const defaultUser = { name: "default", whiteList: ["**"] }
 

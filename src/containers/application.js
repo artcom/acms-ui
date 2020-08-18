@@ -1,4 +1,3 @@
-import Immutable from "immutable"
 import startCase from "lodash/startCase"
 import React from "react"
 import Alert from "react-bootstrap/Alert"
@@ -19,7 +18,7 @@ export default connect(mapStateToProps)(Application)
 function mapStateToProps(state) {
   return {
     flash: state.flash,
-    hasChanged: !Immutable.is(state.originalContent, state.changedContent),
+    hasChanged: state.originalContent !== state.changedContent,
     isLoading: state.originalContent === null,
     isSaving: state.isSaving,
     path: state.path,

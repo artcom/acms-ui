@@ -4,7 +4,7 @@ import { camelCase } from "lodash"
 import {
   selectNewEntityPath,
   selectNewEntityValues,
-  getFilePath,
+  getPath,
   selectRenamedEntity,
   selectTemplateChildren
 } from "../selectors"
@@ -90,7 +90,7 @@ export function finishEntityRenaming() {
     dispatch({
       type: "FINISH_ENTITY_RENAMING",
       payload: {
-        path: getFilePath(state),
+        path: getPath(state),
         oldId,
         newId: camelCase(newId)
       }

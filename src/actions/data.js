@@ -1,3 +1,4 @@
+import { produce } from "immer"
 import { isPlainObject } from "lodash"
 import { getChangedContent, selectTemplates, getVersion, getContentPath } from "../selectors"
 import { showError } from "./error"
@@ -9,59 +10,56 @@ export function loadData(configServer, configPath) {
   return async dispatch => {
     const { data: config, version } = await configServer.queryJson(configPath)
 
-    const [{ data: templates }, { data: content }] = await Promise.all([
+    const [{ data: templates }, { data: originalContent }] = await Promise.all([
       configServer.queryFiles(config.templatesPath, version),
       configServer.queryJson(config.contentPath, version)
     ])
 
-    dispatch(updateData(config, content, templates, version))
-  }
-}
-
-export function fixContent() {
-  return async (dispatch, getState) => {
-    const { originalContent, templates, languages } = getState()
-
-    const content = originalContent.toJS()
-    fixEntries(content, templates, languages)
+    const changedContent = produce(originalContent,
+      draft => fixContent(originalContent, draft, templates, config.languages)
+    )
 
     dispatch({
-      type: "FIX_CONTENT",
+      type: "UPDATE_DATA",
       payload: {
-        content
+        config,
+        originalContent,
+        changedContent,
+        templates,
+        version
       }
     })
   }
 }
 
-function fixEntries(entity, templates, languages) {
-  const { template, ...allEntries } = entity
+function fixContent(content, draft, templates, languages) {
+  const { template, ...allEntries } = content
   const { fields = [], fixedChildren = [], children = [] } = getTemplate(template, templates)
 
   // fix invalid fields
   fields.forEach(field => {
-    if (isLocalized(entity[field.id], languages)) {
-      for (const [language, value] of Object.entries(entity[field.id])) {
+    if (isLocalized(content[field.id], languages)) {
+      for (const [language, value] of Object.entries(content[field.id])) {
         if (!isValid(value, field)) {
           // eslint-disable-next-line no-param-reassign
-          entity[field.id][language] = createFieldValue(field)
+          draft[field.id][language] = createFieldValue(field)
         }
       }
     } else {
-      if (!isValid(entity[field.id], field)) {
+      if (!isValid(content[field.id], field)) {
         // eslint-disable-next-line no-param-reassign
-        entity[field.id] = createFieldValue(field)
+        draft[field.id] = createFieldValue(field)
       }
     }
   })
 
   // fix fixedChildren
   fixedChildren.forEach(child => {
-    if (!isPlainObject(entity[child.id])) {
+    if (!isPlainObject(content[child.id])) {
       // eslint-disable-next-line no-param-reassign
-      entity[child.id] = createChildValue(child.template, templates)
+      draft[child.id] = createChildValue(child.template, templates)
     } else {
-      fixEntries(entity[child.id], templates, languages)
+      fixContent(content[child.id], draft[child.id], templates, languages)
     }
   })
 
@@ -69,11 +67,11 @@ function fixEntries(entity, templates, languages) {
   const namedEntries = [...fields, ...fixedChildren].map(({ id }) => id)
   const additionalChildIds = Object.keys(allEntries).filter(id => !namedEntries.includes(id))
   additionalChildIds.forEach(id => {
-    if (!children.includes(entity[id].template)) {
+    if (!children.includes(content[id].template)) {
       // delete children with invalid template
-      delete entity[id] // eslint-disable-line no-param-reassign
+      delete draft[id] // eslint-disable-line no-param-reassign
     } else {
-      fixEntries(entity[id], templates)
+      fixContent(content[id], draft[id], templates, languages)
     }
   })
 }
@@ -87,7 +85,7 @@ export function saveData(configServer, configPath) {
     const contentPath = getContentPath(state)
 
     try {
-      dispatch(startSaving())
+      dispatch({ type: "START_SAVING" })
 
       const contentFiles = toFiles(content.toJS(), templates)
       await configServer.save(contentFiles, contentPath, version)
@@ -98,25 +96,6 @@ export function saveData(configServer, configPath) {
     }
   }
 }
-
-function startSaving() {
-  return {
-    type: "START_SAVING"
-  }
-}
-
-function updateData(config, content, templates, version) {
-  return {
-    type: "UPDATE_DATA",
-    payload: {
-      config,
-      content,
-      templates,
-      version
-    }
-  }
-}
-
 
 function toFiles({ template, ...content }, templates, path = []) {
   const files = {}

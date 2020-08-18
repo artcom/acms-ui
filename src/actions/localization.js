@@ -1,5 +1,4 @@
-import Immutable from "immutable"
-
+import fromPairs from "lodash/fromPairs"
 import { selectFieldLocalization, getLanguages } from "../selectors"
 
 export function startFieldLocalization(field) {
@@ -11,7 +10,7 @@ export function startFieldLocalization(field) {
       type: "START_FIELD_LOCALIZATION",
       payload: {
         field,
-        languageIds: new Immutable.OrderedMap(languages.map((language, i) =>
+        languageIds: fromPairs(languages.map((language, i) =>
           [language.id, i === 0 || field.isLocalized && field.value[language.id]]
         ))
       }
