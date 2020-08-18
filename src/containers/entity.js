@@ -64,8 +64,33 @@ function Entity({
 function renderFixedChildren(children, dispatch) {
   return (
     <ListGroup className="mb-3">
-      { children.map(child => renderChild(child, dispatch)) }
+      { children.map(child => renderFixedChild(child, dispatch)) }
     </ListGroup>
+  )
+}
+
+function renderFixedChild(child, dispatch) {
+  const displayName = startCase(child.id)
+  const link = child.isDeleted ? displayName : <a href={ fromPath(child.path) }>{ displayName }</a>
+
+  return (
+    <ListGroupItem
+      key={ child.id }
+      variant={ childStyle(child) }
+      style={ { display: "flex", justifyContent: "space-between", alignItems: "center" } }>
+      { link }
+
+      <Dropdown className="float-right btn-sm" id={ child.id } drop="right">
+        <Dropdown.Toggle as={ ToggleButton } />
+        <Dropdown.Menu>
+          <DropDownItem
+            disabled={ !child.hasChanged }
+            onSelect={ () => dispatch(undoChanges(child.path)) }>
+            Undo Changes
+          </DropDownItem>
+        </Dropdown.Menu>
+      </Dropdown>
+    </ListGroupItem>
   )
 }
 
