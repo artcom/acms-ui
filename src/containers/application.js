@@ -59,16 +59,19 @@ function renderHeader({ title, configPath, configServer, dispatch, hasChanged, i
       <Container>
         <Col>
           <Navbar.Text className={ "h2" }>{ title }</Navbar.Text>
-          <ButtonGroup aria-label="First group" style={ { width: "100%", height: "3em" } }>
+          <ButtonGroup aria-label="First group" style={ { width: "100%", minHeight: "3em" } }>
             <Button
               variant="secondary"
               href={ fromPath([]) }
               disabled={ path.length === 0 }
-              style={ { fontSize: "2em", lineHeight: "1em" } }>&#8962;
+              style={ { display: "flex", alignItems: "center" } }>
+              <div style={ { marginTop: "-10px", fontSize: "2.5em", lineHeight: "1em" } }>
+                &#8962;
+              </div>
             </Button>
             <Breadcrumb
               style={ { marginBottom: "-16px", width: "100%" } }
-              listProps={ { style: { height: "3em" } } }>
+              listProps={ { style: { minHeight: "3em" } } }>
               { path.map((item, i) =>
                 <Breadcrumb.Item
                   key={ item }
