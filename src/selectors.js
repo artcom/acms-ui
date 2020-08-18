@@ -141,8 +141,8 @@ export const selectWhitelistedFields = createSelector(
 
 const selectChildren = createSelector(
   [selectTemplate, selectOriginalEntity, selectChangedEntity, getPath],
-  (template, originalEntity, changedEntity, path) => {
-    const allIds = Object.keys({ ...originalEntity || {}, ...changedEntity })
+  (template, originalEntity = {}, changedEntity, path) => {
+    const allIds = Object.keys({ ...originalEntity, ...changedEntity })
     const fieldIds = template.fields.map(({ id }) => id)
     const fixedChildIds = template.fixedChildren.map(({ id }) => id)
 
@@ -169,8 +169,8 @@ export const selectWhitelistedChildren = createSelector(
 
 const selectFixedChildren = createSelector(
   [selectTemplate, selectOriginalEntity, selectChangedEntity, getPath],
-  (template, originalEntity, changedEntity, path) => {
-    const allIds = Object.keys({ ...originalEntity || {}, ...changedEntity })
+  (template, originalEntity = {}, changedEntity, path) => {
+    const allIds = Object.keys({ ...originalEntity, ...changedEntity })
     const fixedChildIds = template.fixedChildren.map(({ id }) => id)
 
     return allIds
