@@ -8,20 +8,21 @@ A frontend webapp which allows browsing/editing the json content served by the g
 
 ```bash
 npm install
-ASSET_SERVER_URI=<uri> GIT_JSON_API_URI=<uri> npm run watch
+ASSET_SERVER_URI=<uri> CONFIG_SERVER_URI=<uri> CMS_CONFIG_PATH=<path> npm run watch
 ```
 
 ### Production
 
 ```bash
-ASSET_SERVER_URI=<uri> GIT_JSON_API_URI=<uri> npm start
+ASSET_SERVER_URI=<uri> CONFIG_SERVER_URI=<uri> CMS_CONFIG_PATH=<path> npm start
 ```
 The web app is served on port `8080` by default if environment variable `PORT` is not set.
 
-The ASSET_SERVER_URI and GIT_JSON_API_URI environment parameter can be omitted if a `config.json` file providing the following information is served:
+The environment variables can be omitted if a `config.json` file providing the following information is served:
 ```json
 {
   "assetServer": <uri>,
-  "gitJsonApi": <uri>
+  "gitJsonApi": <uri>,
+  "configPath": <path>
 }
 ```
