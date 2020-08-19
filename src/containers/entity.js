@@ -4,7 +4,7 @@ import { connect } from "react-redux"
 
 import Col from "react-bootstrap/Col"
 import Dropdown from "react-bootstrap/Dropdown"
-import DropDownItem from "react-bootstrap/DropDownItem"
+import DropDownItem from "react-bootstrap/DropdownItem"
 import ListGroup from "react-bootstrap/ListGroup"
 import ListGroupItem from "react-bootstrap/ListGroupItem"
 import Row from "react-bootstrap/Row"
