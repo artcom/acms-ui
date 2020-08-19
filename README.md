@@ -21,8 +21,8 @@ The web app is served on port `8080` by default if environment variable `PORT` i
 The environment variables can be omitted if a `config.json` file providing the following information is served:
 ```json
 {
-  "assetServer": <uri>,
-  "gitJsonApi": <uri>,
-  "configPath": <path>
+  "assetServerUri": <uri>,
+  "configServerUri": <uri>,
+  "cmsConfigPath": <path>
 }
 ```
