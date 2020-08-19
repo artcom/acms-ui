@@ -16,7 +16,7 @@ ASSET_SERVER_URI=<uri> CONFIG_SERVER_URI=<uri> CMS_CONFIG_PATH=<path> npm run wa
 ```bash
 ASSET_SERVER_URI=<uri> CONFIG_SERVER_URI=<uri> CMS_CONFIG_PATH=<path> npm start
 ```
-The web app is served on port `8080` by default if environment variable `PORT` is not set.
+The web app is served on port `5000` by default if environment variable `PORT` is not set.
 
 The environment variables can be omitted if a `config.json` file providing the following information is served:
 ```json
