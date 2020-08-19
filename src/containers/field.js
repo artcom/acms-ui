@@ -32,7 +32,7 @@ export default function Field(props) {
 function renderHeader({ field, dispatch }) {
   return (
     <div>
-      { startCase(field.id ? field.id : field.id) }
+      { field.name ? field.name : startCase(field.id) }
 
       <Dropdown style={ { float: "right" } } id={ field.id }>
         <Dropdown.Toggle as={ ToggleButton } />

@@ -171,16 +171,16 @@ const selectFixedChildren = createSelector(
   [selectTemplate, selectOriginalEntity, selectChangedEntity, getPath],
   (template, originalEntity = {}, changedEntity, path) => {
     const allIds = Object.keys({ ...originalEntity, ...changedEntity })
-    const fixedChildIds = template.fixedChildren.map(({ id }) => id)
+    const fixedChilds = template.fixedChildren
+      .reduce((result, child) => ({ ...result, [child.id]: child }), {})
 
     return allIds
-      .filter(id => fixedChildIds.includes(id))
+      .filter(id => fixedChilds[id])
       .sort()
-      .map(id => ({
+      .map(id => ({ ...fixedChilds[id],
         hasChanged: originalEntity[id] !== changedEntity[id],
         isNew: isUndefined(originalEntity[id]),
         isDeleted: isUndefined(changedEntity[id]),
-        id,
         path: [...path, id]
       }))
   }

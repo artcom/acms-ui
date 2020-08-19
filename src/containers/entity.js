@@ -70,7 +70,7 @@ function renderFixedChildren(children, dispatch) {
 }
 
 function renderFixedChild(child, dispatch) {
-  const displayName = startCase(child.id)
+  const displayName = child.name ? child.name : startCase(child.id)
   const link = child.isDeleted ? displayName : <a href={ fromPath(child.path) }>{ displayName }</a>
 
   return (
