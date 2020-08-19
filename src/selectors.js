@@ -156,6 +156,7 @@ const selectChildren = createSelector(
         hasChanged: originalEntity[id] !== changedEntity[id],
         isNew: isUndefined(originalEntity[id]),
         isDeleted: isUndefined(changedEntity[id]),
+        isActive: !isUndefined(changedEntity[id]) && changedEntity[id].active !== false,
         id,
         path: [...path, id]
       }))
@@ -181,6 +182,7 @@ const selectFixedChildren = createSelector(
         hasChanged: originalEntity[id] !== changedEntity[id],
         isNew: isUndefined(originalEntity[id]),
         isDeleted: isUndefined(changedEntity[id]),
+        isActive: !isUndefined(changedEntity[id]) && changedEntity[id].active !== false,
         path: [...path, id]
       }))
   }

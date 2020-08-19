@@ -71,7 +71,13 @@ function renderFixedChildren(children, dispatch) {
 
 function renderFixedChild(child, dispatch) {
   const displayName = child.name ? child.name : startCase(child.id)
-  const link = child.isDeleted ? displayName : <a href={ fromPath(child.path) }>{ displayName }</a>
+  const link = child.isDeleted ?
+    displayName :
+    <a
+      href={ fromPath(child.path) }
+      className={ child.isActive ? "" : "text-muted" }>
+      { displayName }
+    </a>
 
   return (
     <ListGroupItem
@@ -110,7 +116,13 @@ function renderChildren(children, dispatch) {
 
 function renderChild(child, dispatch) {
   const displayName = startCase(child.id)
-  const link = child.isDeleted ? displayName : <a href={ fromPath(child.path) }>{ displayName }</a>
+  const link = child.isDeleted ?
+    displayName :
+    <a
+      href={ fromPath(child.path) }
+      className={ child.isActive ? "" : "text-muted" }>
+      { displayName }
+    </a>
 
   return (
     <ListGroupItem
