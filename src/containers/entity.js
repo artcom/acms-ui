@@ -50,7 +50,7 @@ function Entity({
       <Col md={ 4 }>
         { (fixedChildren.length + children.length > 0 || canHaveChildren) && <h4>Children</h4> }
         { fixedChildren.length > 0 && renderFixedChildren(fixedChildren, dispatch) }
-        { canHaveChildren && renderChildren(children, dispatch) }
+        { children.length > 0 && renderChildren(children, dispatch) }
       </Col>
 
       <Col md={ 8 }>
