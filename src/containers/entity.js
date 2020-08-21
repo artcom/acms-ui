@@ -22,7 +22,9 @@ import {
   selectTemplateChildren,
   selectWhitelistedFixedChildren,
   selectWhitelistedChildren,
-  selectWhitelistedFields
+  selectWhitelistedFields,
+  getChildrenLabel,
+  getFieldsLabel
 } from "../selectors"
 
 export default connect(mapStateToProps)(Entity)
@@ -33,7 +35,9 @@ function mapStateToProps(state) {
     children: selectWhitelistedChildren(state),
     fixedChildren: selectWhitelistedFixedChildren(state),
     fields: selectWhitelistedFields(state),
-    languages: getLanguages(state)
+    languages: getLanguages(state),
+    childrenLabel: getChildrenLabel(state),
+    fieldsLabel: getFieldsLabel(state)
   }
 }
 
@@ -44,17 +48,22 @@ function Entity({
   assetServer,
   dispatch,
   fields,
-  languages }) {
+  languages,
+  childrenLabel,
+  fieldsLabel }) {
   return (
     <Row>
       <Col md={ 4 }>
-        { (fixedChildren.length + children.length > 0 || canHaveChildren) && <h4>Children</h4> }
+        {
+          (fixedChildren.length + children.length > 0 || canHaveChildren)
+          && <h4>{ childrenLabel }</h4>
+        }
         { fixedChildren.length > 0 && renderFixedChildren(fixedChildren, dispatch) }
         { children.length > 0 && renderChildren(children, dispatch) }
       </Col>
 
       <Col md={ 8 }>
-        { fields.length > 0 && <h4>Fields</h4> }
+        { fields.length > 0 && <h4>{ fieldsLabel }</h4> }
         { renderFields(fields, languages, assetServer, dispatch) }
       </Col>
     </Row>

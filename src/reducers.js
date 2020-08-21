@@ -5,7 +5,41 @@ import get from "lodash/get"
 import set from "lodash/set"
 import unset from "lodash/unset"
 
+import { param } from "jquery"
 import { createFieldValue } from "./utils"
+
+const DEFAULT_CONFIG = {
+  title: "CMS",
+  contentPath: "content",
+  templatesPath: "templates",
+  childrenLabel: "Children",
+  fieldsLabel: "Fields",
+  languages: [
+    {
+      id: "en",
+      name: "English"
+    }
+  ],
+  users: [
+    {
+      id: "admin",
+      name: "Admin",
+      whitelist: [
+        "**"
+      ]
+    }
+  ]
+}
+
+export function config(state = {}, { type, payload }) {
+  switch (type) {
+    case "UPDATE_DATA":
+      return { ...DEFAULT_CONFIG, ...payload.config }
+
+    default:
+      return state
+  }
+}
 
 export function isSaving(state = false, { type }) {
   switch (type) {
@@ -31,40 +65,10 @@ export function version(state = null, { type, payload }) {
   }
 }
 
-export function languages(state = [], { type, payload }) {
-  switch (type) {
-    case "UPDATE_DATA":
-      return payload.config.languages || []
-
-    default:
-      return state
-  }
-}
-
-export function contentPath(state = "", { type, payload }) {
-  switch (type) {
-    case "UPDATE_DATA":
-      return payload.config.contentPath
-
-    default:
-      return state
-  }
-}
-
 export function templates(state = null, { type, payload }) {
   switch (type) {
     case "UPDATE_DATA":
       return payload.templates
-
-    default:
-      return state
-  }
-}
-
-export function title(state = "", { type, payload }) {
-  switch (type) {
-    case "UPDATE_DATA":
-      return payload.config.title || ""
 
     default:
       return state
@@ -228,20 +232,21 @@ export const progress = produce((draft, { type, payload }) => {
   }
 }, {})
 
-const defaultUser = { name: "default", whiteList: ["**"] }
 
-export function user(state = defaultUser, { type, payload }) {
+export function user(state = null, { type, payload }) {
   switch (type) {
     case "UPDATE_DATA": {
-      const users = payload.config.users
       const params = queryParams()
+      const users = payload.config.users
 
       if (users) {
-        return params.user
-          ? users[params.user] || defaultUser
-          : Object.values(users)[0]
+        if (params.user && users.some(({ id }) => id === param.user)) {
+          return param.user
+        } else {
+          return users[0].id
+        }
       } else {
-        return defaultUser
+        return DEFAULT_CONFIG.users[0].id
       }
     }
     default:

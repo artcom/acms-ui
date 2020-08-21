@@ -22,7 +22,7 @@ function mapStateToProps(state) {
     isLoading: state.originalContent === null,
     isSaving: state.isSaving,
     path: state.path,
-    title: state.title
+    title: state.config.title
   }
 }
 

@@ -14,14 +14,22 @@ const TEMPLATE_KEY = "template"
 export const getVersion = state => state.version
 export const getOriginalContent = state => state.originalContent
 export const getChangedContent = state => state.changedContent
-export const getLanguages = state => state.languages
-export const getContentPath = state => state.contentPath
+export const getLanguages = state => state.config.languages
+export const getContentPath = state => state.config.contentPath
+export const getChildrenLabel = state => state.config.childrenLabel
+export const getFieldsLabel = state => state.config.fieldsLabel
 export const getProgress = state => state.progress
-export const getWhitelist = state => state.user.whiteList
+export const getUser = state => state.user
+export const getUsers = state => state.config.users
 export const getPath = state => state.path
 export const getNewEntity = state => state.newEntity
 export const getRenamedEntity = state => state.renamedEntity
 export const getTemplates = state => state.templates
+
+export const getWhitelist = createSelector(
+  [getUser, getUsers],
+  (user, users) => users.find(({ id }) => user === id).whitelist || ["**"]
+)
 
 export const selectTemplates = createSelector(
   [getTemplates],
