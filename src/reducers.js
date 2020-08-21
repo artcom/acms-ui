@@ -1,6 +1,9 @@
 /* eslint-disable no-param-reassign */
 import { original, produce } from "immer"
-import { isUndefined, get, set, unset } from "lodash"
+import isUndefined from "lodash/isUndefined"
+import get from "lodash/get"
+import set from "lodash/set"
+import unset from "lodash/unset"
 
 import { createFieldValue } from "./utils"
 

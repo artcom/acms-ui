@@ -1,6 +1,9 @@
 import { createSelector } from "reselect"
 
-import { camelCase, get, mapValues, isUndefined } from "lodash"
+import camelCase from "lodash/camelCase"
+import get from "lodash/get"
+import mapValues from "lodash/mapValues"
+import isUndefined from "lodash/isUndefined"
 import { evaluate } from "./condition"
 import { isLocalized } from "./language"
 import { isWhitelisted } from "./whitelist"

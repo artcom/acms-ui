@@ -1,4 +1,4 @@
-import { isPlainObject } from "lodash"
+import isPlainObject from "lodash/isPlainObject"
 
 export function isLocalized(value, languages) {
   return isPlainObject(value) && Object.keys(value).every(key => isLanguage(key, languages))

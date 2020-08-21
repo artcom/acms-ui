@@ -1,5 +1,5 @@
 import { produce } from "immer"
-import { isPlainObject } from "lodash"
+import isPlainObject from "lodash/isPlainObject"
 import { getChangedContent, selectTemplates, getVersion, getContentPath } from "../selectors"
 import { showError } from "./error"
 import { createChildValue, createFieldValue, getTemplate, isValid } from "../utils"

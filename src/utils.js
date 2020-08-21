@@ -1,4 +1,7 @@
-import { get, isString, isNumber, isUndefined } from "lodash"
+import get from "lodash/get"
+import isString from "lodash/isString"
+import isNumber from "lodash/isNumber"
+import isUndefined from "lodash/isUndefined"
 
 export function getTemplate(id, templates) {
   return templates[id]

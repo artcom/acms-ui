@@ -1,5 +1,5 @@
 import startCase from "lodash/startCase"
-import { camelCase } from "lodash"
+import camelCase from "lodash/camelCase"
 
 import {
   selectNewEntityPath,
