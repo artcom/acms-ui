@@ -1,6 +1,5 @@
 import AssetEditor from "./assetEditor"
 import EnumEditor from "./enumEditor"
-import MarkdownEditor from "./markdownEditor"
 import NumberEditor from "./numberEditor"
 import BooleanEditor from "./booleanEditor"
 import StringEditor from "./stringEditor"
@@ -11,7 +10,7 @@ export default {
   enum: EnumEditor,
   image: AssetEditor,
   file: AssetEditor,
-  markdown: MarkdownEditor,
+  markdown: StringEditor,
   number: NumberEditor,
   string: StringEditor,
   video: AssetEditor
