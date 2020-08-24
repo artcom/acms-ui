@@ -31,34 +31,34 @@ The web app is served on port `5000` by default if environment variable `PORT` i
 ### Config file
 
 The environment variables can be omitted if a `config.json` file providing the following information is served:
-```json
+```json5
 {
-  "assetServerUri": <uri>,
-  "configServerUri": <uri>,
-  "cmsConfigPath": <path>
+  "assetServerUri": "<uri>",
+  "configServerUri": "<uri>",
+  "cmsConfigPath": "<path>"
 }
 ```
 
 ### CMS Configuration
 
-```json
+```json5
 {
-  title: "CMS",               // optional title shown in the header
-  contentPath: "content",     // root directory containing the content data
-  templatesPath: "templates", // root directory containing the (nested) template files
-  childrenLabel: "Children",  // optional label shown above the children, default: "Children"
-  fieldsLabel: "Fields",      // optional label shown above the fields, default: "Fields"
-  languages: [                // optional list of supported languages, the first one is the default language
+  "title": "CMS",               // optional title shown in the header
+  "contentPath": "content",     // root directory containing the content data
+  "templatesPath": "templates", // root directory containing the (nested) template files
+  "childrenLabel": "Children",  // optional label shown above the children, default: "Children"
+  "fieldsLabel": "Fields",      // optional label shown above the fields, default: "Fields"
+  "languages": [                // optional list of supported languages, the first one is the default language
     {
-      id: "en",
-      name: "English"
+      "id": "en",
+      "name": "English"
     }
   ],
-  users: [                    // optional list of users to filter content based on whitelist patterns
+  "users": [                    // optional list of users to filter content based on whitelist patterns
     {
-      id: "admin",
-      name: "Admin",
-      whitelist: [
+      "id": "admin",
+      "name": "Admin",
+      "whitelist": [
         "**"
       ]
     }
@@ -70,7 +70,7 @@ The environment variables can be omitted if a `config.json` file providing the f
 
 Template files specify the structure of the content data while the actual values are located in the `content` directory. Every template entity can have children which themself are structured by a template. Nested templates within the `templates` directory are referenced via local path. E.g.:
 
-```json
+```json5
 /templates/template1.json            // => `template1`
 /templates/template2.json            // => `template2`
 /templates/template3/index.json      // => `template3`
@@ -79,7 +79,7 @@ Template files specify the structure of the content data while the actual values
 ```
 
 #### Example
-```json
+```json5
 {
   "fields": [                      // optional list of fields
         {
@@ -126,7 +126,7 @@ The following field types are supported:
 An uploadable asset which is stored on the asset server with a unique (hashed) filename
 
 Example:
-```json
+```json5
 {
     "id": "coverImage",
     "name": "Front Cover Image",
@@ -140,7 +140,7 @@ A string type with the following otional properties:
   * `maxLength`: Defines the maximum number of characters, default: `Infinity`
 
 Example:
-```json
+```json5
 {
     "id": "label",
     "name": "Start Label",
@@ -156,7 +156,7 @@ A number type with the following optional properties:
 * `max`: The maximum value, default `Infinity`
 
 Example:
-```json
+```json5
 {
     "id": "numLoops",
     "name": "Number of loops",
@@ -170,7 +170,7 @@ Example:
 A boolean either being `true` or `false`.
 
 Example:
-```json
+```json5
 {
     "id": "active",
     "name": "Active State",
@@ -182,7 +182,7 @@ Example:
 A list of selectable `string` values.
 
 Example:
-```json
+```json5
 {
     "id": "myEnum",
     "name": "My Enum Type",
@@ -209,7 +209,7 @@ Note: If you want to omit the `name` properties you can simplify `values` to a l
 
 It is possible to hide/show fields in the CMS frontend depending on sibling fields value. A typical case is an `enum` field which specifies a layout type (e.g. `videoCover`/`imageCover`). Based on the field value you want to either show an `image` or `video` field. This can be achieved with the following `GET`and `EQUALS` operators:
 
-```json
+```json5
 {
     "id": "layoutType",
     "type": "enum",
@@ -229,7 +229,7 @@ It is possible to hide/show fields in the CMS frontend depending on sibling fiel
 ```
 
 If several values should be considered you can use the `IN` and `LIST` operator:
-```json
+```json5
 {
     "id": "coverVideo",
     "type": "string",
