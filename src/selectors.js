@@ -2,6 +2,7 @@ import { createSelector } from "reselect"
 
 import camelCase from "lodash/camelCase"
 import get from "lodash/get"
+import isString from "lodash/isString"
 import mapValues from "lodash/mapValues"
 import isUndefined from "lodash/isUndefined"
 import { evaluate } from "./condition"
@@ -193,8 +194,8 @@ export const selectWhitelistedChildren = createSelector(
 )
 
 const selectFixedChildren = createSelector(
-  [selectTemplate, selectOriginalEntity, selectChangedEntity, getPath],
-  (template, originalEntity = {}, changedEntity, path) => {
+  [selectTemplate, selectOriginalEntity, selectChangedEntity, getLanguages, getPath],
+  (template, originalEntity = {}, changedEntity, languages, path) => {
     const allIds = Object.keys({ ...originalEntity, ...changedEntity })
     const fixedChilds = template.fixedChildren
       .reduce((result, child) => ({ ...result, [child.id]: child }), {})
@@ -207,10 +208,21 @@ const selectFixedChildren = createSelector(
         isNew: isUndefined(originalEntity[id]),
         isDeleted: isUndefined(changedEntity[id]),
         isActive: !isUndefined(changedEntity[id]) && changedEntity[id].active !== false,
+        subtitle: subtitle(fixedChilds[id], changedEntity[id], languages[0].id),
         path: [...path, id]
       }))
   }
 )
+
+function subtitle(child, content, defaultLanguage) {
+  if (child.subtitleField) {
+    return isString(content[child.subtitleField])
+      ? content[child.subtitleField]
+      : content[child.subtitleField][defaultLanguage]
+  } else {
+    return null
+  }
+}
 
 export const selectWhitelistedFixedChildren = createSelector(
   [selectFixedChildren, getWhitelist],

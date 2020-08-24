@@ -1,3 +1,4 @@
+import isUndefined from "lodash/isUndefined"
 import startCase from "lodash/startCase"
 import React from "react"
 import { connect } from "react-redux"
@@ -5,6 +6,7 @@ import { connect } from "react-redux"
 import Col from "react-bootstrap/Col"
 import Dropdown from "react-bootstrap/Dropdown"
 import DropDownItem from "react-bootstrap/DropdownItem"
+import Form from "react-bootstrap/Form"
 import ListGroup from "react-bootstrap/ListGroup"
 import ListGroupItem from "react-bootstrap/ListGroupItem"
 import Row from "react-bootstrap/Row"
@@ -26,6 +28,20 @@ import {
   getChildrenLabel,
   getFieldsLabel
 } from "../selectors"
+
+const ITEM_STYLE = {
+  display: "flex",
+  justifyContent: "space-between",
+  alignItems: "center",
+  height: "60px"
+}
+
+const SUBTITLE_STYLE = {
+  textOverflow: "ellipsis",
+  whiteSpace: "nowrap",
+  width: "125px",
+  overflowX: "hidden"
+}
 
 export default connect(mapStateToProps)(Entity)
 
@@ -92,9 +108,11 @@ function renderFixedChild(child, dispatch) {
     <ListGroupItem
       key={ child.id }
       variant={ childStyle(child) }
-      style={ { display: "flex", justifyContent: "space-between", alignItems: "center" } }>
-      { link }
-
+      style={ ITEM_STYLE }>
+      <div>
+        { link }
+        <Form.Text style={ SUBTITLE_STYLE } muted>{ child.subtitle }</Form.Text>
+      </div>
       <Dropdown className="float-right btn-sm" id={ child.id } drop="right">
         <Dropdown.Toggle as={ ToggleButton } />
         <Dropdown.Menu>
@@ -137,7 +155,7 @@ function renderChild(child, dispatch) {
     <ListGroupItem
       key={ child.id }
       variant={ childStyle(child) }
-      style={ { display: "flex", justifyContent: "space-between", alignItems: "center" } }>
+      style={ ITEM_STYLE }>
       { link }
 
       <Dropdown className="float-right btn-sm" id={ child.id } drop="right">
