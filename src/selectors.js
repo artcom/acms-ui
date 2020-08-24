@@ -41,6 +41,19 @@ export const selectTemplates = createSelector(
   }))
 )
 
+export const getPathNames = createSelector(
+  [getPath, getChangedContent, selectTemplates],
+  (path, changedContent, templates) => {
+    let currentEntry = changedContent
+
+    return path.map(id => {
+      const template = utils.getTemplate(currentEntry.template, templates)
+      const { name } = template.fixedChildren.find(child => child.id === id)
+      currentEntry = currentEntry[id]
+      return name || id
+    })
+  })
+
 export const selectChangedEntity = createSelector(
   [getChangedContent, getPath],
   (changedContent, path) => {

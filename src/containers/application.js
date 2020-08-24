@@ -1,4 +1,3 @@
-import startCase from "lodash/startCase"
 import React from "react"
 import Alert from "react-bootstrap/Alert"
 import Breadcrumb from "react-bootstrap/Breadcrumb"
@@ -12,6 +11,7 @@ import Container from "react-bootstrap/Container"
 import { saveData } from "../actions/data"
 import { hideError } from "../actions/error"
 import { fromPath } from "../hash"
+import { getPathNames } from "../selectors"
 
 export default connect(mapStateToProps)(Application)
 
@@ -21,8 +21,9 @@ function mapStateToProps(state) {
     hasChanged: state.originalContent !== state.changedContent,
     isLoading: state.originalContent === null,
     isSaving: state.isSaving,
+    title: state.config.title,
     path: state.path,
-    title: state.config.title
+    pathNames: getPathNames(state)
   }
 }
 
@@ -53,7 +54,15 @@ function renderError({ dispatch, flash }) {
   }
 }
 
-function renderHeader({ title, configPath, configServer, dispatch, hasChanged, isSaving, path }) {
+function renderHeader({
+  title,
+  configPath,
+  configServer,
+  dispatch,
+  hasChanged,
+  isSaving,
+  path,
+  pathNames }) {
   return (
     <Navbar sticky="top" bg="light" variant="light" className={ "flex-column mb-2" }>
       <Container>
@@ -77,7 +86,7 @@ function renderHeader({ title, configPath, configServer, dispatch, hasChanged, i
                   key={ item }
                   href={ fromPath(path.slice(0, i + 1)) }
                   active={ i === path.length - 1 }>
-                  { startCase(item) }
+                  { pathNames[i] }
                 </Breadcrumb.Item>
               ) }
             </Breadcrumb>
