@@ -1,25 +1,29 @@
 import React from "react"
 import Form from "react-bootstrap/Form"
+import isString from "lodash/isString"
+import startCase from "lodash/startCase"
 
 
 export default function EnumEditor({ field, onChange }) {
   function onChangeEnum(event) {
     onChange({
       target: {
-        value: field.values[event.target.value].value
+        value: event.target.value
       }
     })
   }
 
-  const selectedIndex = field.values.findIndex(value => value.value === field.value)
+  const values = isString(field.values[0])
+    ? field.values.map(id => ({ id, name: startCase(id) }))
+    : field.values
 
   return (
     <Form.Control style={ { border: "0px", boxShadow: "none" } }
       as="select"
-      value={ selectedIndex }
+      value={ field.value }
       onChange={ onChangeEnum }>
-      { field.values.map((value, index) =>
-        <option key={ index } value={ index }>{ value.name }</option>
+      { values.map(({ id, name }, index) =>
+        <option key={ index } value={ id }>{ name }</option>
       ) }
     </Form.Control>
   )

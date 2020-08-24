@@ -31,7 +31,7 @@ export function createFieldValue(field) {
 
   switch (field.type) {
     case "enum":
-      return field.values[0].value
+      return isString(field.values[0]) ? field.values[0] : field.values[0].id
     case "boolean":
       return false
     case "audio":
@@ -56,7 +56,9 @@ export function createFieldValue(field) {
 export function isValid(value, field) {
   switch (field.type) {
     case "enum":
-      return field.values.map(val => val.value).includes(value)
+      return isString(field.values[0])
+        ? field.values.includes(value)
+        : field.values.map(val => val.id).includes(value)
     case "boolean":
       return value === true || value === false
     case "audio":
