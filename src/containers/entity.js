@@ -35,10 +35,17 @@ const ITEM_STYLE = {
   height: "60px"
 }
 
+const ITEM_TEXT_STYLE = {
+  display: "flex",
+  flexDirection: "column",
+  flexGrow: "1",
+  flexShrink: "1",
+  minWidth: "0"
+}
+
 const SUBTITLE_STYLE = {
   textOverflow: "ellipsis",
   whiteSpace: "nowrap",
-  width: "125px",
   overflowX: "hidden"
 }
 
@@ -108,7 +115,7 @@ function renderFixedChild(child, dispatch) {
       key={ child.id }
       variant={ childStyle(child) }
       style={ ITEM_STYLE }>
-      <div>
+      <div style={ ITEM_TEXT_STYLE }>
         { link }
         <Form.Text style={ SUBTITLE_STYLE } muted>{ child.subtitle }</Form.Text>
       </div>
