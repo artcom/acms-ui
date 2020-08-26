@@ -86,7 +86,7 @@ Template files specify the structure of the content data while the actual values
             "id": "buttonLabel",   // unique id within the whole template
             "name": "Button Text", // optional display name shown in the CMS frontend, default startCase(id)
             "type": "string",      // field type see below
-            "maxLength": 8         // optiona type specific properties
+            "maxLength": 8         // optional type specific properties
         },
         {
             "id": "numLoops",
