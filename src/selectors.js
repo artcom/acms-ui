@@ -2,6 +2,7 @@ import { createSelector } from "reselect"
 
 import camelCase from "lodash/camelCase"
 import get from "lodash/get"
+import isBoolean from "lodash/isBoolean"
 import isString from "lodash/isString"
 import mapValues from "lodash/mapValues"
 import isUndefined from "lodash/isUndefined"
@@ -207,12 +208,22 @@ const selectFixedChildren = createSelector(
         hasChanged: originalEntity[id] !== changedEntity[id],
         isNew: isUndefined(originalEntity[id]),
         isDeleted: isUndefined(changedEntity[id]),
-        isActive: !isUndefined(changedEntity[id]) && changedEntity[id].active !== false,
+        isActive: isActive(fixedChilds[id], changedEntity[id], languages[0].id),
         subtitle: subtitle(fixedChilds[id], changedEntity[id], languages[0].id),
         path: [...path, id]
       }))
   }
 )
+
+function isActive(child, content, defaultLanguage) {
+  if (child.enabledField) {
+    return isBoolean(content[child.enabledField])
+      ? content[child.enabledField]
+      : content[child.enabledField][defaultLanguage]
+  } else {
+    return true
+  }
+}
 
 function subtitle(child, content, defaultLanguage) {
   if (child.subtitleField) {
