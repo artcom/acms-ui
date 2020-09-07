@@ -173,7 +173,7 @@ function renderChild(child, dispatch) {
             Rename...
           </DropDownItem>
           <DropDownItem
-            disabled={ !child.hasChanged }
+            disabled={ !child.hasChanged || child.isNew }
             onSelect={ () => dispatch(undoChanges(child.path)) }>
             Undo Changes
           </DropDownItem>
