@@ -31,17 +31,14 @@ const DEFAULT_CONFIG = {
   ]
 }
 
-export function config(state = {}, { type, payload }) {
+export const config = produce((draft, { type, payload }) => {
   switch (type) {
     case "UPDATE_DATA":
       return { ...DEFAULT_CONFIG, ...payload.config }
-
-    default:
-      return state
   }
-}
+}, null)
 
-export function isSaving(state = false, { type }) {
+export const isSaving = produce((draft, { type }) => {
   switch (type) {
     case "START_SAVING":
       return true
@@ -49,41 +46,29 @@ export function isSaving(state = false, { type }) {
     case "UPDATE_DATA":
     case "SHOW_ERROR":
       return false
-
-    default:
-      return state
   }
-}
+}, false)
 
-export function version(state = null, { type, payload }) {
+export const version = produce((draft, { type, payload }) => {
   switch (type) {
     case "UPDATE_DATA":
       return payload.version
-
-    default:
-      return state
   }
-}
+}, null)
 
-export function templates(state = null, { type, payload }) {
+export const templates = produce((draft, { type, payload }) => {
   switch (type) {
     case "UPDATE_DATA":
       return payload.templates
-
-    default:
-      return state
   }
-}
+}, null)
 
-export function originalContent(state = null, { type, payload }) {
+export const originalContent = produce((draft, { type, payload }) => {
   switch (type) {
     case "UPDATE_DATA":
       return payload.originalContent
-
-    default:
-      return state
   }
-}
+}, null)
 
 export const changedContent = produce((draft, { type, payload }) => {
   switch (type) {
@@ -146,39 +131,33 @@ export const changedContent = produce((draft, { type, payload }) => {
   }
 }, null)
 
-export function newEntity(state = null, { type, payload }) {
+export const newEntity = produce((draft, { type, payload }) => {
   switch (type) {
     case "START_ENTITY_CREATION":
       return payload
 
     case "UPDATE_ENTITY_CREATION":
-      return { ...state, ...payload }
-
+      Object.entries(payload).forEach(([key, value]) => { draft[key] = value })
+      break
     case "FINISH_ENTITY_CREATION":
     case "CANCEL_ENTITY_CREATION":
       return null
-
-    default:
-      return state
   }
-}
+}, null)
 
-export function renamedEntity(state = null, { type, payload }) {
+export const renamedEntity = produce((draft, { type, payload }) => {
   switch (type) {
     case "START_ENTITY_RENAMING":
       return payload
 
     case "UPDATE_ENTITY_RENAMING":
-      return { ...state, newId: payload.newId }
-
+      draft.newId = payload.newId
+      break
     case "FINISH_ENTITY_RENAMING":
     case "CANCEL_ENTITY_RENAMING":
       return null
-
-    default:
-      return state
   }
-}
+}, null)
 
 export const fieldLocalization = produce((draft, { type, payload }) => {
   switch (type) {
@@ -194,28 +173,21 @@ export const fieldLocalization = produce((draft, { type, payload }) => {
   }
 }, null)
 
-export function path(state = [], { type, payload }) {
+export const path = produce((draft, { type, payload }) => {
   switch (type) {
     case "UPDATE_PATH":
       return payload.path
-
-    default:
-      return state
   }
-}
+}, [])
 
-export function flash(state = null, { type, payload }) {
+export const flash = produce((draft, { type, payload }) => {
   switch (type) {
     case "SHOW_ERROR":
       return payload
-
     case "HIDE_ERROR":
       return null
-
-    default:
-      return state
   }
-}
+}, null)
 
 export const progress = produce((draft, { type, payload }) => {
   switch (type) {
@@ -232,8 +204,7 @@ export const progress = produce((draft, { type, payload }) => {
   }
 }, {})
 
-
-export function user(state = null, { type, payload }) {
+export const user = produce((draft, { type, payload }) => {
   switch (type) {
     case "UPDATE_DATA": {
       const params = queryParams()
@@ -249,10 +220,8 @@ export function user(state = null, { type, payload }) {
         return DEFAULT_CONFIG.users[0].id
       }
     }
-    default:
-      return state
   }
-}
+}, null)
 
 function queryParams() {
   const queryString = window.location.search.substring(1)
