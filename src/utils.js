@@ -8,9 +8,7 @@ export function getFromPath(object, path, defaultValue) {
 }
 
 export function getTemplate(id, templates) {
-  return templates[id]
-    ? templates[id]
-    : templates[`${id}/index`]
+  return templates[id] ? templates[id] : templates[`${id}/index`]
 }
 
 export function createEntry(entry, templates) {
