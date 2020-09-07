@@ -50,9 +50,9 @@ export const getPathNames = createSelector(
 
     return path.map(id => {
       const template = utils.getTemplate(currentEntry.template, templates)
-      const { name } = template.fixedChildren.find(child => child.id === id)
+      const fixedChild = template.fixedChildren.find(child => child.id === id)
       currentEntry = currentEntry[id]
-      return name || id
+      return fixedChild && fixedChild.name ? fixedChild.name : id
     })
   })
 
