@@ -2,12 +2,12 @@ import get from "lodash/get"
 import React from "react"
 import Form from "react-bootstrap/Form"
 
-import { isValid } from "../utils"
+import { isValidField } from "../utils"
 
 export default function NumberEditor({ field, onChange }) {
   const min = get(field, "min", -Infinity)
   const max = get(field, "max", Infinity)
-  const valid = isValid(field.value, field)
+  const valid = isValidField(field.value, field)
 
   function onChangeFloat(event) {
     onChange({

@@ -122,11 +122,11 @@ export const changedContent = produce((draft, { type, payload }) => {
       if (field.isLocalized) {
         if (shouldBeLocalized) {
           // Update localization
-          const values = {}
+          const newValue = {}
           for (const id of selectedLanguageIds) {
-            values[id] = isUndefined(field.value[id]) ? createFieldValue(field) : field.value[id]
+            newValue[id] = isUndefined(field.value[id]) ? createFieldValue(field) : field.value[id]
           }
-          set(draft, field.path, values)
+          set(draft, field.path, newValue)
         } else {
           // Unlocalize field
           const defaultLanguageValue = get(original(draft), [...field.path, defaultLanguageId])
@@ -135,11 +135,11 @@ export const changedContent = produce((draft, { type, payload }) => {
       } else {
         if (shouldBeLocalized) {
           // Localize field
-          const values = {}
+          const newValue = {}
           for (const id of selectedLanguageIds) {
-            values[id] = id === defaultLanguageId ? field.value : createFieldValue(field)
+            newValue[id] = id === defaultLanguageId ? field.value : createFieldValue(field)
           }
-          set(draft, field.path, values)
+          set(draft, field.path, newValue)
         }
       }
     }

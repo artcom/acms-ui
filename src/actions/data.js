@@ -2,7 +2,7 @@ import { produce } from "immer"
 import isPlainObject from "lodash/isPlainObject"
 import { getChangedContent, selectTemplates, getVersion, getContentPath } from "../selectors"
 import { showError } from "./error"
-import { createChildValue, createFieldValue, getTemplate, isValid } from "../utils"
+import { createChildValue, createFieldValue, getTemplate, isValidField } from "../utils"
 import { isLocalized } from "../language"
 
 
@@ -40,13 +40,13 @@ function fixContent(content, draft, templates, languages) {
   fields.forEach(field => {
     if (isLocalized(content[field.id], languages)) {
       for (const [language, value] of Object.entries(content[field.id])) {
-        if (!isValid(value, field)) {
+        if (!isValidField(value, field)) {
           // eslint-disable-next-line no-param-reassign
           draft[field.id][language] = createFieldValue(field)
         }
       }
     } else {
-      if (!isValid(content[field.id], field)) {
+      if (!isValidField(content[field.id], field)) {
         // eslint-disable-next-line no-param-reassign
         draft[field.id] = createFieldValue(field)
       }

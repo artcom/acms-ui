@@ -53,7 +53,7 @@ export function createFieldValue(field) {
   }
 }
 
-export function isValid(value, field) {
+export function isValidField(value, field) {
   switch (field.type) {
     case "enum":
       return isString(field.values[0])
