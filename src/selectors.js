@@ -30,7 +30,10 @@ export const getTemplates = state => state.templates
 
 export const getWhitelist = createSelector(
   [getUser, getUsers],
-  (user, users) => users.find(({ id }) => user === id).whitelist || ["**"]
+  (user, users) => {
+    const userConfig = users.find(({ id }) => id === user)
+    return userConfig && userConfig.whitelist ? userConfig.whitelist : ["**"]
+  }
 )
 
 export const selectTemplates = createSelector(

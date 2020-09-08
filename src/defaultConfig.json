@@ -1,0 +1,22 @@
+{
+    "title": "CMS",
+    "contentPath": "content",
+    "templatesPath": "templates",
+    "childrenLabel": "Children",
+    "fieldsLabel": "Fields",
+    "languages": [
+        {
+            "id": "en",
+            "name": "English"
+        }
+    ],
+    "users": [
+        {
+            "id": "admin",
+            "name": "Admin",
+            "whitelist": [
+                "**"
+            ]
+        }
+    ]
+}

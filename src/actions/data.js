@@ -4,6 +4,7 @@ import { getChangedContent, selectTemplates, getVersion, getContentPath } from "
 import { showError } from "./error"
 import { createChildValue, createFieldValue, getTemplate, isValidField } from "../utils"
 import { isLocalized } from "../language"
+import defaultConfig from "../defaultConfig.json"
 
 
 export function loadData(configServer, configPath) {
@@ -22,7 +23,7 @@ export function loadData(configServer, configPath) {
     dispatch({
       type: "UPDATE_DATA",
       payload: {
-        config,
+        config: { ...defaultConfig, ...config },
         originalContent,
         changedContent,
         templates,

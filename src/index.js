@@ -4,6 +4,8 @@ import { Provider } from "react-redux"
 
 import { loadData } from "./actions/data"
 import { updatePath } from "./actions/path"
+import { updateUser } from "./actions/user"
+
 import bootstrap from "./bootstrap"
 import { configureStore } from "./store"
 
@@ -23,6 +25,8 @@ bootstrap().then(async ({ assetServer, cmsConfigPath, configServer }) => {
   } catch (error) {
     store.dispatch(showError("Failed to load Data", error))
   }
+
+  store.dispatch(updateUser())
 
   window.addEventListener("hashchange", updatePathFromHash)
   updatePathFromHash()
