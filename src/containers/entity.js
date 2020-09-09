@@ -151,9 +151,7 @@ function renderChild(child, dispatch) {
   const displayName = startCase(child.id)
   const link = child.isDeleted ?
     displayName :
-    <a
-      href={ fromPath(child.path) }
-      className={ child.isActive ? "" : "text-muted" }>
+    <a href={ fromPath(child.path) } >
       { displayName }
     </a>
 
