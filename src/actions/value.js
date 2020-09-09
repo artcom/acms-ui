@@ -2,7 +2,7 @@ import get from "lodash/get"
 
 export function changeValue(path, value) {
   return {
-    type: "CHANGE_VALUE",
+    type: "SET_VALUE",
     payload: {
       path,
       value

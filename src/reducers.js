@@ -51,7 +51,7 @@ export const changedContent = produce((draft, { type, payload }) => {
     case "UPDATE_DATA":
       return payload.changedContent
 
-    case "CHANGE_VALUE":
+    case "SET_VALUE":
       set(draft, payload.path, payload.value)
       break
     case "UNDO_CHANGES":
@@ -173,7 +173,7 @@ export const progress = produce((draft, { type, payload }) => {
     case "PROGRESS_UPLOAD":
       draft[payload.path.toString()] = payload.progress
       break
-    case "CHANGE_VALUE":
+    case "SET_VALUE":
     case "CANCEL_UPLOAD":
       delete draft[payload.path.toString()]
       break
