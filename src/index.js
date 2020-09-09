@@ -20,6 +20,7 @@ import "bootstrap/dist/css/bootstrap.min.css"
 
 bootstrap().then(async ({ assetServer, cmsConfigPath, configServer }) => {
   const store = configureStore()
+
   try {
     await store.dispatch(loadData(configServer, cmsConfigPath))
   } catch (error) {
