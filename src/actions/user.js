@@ -1,6 +1,6 @@
 export function updateUser() {
   const queryString = window.location.search.substring(1)
-  const { user } = queryParams(queryString)
+  const { user = null } = queryParams(queryString)
 
   return {
     type: "UPDATE_USER",
