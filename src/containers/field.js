@@ -5,6 +5,7 @@ import Card from "react-bootstrap/Card"
 import Dropdown from "react-bootstrap/Dropdown"
 import DropdownItem from "react-bootstrap/DropdownItem"
 import ListGroup from "react-bootstrap/ListGroup"
+import Table from "react-bootstrap/Table"
 
 import { getLanguageName } from "../language"
 
@@ -74,18 +75,20 @@ function renderLocalizedEditors(field, languages, assetServer, dispatch, Editor)
     }
 
     return (
-      <ListGroup.Item key={ languageId } style={ { padding: "0px" } }>
-        <Card.Header className="text-muted"
-          style={ { paddingTop: "0.3rem", paddingBottom: "0.3rem" } }>
-          { getLanguageName(languageId, languages) }
-        </Card.Header>
-
-        { renderEditor(languageField, assetServer, dispatch, Editor) }
-      </ListGroup.Item>
+      <tr key={ languageId } >
+        <td style={ { background: "rgba(0,0,0,.03)", borderRight: "1px solid rgba(0,0,0,.1)", width: 20, paddingTop: 20 } }>{ languageId }</td>
+        <td>{ renderEditor(languageField, assetServer, dispatch, Editor) }</td>
+      </tr>
     )
   })
 
-  return <ListGroup variant="flush">{ items }</ListGroup>
+  return (
+    <Table style={ { margin: "0px", border: "0px solid green" } }>
+      <tbody>
+        { items }
+      </tbody>
+    </Table>
+  )
 }
 
 function renderEditor(field, assetServer, dispatch, Editor) {
