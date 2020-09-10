@@ -38,7 +38,7 @@ const Header = ({
             listProps={ { style: { minHeight: "3em" } } }>
             { path.map((item, i) =>
               <Breadcrumb.Item
-                key={ item }
+                key={ i }
                 href={ fromPath(path.slice(0, i + 1)) }
                 active={ i === path.length - 1 }>
                 { pathNames[i] }
