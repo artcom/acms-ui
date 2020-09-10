@@ -7,7 +7,7 @@ import Navbar from "react-bootstrap/Navbar"
 import Col from "react-bootstrap/Col"
 import Container from "react-bootstrap/Container"
 import { saveData } from "../actions/data"
-import { fromPath } from "../hash"
+import { fromPath } from "../utils/hash"
 
 const Header = ({
   title,

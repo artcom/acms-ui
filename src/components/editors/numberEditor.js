@@ -2,7 +2,7 @@ import get from "lodash/get"
 import React from "react"
 import Form from "react-bootstrap/Form"
 
-import { isValidField } from "../utils"
+import { isValidField } from "../../utils"
 
 export default function NumberEditor({ field, onChange }) {
   const min = get(field, "min", -Infinity)

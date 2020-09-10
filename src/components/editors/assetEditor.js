@@ -2,7 +2,7 @@ import React from "react"
 import ProgressBar from "react-bootstrap/ProgressBar"
 import path from "path"
 
-import FileSelector from "../components/fileSelector"
+import FileSelector from "../fileSelector"
 
 export default function AssetEditor({ field, onFileSelect }) {
   return (

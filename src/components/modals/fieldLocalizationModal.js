@@ -9,9 +9,9 @@ import {
   cancelFieldLocalization,
   finishFieldLocalization,
   updateFieldLocalization
-} from "../actions/localization"
+} from "../../actions/localization"
 
-import { selectFieldLocalization, getLanguages } from "../selectors"
+import { selectFieldLocalization, getLanguages } from "../../selectors"
 
 export default connect(mapStateToProps)(FieldLocalizationModal)
 

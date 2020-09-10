@@ -9,8 +9,8 @@ import { cancelEntityCreation,
   finishEntityCreation,
   updateEntityCreationId,
   updateEntityCreationTemplate
-} from "../actions/entity"
-import { selectNewEntity } from "../selectors"
+} from "../../actions/entity"
+import { selectNewEntity } from "../../selectors"
 
 export default connect(mapStateToProps)(EntityCreationModal)
 

@@ -6,7 +6,7 @@ import Dropdown from "react-bootstrap/Dropdown"
 import DropdownItem from "react-bootstrap/DropdownItem"
 import ListGroup from "react-bootstrap/ListGroup"
 
-import { getLanguageName } from "../language"
+import { getLanguageName } from "../utils/language"
 
 import { startFieldLocalization } from "../actions/localization"
 import { uploadFile } from "../actions/upload"
@@ -14,7 +14,7 @@ import { changeValue, undoChanges } from "../actions/value"
 
 import ToggleButton from "../components/toggleButton"
 
-import editors from "../editors"
+import editors from "./editors"
 
 export default function Field(props) {
   const style = fieldStyle(props.field)

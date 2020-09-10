@@ -1,6 +1,6 @@
 import { basename, extname } from "path"
 
-import { sha256 } from "../sha"
+import { sha256 } from "../utils/sha"
 
 import { showError } from "./error"
 import { changeValue } from "./value"

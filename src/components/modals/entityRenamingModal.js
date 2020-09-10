@@ -5,8 +5,9 @@ import Button from "react-bootstrap/Button"
 import Form from "react-bootstrap/Form"
 import Modal from "react-bootstrap/Modal"
 
-import { cancelEntityRenaming, finishEntityRenaming, updateEntityRenaming } from "../actions/entity"
-import { selectRenamedEntity } from "../selectors"
+import { cancelEntityRenaming, finishEntityRenaming,
+  updateEntityRenaming } from "../../actions/entity"
+import { selectRenamedEntity } from "../../selectors"
 
 export default connect(mapStateToProps)(EntityRenamingModal)
 
