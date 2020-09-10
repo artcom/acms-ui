@@ -81,7 +81,7 @@ function Entity({
           && <h4>{ childrenLabel }</h4>
         }
         { fixedChildren.length > 0 && renderFixedChildren(fixedChildren, dispatch) }
-        { children.length > 0 && renderChildren(children, dispatch) }
+        { renderChildren(children, dispatch, canHaveChildren) }
       </Col>
 
       <Col md={ 8 }>
@@ -133,16 +133,18 @@ function renderFixedChild(child, dispatch) {
   )
 }
 
-function renderChildren(children, dispatch) {
+function renderChildren(children, dispatch, canHaveChildren) {
   return (
     <ListGroup className="mb-3">
       { children.map(child => renderChild(child, dispatch)) }
-      <ListGroupItem
-        variant="secondary"
-        style={ { padding: "0px", textAlign: "center", outline: "none" } }
-        action
-        onClick={ () => dispatch(startEntityCreation()) }>+
-      </ListGroupItem>
+      { canHaveChildren &&
+        <ListGroupItem
+          variant="secondary"
+          style={ { padding: "0px", textAlign: "center", outline: "none" } }
+          action
+          onClick={ () => dispatch(startEntityCreation()) }>+
+        </ListGroupItem>
+      }
     </ListGroup>
   )
 }
