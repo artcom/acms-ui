@@ -13,6 +13,11 @@ import { hideError } from "../actions/error"
 import { fromPath } from "../hash"
 import { getPathNames } from "../selectors"
 
+import Entity from "./entity"
+import EntityCreationModal from "../modals/entityCreationModal"
+import EntityRenamingModal from "../modals/entityRenamingModal"
+import FieldLocalizationModal from "../modals/fieldLocalizationModal"
+
 export default connect(mapStateToProps)(Application)
 
 function mapStateToProps(state) {
@@ -33,7 +38,14 @@ function Application(props) {
       { !props.isLoading && renderHeader(props) }
       <Container>
         { renderError(props) }
-        { !props.isLoading && props.children }
+        { !props.isLoading &&
+        <>
+          <Entity assetServer={ props.assetServer } />
+          <EntityCreationModal />
+          <EntityRenamingModal />
+          <FieldLocalizationModal />
+        </>
+        }
       </Container>
     </>
   )

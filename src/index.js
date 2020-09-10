@@ -10,11 +10,7 @@ import bootstrap from "./bootstrap"
 import { configureStore } from "./store"
 
 import Application from "./containers/application"
-import Entity from "./containers/entity"
-import EntityCreationModal from "./modals/entityCreationModal"
-import EntityRenamingModal from "./modals/entityRenamingModal"
 import { showError } from "./actions/error"
-import FieldLocalizationModal from "./modals/fieldLocalizationModal"
 
 import "bootstrap/dist/css/bootstrap.min.css"
 
@@ -38,12 +34,10 @@ bootstrap().then(async ({ assetServer, cmsConfigPath, configServer }) => {
 
   render(
     <Provider store={ store } >
-      <Application configServer={ configServer } configPath={ cmsConfigPath }>
-        <Entity assetServer={ assetServer } />
-        <EntityCreationModal />
-        <EntityRenamingModal />
-        <FieldLocalizationModal />
-      </Application>
+      <Application
+        configServer={ configServer }
+        configPath={ cmsConfigPath }
+        assetServer={ assetServer } />
     </Provider>
     , document.getElementById("app"))
 })
