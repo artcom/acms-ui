@@ -1,37 +1,57 @@
 import React from "react"
 import ProgressBar from "react-bootstrap/ProgressBar"
+import styled from "styled-components"
+
 import path from "path"
 
 import FileSelector from "../fileSelector"
 
+const Editor = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+`
+
+const Image = styled.img`
+    max-width: 100%;
+    background-image: 
+      linear-gradient(to right, rgba(150, 150, 150, 0.75), rgba(150, 150, 150, 0.75)),
+      linear-gradient(to right, black 50%, white 50%),
+      linear-gradient(to bottom, black 50%, white 50%);
+    background-blend-mode: normal, difference, normal;
+    background-size: 2em 2em;
+`
+
+const File = styled.div`
+    font-size: 0.7rem;
+    line-height: 2.5;
+`
+
+const Audio = styled.audio`
+    width: 100%;   
+`
+
+const Video = styled.video`
+    width: 100%;   
+`
+
 export default function AssetEditor({ field, onFileSelect }) {
   return (
-    <div style={ { display: "flex", flexDirection: "column", alignItems: "center" } }>
+    <Editor >
       { field.value && renderView(field) }
       { renderUpload(field, onFileSelect) }
-    </div>
+    </Editor>
   )
 }
 
 function renderView(field) {
   const src = field.value
-  const style = { width: "100%", fontSize: "0.7rem", lineHeight: "2.5", textAlign: "center" }
 
-  const checkerboard = {
-    maxWidth: "100%",
-    backgroundImage: `
-      linear-gradient(to right, rgba(150, 150, 150, 0.75), rgba(150, 150, 150, 0.75)),
-      linear-gradient(to right, black 50%, white 50%),
-      linear-gradient(to bottom, black 50%, white 50%)`,
-    backgroundBlendMode: "normal, difference, normal",
-    backgroundSize: "2em 2em"
-
-  }
   switch (field.type) {
-    case "audio": return <audio controls key={ src } src={ src } style={ style } />
-    case "file": return <div key={ src } style={ style }>{ path.basename(src) }</div>
-    case "image": return <img key={ src } src={ src } style={ checkerboard } />
-    case "video": return <video controls key={ src } src={ src } style={ style } />
+    case "audio": return <Audio controls key={ src } src={ src } />
+    case "file": return <File key={ src }>{ path.basename(src) }</File>
+    case "image": return <Image key={ src } src={ src } />
+    case "video": return <Video controls key={ src } src={ src } />
   }
 }
 
