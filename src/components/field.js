@@ -1,18 +1,13 @@
-import startCase from "lodash/startCase"
 import React from "react"
 
 import Card from "react-bootstrap/Card"
-import Dropdown from "react-bootstrap/Dropdown"
-import DropdownItem from "react-bootstrap/DropdownItem"
 import ListGroup from "react-bootstrap/ListGroup"
+import FieldHeader from "./fieldHeader"
 
 import { getLanguageName } from "../utils/language"
 
-import { startFieldLocalization } from "../actions/localization"
 import { uploadFile } from "../actions/upload"
-import { changeValue, undoChanges } from "../actions/value"
-
-import ToggleButton from "../components/toggleButton"
+import { changeValue } from "../actions/value"
 
 import editors from "./editors"
 
@@ -22,35 +17,10 @@ export default function Field(props) {
   return (
     <Card border={ style } className="mb-3">
       <Card.Header className={ style ? `list-group-item-${style}` : "" }>
-        { renderHeader(props) }
+        <FieldHeader { ...props } />
       </Card.Header>
       { renderContent(props) }
     </Card>
-  )
-}
-
-function renderHeader({ field, dispatch }) {
-  return (
-    <div>
-      { field.name ? field.name : startCase(field.id) }
-
-      <Dropdown style={ { float: "right" } } id={ field.id }>
-        <Dropdown.Toggle as={ ToggleButton } />
-        <Dropdown.Menu>
-          <DropdownItem
-            key="undo"
-            disabled={ !field.hasChanged || field.isNew }
-            onSelect={ () => dispatch(undoChanges(field.path)) }>
-            Undo Changes
-          </DropdownItem>
-          <DropdownItem
-            key="localize"
-            onSelect={ () => dispatch(startFieldLocalization(field)) }>
-            Localize...
-          </DropdownItem>
-        </Dropdown.Menu>
-      </Dropdown>
-    </div>
   )
 }
 

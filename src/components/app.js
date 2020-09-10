@@ -6,7 +6,7 @@ import { getPathNames } from "../selectors"
 
 import Entity from "./entity"
 import Error from "./error"
-import Header from "./header"
+import Header from "./appHeader"
 import EntityCreationModal from "./modals/entityCreationModal"
 import EntityRenamingModal from "./modals/entityRenamingModal"
 import FieldLocalizationModal from "./modals/fieldLocalizationModal"
