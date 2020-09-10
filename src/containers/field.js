@@ -17,14 +17,14 @@ import ToggleButton from "../components/toggleButton"
 import editors from "../editors"
 
 export default function Field(props) {
-  const { style, content } = renderContent(props)
+  const style = fieldStyle(props.field)
 
   return (
     <Card border={ style } className="mb-3">
       <Card.Header className={ style ? `list-group-item-${style}` : "" }>
         { renderHeader(props) }
       </Card.Header>
-      { content }
+      { renderContent(props) }
     </Card>
   )
 }
@@ -58,18 +58,12 @@ function renderContent({ assetServer, dispatch, field, languages }) {
   const Editor = editors[field.type]
 
   if (!Editor) {
-    return {
-      style: "danger",
-      content: <span>Unknown field type <code>{ field.type }</code></span>
-    }
+    return <span>Unknown field type <code>{ field.type }</code></span>
   }
 
-  return {
-    style: fieldStyle(field),
-    content: field.isLocalized
-      ? renderLocalizedEditors(field, languages, assetServer, dispatch, Editor)
-      : renderEditor(field, assetServer, dispatch, Editor)
-  }
+  return field.isLocalized
+    ? renderLocalizedEditors(field, languages, assetServer, dispatch, Editor)
+    : renderEditor(field, assetServer, dispatch, Editor)
 }
 
 function renderLocalizedEditors(field, languages, assetServer, dispatch, Editor) {
@@ -103,9 +97,13 @@ function renderEditor(field, assetServer, dispatch, Editor) {
   )
 }
 
-function fieldStyle({ hasChanged, isNew }) {
+function fieldStyle({ hasChanged, isNew, type }) {
   if (isNew) {
     return "success"
+  }
+
+  if (!editors[type]) {
+    return "danger"
   }
 
   if (hasChanged) {
