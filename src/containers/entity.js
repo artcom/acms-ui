@@ -80,10 +80,8 @@ function Entity({
           (fixedChildren.length + children.length > 0 || canHaveChildren)
           && <h4>{ childrenLabel }</h4>
         }
-        <ListGroup className="mb-3">
-          { fixedChildren.length > 0 && renderFixedChildren(fixedChildren, dispatch) }
-          { children.length > 0 && renderChildren(children, dispatch) }
-        </ListGroup>
+        { fixedChildren.length > 0 && renderFixedChildren(fixedChildren, dispatch) }
+        { children.length > 0 && renderChildren(children, dispatch) }
       </Col>
 
       <Col md={ 8 }>
@@ -95,45 +93,49 @@ function Entity({
 }
 
 function renderFixedChildren(children, dispatch) {
-  return children.map(child => {
-    const displayName = child.name ? child.name : startCase(child.id)
-    const link = child.isDeleted ?
-      displayName :
-      <a
-        href={ fromPath(child.path) }
-        className={ child.isActive ? "" : "text-muted" }>
-        { displayName }
-      </a>
-
-    return (
-      <ListGroupItem
-        key={ child.id }
-        variant={ childStyle(child) }
-        style={ ITEM_STYLE }>
-        <div style={ ITEM_TEXT_STYLE }>
-          { link }
-          <Form.Text style={ SUBTITLE_STYLE } muted>{ child.subtitle }</Form.Text>
-        </div>
-        <Dropdown className="float-right btn-sm" id={ child.id } drop="right">
-          <Dropdown.Toggle as={ ToggleButton } />
-          <Dropdown.Menu>
-            <DropDownItem
-              disabled={ !child.hasChanged }
-              onSelect={ () => dispatch(undoChanges(child.path)) }>
-              Undo Changes
-            </DropDownItem>
-          </Dropdown.Menu>
-        </Dropdown>
-      </ListGroupItem>
-    )
-  }
+  return (
+    <ListGroup className="mb-3">
+      { children.map(child => renderFixedChild(child, dispatch)) }
+    </ListGroup>
   )
 }
 
+function renderFixedChild(child, dispatch) {
+  const displayName = child.name ? child.name : startCase(child.id)
+  const link = child.isDeleted ?
+    displayName :
+    <a
+      href={ fromPath(child.path) }
+      className={ child.isActive ? "" : "text-muted" }>
+      { displayName }
+    </a>
+
+  return (
+    <ListGroupItem
+      key={ child.id }
+      variant={ childStyle(child) }
+      style={ ITEM_STYLE }>
+      <div style={ ITEM_TEXT_STYLE }>
+        { link }
+        <Form.Text style={ SUBTITLE_STYLE } muted>{ child.subtitle }</Form.Text>
+      </div>
+      <Dropdown className="float-right btn-sm" id={ child.id } drop="right">
+        <Dropdown.Toggle as={ ToggleButton } />
+        <Dropdown.Menu>
+          <DropDownItem
+            disabled={ !child.hasChanged }
+            onSelect={ () => dispatch(undoChanges(child.path)) }>
+            Undo Changes
+          </DropDownItem>
+        </Dropdown.Menu>
+      </Dropdown>
+    </ListGroupItem>
+  )
+}
 
 function renderChildren(children, dispatch) {
   return (
-    <>
+    <ListGroup className="mb-3">
       { children.map(child => renderChild(child, dispatch)) }
       <ListGroupItem
         variant="secondary"
@@ -141,7 +143,7 @@ function renderChildren(children, dispatch) {
         action
         onClick={ () => dispatch(startEntityCreation()) }>+
       </ListGroupItem>
-    </>
+    </ListGroup>
   )
 }
 
