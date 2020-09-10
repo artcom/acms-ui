@@ -1,6 +1,7 @@
 import get from "lodash/get"
 import React from "react"
 import Form from "react-bootstrap/Form"
+import StyledFormControl from "./styledFormControl"
 
 import { isValidField } from "../../utils"
 
@@ -19,8 +20,7 @@ export default function NumberEditor({ field, onChange }) {
 
   return (
     <>
-      <Form.Control
-        style={ { border: "0px", boxShadow: "none" } }
+      <StyledFormControl
         isInvalid={ !valid }
         type="number"
         value={ field.value }

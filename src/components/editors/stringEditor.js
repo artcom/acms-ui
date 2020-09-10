@@ -1,6 +1,7 @@
-import Form from "react-bootstrap/Form"
 import get from "lodash/get"
 import React from "react"
+import Form from "react-bootstrap/Form"
+import StyledFormControl from "./styledFormControl"
 
 import { isValidField } from "../../utils"
 
@@ -16,8 +17,7 @@ export default function StringEditor({ field, onChange }) {
 
   return (
     <>
-      <Form.Control
-        style={ { border: "0px", boxShadow: "none" } }
+      <StyledFormControl
         isInvalid={ !valid }
         { ...(multiline ? MULTI_LINE_STYLE : SINGLE_LINE_STYLE) }
         value={ field.value }

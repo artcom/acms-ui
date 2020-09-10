@@ -88,7 +88,8 @@ function Entity({
           && <h4>{ childrenLabel }</h4>
         }
         { fixedChildren.length > 0 && renderFixedChildren(fixedChildren, dispatch) }
-        { renderChildren(children, dispatch, canHaveChildren) }
+        { (children.length > 0 || canHaveChildren) &&
+          renderChildren(children, dispatch, canHaveChildren) }
       </Col>
 
       <Col md={ 8 }>
