@@ -55,11 +55,7 @@ export const changedContent = produce((draft, { type, payload }) => {
       set(draft, payload.path, payload.value)
       break
     case "UNDO_CHANGES":
-      if (isUndefined(payload.originalValue)) {
-        unset(draft, payload.path)
-      } else {
-        set(draft, payload.path, payload.originalValue)
-      }
+      set(draft, payload.path, payload.originalValue)
       break
     case "FINISH_ENTITY_CREATION":
       set(draft, payload.path, payload.values)
