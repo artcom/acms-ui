@@ -2,54 +2,59 @@ import { produce } from "immer"
 import isPlainObject from "lodash/isPlainObject"
 import { getChangedContent, selectTemplates, getVersion, getContentPath } from "../selectors"
 import { showError } from "./error"
-import { createChildValue, createFieldValue, getTemplate, isValidField } from "../utils"
+import * as utils from "../utils"
 import { isLocalized } from "../language"
 import defaultConfig from "../defaultConfig.json"
 
 
 export function loadData(configServer, configPath) {
   return async dispatch => {
-    const { data: config, version } = await configServer.queryJson(configPath)
+    try {
+      const { data: config, version } = await configServer.queryJson(configPath)
 
-    const [{ data: templates }, { data: originalContent }] = await Promise.all([
-      configServer.queryFiles(config.templatesPath, version),
-      configServer.queryJson(config.contentPath, version)
-    ])
+      const [{ data: templates }, { data: originalContent }] = await Promise.all([
+        configServer.queryFiles(config.templatesPath, version),
+        configServer.queryJson(config.contentPath, version)
+      ])
 
-    const changedContent = produce(originalContent,
-      draft => fixContent(originalContent, draft, templates, config.languages)
-    )
+      const changedContent = produce(originalContent,
+        draft => fixContent(originalContent, draft, templates, config.languages)
+      )
 
-    dispatch({
-      type: "UPDATE_DATA",
-      payload: {
-        config: { ...defaultConfig, ...config },
-        originalContent,
-        changedContent,
-        templates,
-        version
-      }
-    })
+      dispatch({
+        type: "UPDATE_DATA",
+        payload: {
+          config: { ...defaultConfig, ...config },
+          originalContent,
+          changedContent,
+          templates,
+          version
+        }
+      })
+    } catch (error) {
+      const details = error.response ? JSON.stringify(error.response, null, 2) : error.stack
+      dispatch(showError("Failed to load Data", details))
+    }
   }
 }
 
 function fixContent(content, draft, templates, languages) {
   const { template, ...allEntries } = content
-  const { fields = [], fixedChildren = [], children = [] } = getTemplate(template, templates)
+  const { fields = [], fixedChildren = [], children = [] } = utils.getTemplate(template, templates)
 
   // fix invalid fields
   fields.forEach(field => {
     if (isLocalized(content[field.id], languages)) {
       for (const [language, value] of Object.entries(content[field.id])) {
-        if (!isValidField(value, field)) {
+        if (!utils.isValidField(value, field)) {
           // eslint-disable-next-line no-param-reassign
-          draft[field.id][language] = createFieldValue(field)
+          draft[field.id][language] = utils.createFieldValue(field)
         }
       }
     } else {
-      if (!isValidField(content[field.id], field)) {
+      if (!utils.isValidField(content[field.id], field)) {
         // eslint-disable-next-line no-param-reassign
-        draft[field.id] = createFieldValue(field)
+        draft[field.id] = utils.createFieldValue(field)
       }
     }
   })
@@ -58,7 +63,7 @@ function fixContent(content, draft, templates, languages) {
   fixedChildren.forEach(child => {
     if (!isPlainObject(content[child.id])) {
       // eslint-disable-next-line no-param-reassign
-      draft[child.id] = createChildValue(child.template, templates)
+      draft[child.id] = utils.createChildValue(child.template, templates)
     } else {
       fixContent(content[child.id], draft[child.id], templates, languages)
     }
@@ -100,7 +105,7 @@ export function saveData(configServer, configPath) {
 
 function toFiles({ template, ...content }, templates, path = []) {
   const files = {}
-  const fields = getTemplate(template, templates).fields || []
+  const fields = utils.getTemplate(template, templates).fields || []
 
   // add index file
   const fieldIds = fields.map(({ id }) => id)

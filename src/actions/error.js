@@ -1,9 +1,11 @@
-export function showError(title, error) {
+export function showError(title, details) {
+  window.scrollTo(0, 0) // reset scroll position
+
   return {
     type: "SHOW_ERROR",
     payload: {
-      error,
-      title
+      title,
+      details
     }
   }
 }

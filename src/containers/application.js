@@ -48,7 +48,7 @@ function renderError({ dispatch, flash }) {
         <h4>{ flash.title }</h4>
         <pre>
           <code>
-            { JSON.stringify(flash.error.response, null, 2) || flash.error.stack }
+            { flash.details }
           </code>
         </pre>
       </Alert>

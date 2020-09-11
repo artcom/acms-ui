@@ -13,7 +13,6 @@ import Application from "./containers/application"
 import Entity from "./containers/entity"
 import EntityCreationModal from "./modals/entityCreationModal"
 import EntityRenamingModal from "./modals/entityRenamingModal"
-import { showError } from "./actions/error"
 import FieldLocalizationModal from "./modals/fieldLocalizationModal"
 
 import "bootstrap/dist/css/bootstrap.min.css"
@@ -21,11 +20,7 @@ import "bootstrap/dist/css/bootstrap.min.css"
 bootstrap().then(async ({ assetServer, cmsConfigPath, configServer }) => {
   const store = configureStore()
 
-  try {
-    await store.dispatch(loadData(configServer, cmsConfigPath))
-  } catch (error) {
-    store.dispatch(showError("Failed to load Data", error))
-  }
+  await store.dispatch(loadData(configServer, cmsConfigPath))
 
   store.dispatch(updateUser())
 
