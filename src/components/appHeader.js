@@ -6,8 +6,35 @@ import Navbar from "react-bootstrap/Navbar"
 
 import Col from "react-bootstrap/Col"
 import Container from "react-bootstrap/Container"
+import styled from "styled-components"
 import { saveData } from "../actions/data"
 import { fromPath } from "../utils/hash"
+
+const StyledButtonGroup = styled(ButtonGroup)`
+  width: 100%;
+  min-height: 3em;
+`
+
+const SaveButton = styled(Button)`
+  float: right;
+  width: 100px;
+`
+
+const HomeButton = styled(Button)`
+  display: flex;
+  align-items: center;
+`
+
+const HomeIcon = styled.div`
+  margin-top: -10px;
+  font-size: 2.5em;
+  line-height: 1em;
+`
+
+const StyledBreadcrumb = styled(Breadcrumb)`
+  margin-bottom: -16px;
+  width: 100%;
+`
 
 const Header = ({
   title,
@@ -23,18 +50,16 @@ const Header = ({
     <Container>
       <Col>
         <Navbar.Text className={ "h2" }>{ title }</Navbar.Text>
-        <ButtonGroup aria-label="First group" style={ { width: "100%", minHeight: "3em" } }>
-          <Button
+        <StyledButtonGroup aria-label="First group">
+          <HomeButton
             variant="secondary"
             href={ fromPath([]) }
-            disabled={ path.length === 0 }
-            style={ { display: "flex", alignItems: "center" } }>
-            <div style={ { marginTop: "-10px", fontSize: "2.5em", lineHeight: "1em" } }>
+            disabled={ path.length === 0 }>
+            <HomeIcon >
               &#8962;
-            </div>
-          </Button>
-          <Breadcrumb
-            style={ { marginBottom: "-16px", width: "100%" } }
+            </HomeIcon>
+          </HomeButton>
+          <StyledBreadcrumb
             listProps={ { style: { minHeight: "3em" } } }>
             { path.map((item, i) =>
               <Breadcrumb.Item
@@ -44,14 +69,13 @@ const Header = ({
                 { pathNames[i] }
               </Breadcrumb.Item>
             ) }
-          </Breadcrumb>
-          <Button
-            style={ { float: "right", width: "100px" } }
+          </StyledBreadcrumb>
+          <SaveButton
             disabled={ !hasChanged || isSaving }
             onClick={ () => dispatch(saveData(configServer, configPath)) }>
             { isSaving ? "Saving..." : "Save" }
-          </Button>
-        </ButtonGroup>
+          </SaveButton>
+        </StyledButtonGroup>
       </Col>
     </Container>
   </Navbar>
