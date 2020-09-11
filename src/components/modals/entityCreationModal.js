@@ -4,6 +4,7 @@ import { connect } from "react-redux"
 import Button from "react-bootstrap/Button"
 import Form from "react-bootstrap/Form"
 import Modal from "react-bootstrap/Modal"
+import StyledFormControl from "./styledFormControl"
 
 import { cancelEntityCreation,
   finishEntityCreation,
@@ -29,9 +30,8 @@ function EntityCreationModal({ dispatch, newEntity }) {
       <Modal.Body>
         <Form.Label>Name</Form.Label>
         <div style={ { position: "relative" } }>
-          <Form.Control
+          <StyledFormControl
             type="text"
-            style={ { boxShadow: "none" } }
             value={ newEntity.id }
             isInvalid={ newEntity.isVisible && !newEntity.isValidId }
             autoFocus

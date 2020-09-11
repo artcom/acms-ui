@@ -4,6 +4,7 @@ import { connect } from "react-redux"
 import Button from "react-bootstrap/Button"
 import Form from "react-bootstrap/Form"
 import Modal from "react-bootstrap/Modal"
+import StyledFormControl from "./styledFormControl"
 
 import { cancelEntityRenaming, finishEntityRenaming,
   updateEntityRenaming } from "../../actions/entity"
@@ -26,9 +27,8 @@ function EntityRenamingModal({ dispatch, renamedEntity }) {
       <Modal.Body>
         <Form.Label>Name</Form.Label>
         <div style={ { position: "relative" } }>
-          <Form.Control
+          <StyledFormControl
             type="text"
-            style={ { boxShadow: "none" } }
             value={ renamedEntity.newId }
             isInvalid={ renamedEntity.isVisible && !renamedEntity.isValidId }
             autoFocus
