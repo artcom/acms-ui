@@ -94,3 +94,25 @@ export function isValidId(id) {
     && id.length > 0
     && id === id.replace(/([^a-z0-9\s])/gi, "_")
 }
+
+// only supports primitives, arrays and objects
+export function deepEqual(a, b) {
+  if (a === b) {
+    return true
+  }
+
+  if (isObject(a) && isObject(b)) {
+    return Object.keys(a).length === Object.keys(b).length &&
+      !Object.keys(a).some(key => !deepEqual(a[key], b[key]))
+  }
+
+  if (Array.isArray(a) && Array.isArray(b)) {
+    return a.length === b.length && !a.some((value, key) => !deepEqual(value, b[key]))
+  }
+
+  return false
+}
+
+function isObject(obj) {
+  return Object.prototype.toString.call(obj) === "[object Object]"
+}

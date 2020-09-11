@@ -12,13 +12,14 @@ import { saveData } from "../actions/data"
 import { hideError } from "../actions/error"
 import { fromPath } from "../hash"
 import { getPathNames } from "../selectors"
+import { deepEqual } from "../utils"
 
 export default connect(mapStateToProps)(Application)
 
 function mapStateToProps(state) {
   return {
     flash: state.flash,
-    hasChanged: state.originalContent !== state.changedContent,
+    hasChanged: !deepEqual(state.originalContent, state.changedContent),
     isLoading: state.originalContent === null,
     isSaving: state.isSaving,
     title: state.config.title,

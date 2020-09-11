@@ -152,7 +152,7 @@ const selectFields = createSelector(
       const fieldPath = [...path, field.id]
 
       return { ...field,
-        hasChanged: originalValue !== changedValue,
+        hasChanged: !utils.deepEqual(originalValue, changedValue),
         isNew: isUndefined(originalValue),
         isLocalized: isLocalized(changedValue, languages),
         path: fieldPath,
@@ -181,7 +181,7 @@ const selectChildren = createSelector(
         !fixedChildIds.includes(id))
       .sort()
       .map(id => ({
-        hasChanged: originalEntity[id] !== changedEntity[id],
+        hasChanged: !utils.deepEqual(originalEntity[id], changedEntity[id]),
         isNew: isUndefined(originalEntity[id]),
         isDeleted: isUndefined(changedEntity[id]),
         id,
@@ -206,7 +206,7 @@ const selectFixedChildren = createSelector(
       .filter(id => fixedChilds[id])
       .sort()
       .map(id => ({ ...fixedChilds[id],
-        hasChanged: originalEntity[id] !== changedEntity[id],
+        hasChanged: !utils.deepEqual(originalEntity[id], changedEntity[id]),
         isNew: isUndefined(originalEntity[id]),
         isDeleted: isUndefined(changedEntity[id]),
         isActive: isActive(fixedChilds[id], changedEntity[id], languages[0].id),
