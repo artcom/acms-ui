@@ -25,6 +25,7 @@ const Image = styled.img`
 const File = styled.div`
     font-size: 0.7rem;
     line-height: 2.5;
+    text-align: center;
 `
 
 const Audio = styled.audio`
