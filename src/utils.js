@@ -2,6 +2,7 @@ import get from "lodash/get"
 import isString from "lodash/isString"
 import isNumber from "lodash/isNumber"
 import isUndefined from "lodash/isUndefined"
+import isPlainObject from "lodash/isPlainObject"
 
 export function getFromPath(object, path, defaultValue) {
   return path.length === 0 ? object : get(object, path, defaultValue)
@@ -101,7 +102,7 @@ export function deepEqual(a, b) {
     return true
   }
 
-  if (isObject(a) && isObject(b)) {
+  if (isPlainObject(a) && isPlainObject(b)) {
     return Object.keys(a).length === Object.keys(b).length &&
       !Object.keys(a).some(key => !deepEqual(a[key], b[key]))
   }
@@ -111,8 +112,4 @@ export function deepEqual(a, b) {
   }
 
   return false
-}
-
-function isObject(obj) {
-  return Object.prototype.toString.call(obj) === "[object Object]"
 }
