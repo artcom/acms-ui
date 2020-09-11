@@ -2,6 +2,7 @@ import React from "react"
 
 import Card from "react-bootstrap/Card"
 import ListGroup from "react-bootstrap/ListGroup"
+import styled from "styled-components"
 
 import { getLanguageName } from "../utils/language"
 
@@ -9,6 +10,15 @@ import { uploadFile } from "../actions/upload"
 import { changeValue } from "../actions/value"
 
 import editors from "./editors"
+
+const StyledListGroupItem = styled(ListGroup.Item)`
+  padding: 0px;
+`
+
+const StyledCardHeader = styled(Card.Header)`
+  padding-top: 0.3rem;
+  padding-bottom: 0.3rem;
+`
 
 const FieldContent = ({ assetServer, dispatch, field, languages }) => {
   const Editor = editors[field.type]
@@ -30,14 +40,13 @@ function renderLocalizedEditors(field, languages, assetServer, dispatch, Editor)
     }
 
     return (
-      <ListGroup.Item key={ languageId } style={ { padding: "0px" } }>
-        <Card.Header className="text-muted"
-          style={ { paddingTop: "0.3rem", paddingBottom: "0.3rem" } }>
+      <StyledListGroupItem key={ languageId }>
+        <StyledCardHeader className="text-muted">
           { getLanguageName(languageId, languages) }
-        </Card.Header>
+        </StyledCardHeader>
 
         { renderEditor(languageField, assetServer, dispatch, Editor) }
-      </ListGroup.Item>
+      </StyledListGroupItem>
     )
   })
 
