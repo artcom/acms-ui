@@ -3,18 +3,22 @@ import React from "react"
 
 import Dropdown from "react-bootstrap/Dropdown"
 import DropdownItem from "react-bootstrap/DropdownItem"
+import styled from "styled-components"
 
 import { startFieldLocalization } from "../actions/localization"
 import { undoChanges } from "../actions/value"
 
 import ToggleButton from "./toggleButton"
 
+const StyledDropdown = styled(Dropdown)`
+  float: right;
+`
 
 const FieldHeader = ({ field, dispatch }) =>
   <div>
     { field.name ? field.name : startCase(field.id) }
 
-    <Dropdown style={ { float: "right" } } id={ field.id }>
+    <StyledDropdown id={ field.id }>
       <Dropdown.Toggle as={ ToggleButton } />
       <Dropdown.Menu>
         <DropdownItem
@@ -29,7 +33,7 @@ const FieldHeader = ({ field, dispatch }) =>
           Localize...
         </DropdownItem>
       </Dropdown.Menu>
-    </Dropdown>
+    </StyledDropdown>
   </div>
 
 export default FieldHeader
