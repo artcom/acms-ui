@@ -4,6 +4,7 @@
     "templatesPath": "templates",
     "childrenLabel": "Children",
     "fieldsLabel": "Fields",
+    "saveLabel": "Save",
     "languages": [
         {
             "id": "en",

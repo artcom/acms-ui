@@ -22,6 +22,7 @@ function mapStateToProps(state) {
     isLoading: state.originalContent === null,
     isSaving: state.isSaving,
     title: state.config.title,
+    saveLabel: state.config.saveLabel,
     path: state.path,
     pathNames: getPathNames(state)
   }
@@ -62,7 +63,8 @@ function renderHeader({
   hasChanged,
   isSaving,
   path,
-  pathNames }) {
+  pathNames,
+  saveLabel }) {
   return (
     <Navbar sticky="top" bg="light" variant="light" className={ "flex-column mb-2" }>
       <Container>
@@ -94,7 +96,7 @@ function renderHeader({
               style={ { float: "right", width: "100px" } }
               disabled={ !hasChanged || isSaving }
               onClick={ () => dispatch(saveData(configServer, configPath)) }>
-              { isSaving ? "Saving..." : "Save" }
+              { saveLabel }
             </Button>
           </ButtonGroup>
         </Col>

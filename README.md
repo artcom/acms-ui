@@ -48,6 +48,7 @@ The environment variables can be omitted if a `config.json` file providing the f
   "templatesPath": "templates", // root directory containing the (nested) template files
   "childrenLabel": "Children",  // optional label shown above the children, default: "Children"
   "fieldsLabel": "Fields",      // optional label shown above the fields, default: "Fields"
+  "saveLabel": "Save",          // optional label of the save button, default: "Save"
   "languages": [                // optional list of supported languages, the first one is the default language
     {
       "id": "en",
