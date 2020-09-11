@@ -107,7 +107,7 @@ export function deepEqual(a, b) {
   }
 
   if (Array.isArray(a) && Array.isArray(b)) {
-    return a.length === b.length && !a.some((value, key) => !deepEqual(value, b[key]))
+    return a.length === b.length && !a.some((value, index) => !deepEqual(value, b[index]))
   }
 
   return false
