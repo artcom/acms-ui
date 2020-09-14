@@ -5,10 +5,10 @@ import Dropdown from "react-bootstrap/Dropdown"
 import DropdownItem from "react-bootstrap/DropdownItem"
 import styled from "styled-components"
 
-import { startFieldLocalization } from "../actions/localization"
-import { undoChanges } from "../actions/value"
+import { startFieldLocalization } from "../../actions/localization"
+import { undoChanges } from "../../actions/value"
 
-import ToggleButton from "./toggleButton"
+import ToggleButton from "./../toggleButton"
 
 const StyledDropdown = styled(Dropdown)`
   float: right;

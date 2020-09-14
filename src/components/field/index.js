@@ -4,7 +4,7 @@ import Card from "react-bootstrap/Card"
 import FieldHeader from "./fieldHeader"
 import FieldContent from "./fieldContent"
 
-import editors from "./editors"
+import editors from "../editors"
 
 export default function Field(props) {
   const style = fieldStyle(props.field)
