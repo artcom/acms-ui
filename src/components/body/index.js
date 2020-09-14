@@ -13,11 +13,11 @@ import Row from "react-bootstrap/Row"
 
 import Field from "./field"
 
-import ToggleButton from "../components/toggleButton"
+import ToggleButton from "../toggleButton"
 
-import { deleteEntity, startEntityCreation, startEntityRenaming } from "../actions/entity"
-import { undoChanges } from "../actions/value"
-import { fromPath } from "../utils/hash"
+import { deleteEntity, startEntityCreation, startEntityRenaming } from "../../actions/entity"
+import { undoChanges } from "../../actions/value"
+import { fromPath } from "../../utils/hash"
 
 import {
   getLanguages,
@@ -27,7 +27,7 @@ import {
   selectWhitelistedFields,
   getChildrenLabel,
   getFieldsLabel
-} from "../selectors"
+} from "../../selectors"
 
 const Child = styled(ListGroupItem)`
   display: flex;
@@ -56,7 +56,7 @@ const AddButton = styled(ListGroupItem)`
   outline: none;
 `
 
-export default connect(mapStateToProps)(Entity)
+export default connect(mapStateToProps)(Body)
 
 function mapStateToProps(state) {
   return {
@@ -70,7 +70,7 @@ function mapStateToProps(state) {
   }
 }
 
-function Entity({
+function Body({
   canHaveChildren,
   children,
   fixedChildren,

@@ -3,7 +3,7 @@ import React from "react"
 import Form from "react-bootstrap/Form"
 import StyledFormControl from "./styledFormControl"
 
-import { isValidField } from "../../utils"
+import { isValidField } from "../../../../utils"
 
 const MULTI_LINE_STYLE = { as: "textarea", rows: "3" }
 const SINGLE_LINE_STYLE = { type: "text" }

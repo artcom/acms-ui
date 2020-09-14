@@ -4,9 +4,9 @@ import { connect } from "react-redux"
 import Container from "react-bootstrap/Container"
 import { getPathNames } from "../selectors"
 
-import Entity from "./entity"
+import Body from "./body"
 import Error from "./error"
-import Header from "./appHeader"
+import Header from "./header"
 import EntityCreationModal from "./modals/entityCreationModal"
 import EntityRenamingModal from "./modals/entityRenamingModal"
 import FieldLocalizationModal from "./modals/fieldLocalizationModal"
@@ -34,7 +34,7 @@ function Application(props) {
 
         { !props.isLoading &&
         <>
-          <Entity assetServer={ props.assetServer } />
+          <Body assetServer={ props.assetServer } />
           <EntityCreationModal />
           <EntityRenamingModal />
           <FieldLocalizationModal />

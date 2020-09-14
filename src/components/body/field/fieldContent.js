@@ -4,12 +4,12 @@ import Card from "react-bootstrap/Card"
 import ListGroup from "react-bootstrap/ListGroup"
 import styled from "styled-components"
 
-import { getLanguageName } from "../../utils/language"
+import { getLanguageName } from "../../../utils/language"
 
-import { uploadFile } from "../../actions/upload"
-import { changeValue } from "../../actions/value"
+import { uploadFile } from "../../../actions/upload"
+import { changeValue } from "../../../actions/value"
 
-import editors from "./../editors"
+import editors from "./editors"
 
 const StyledListGroupItem = styled(ListGroup.Item)`
   padding: 0px;

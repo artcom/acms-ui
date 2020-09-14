@@ -4,7 +4,7 @@ import styled from "styled-components"
 
 import path from "path"
 
-import FileSelector from "./../fileSelector"
+import FileSelector from "./fileSelector"
 
 const Editor = styled.div`
   display: flex;
