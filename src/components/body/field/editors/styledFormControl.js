@@ -1,8 +1,7 @@
-import React from "react"
 import Form from "react-bootstrap/Form"
 import styled from "styled-components"
 
-const StyledFormControl = styled(Form.Control)`
+export default styled(Form.Control)`
     border: 0px;
     box-shadow: none; 
     outline: none; 
@@ -15,9 +14,3 @@ const StyledFormControl = styled(Form.Control)`
         outline: none; 
     }
 `
-
-export default props =>
-  <StyledFormControl { ...props } >
-    { props.children }
-  </StyledFormControl>
-
