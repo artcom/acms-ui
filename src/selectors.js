@@ -4,8 +4,9 @@ import camelCase from "lodash/camelCase"
 import get from "lodash/get"
 import isBoolean from "lodash/isBoolean"
 import isString from "lodash/isString"
-import mapValues from "lodash/mapValues"
 import isUndefined from "lodash/isUndefined"
+import mapValues from "lodash/mapValues"
+import startCase from "lodash/startCase"
 import { evaluate } from "./utils/condition"
 import { isLocalized } from "./utils/language"
 import { isWhitelisted } from "./utils/whitelist"
@@ -54,7 +55,7 @@ export const getPathNames = createSelector(
       const currentEntry = utils.getFromPath(changedContent, currentPath)
       const template = utils.getTemplate(currentEntry.template, templates)
       const fixedChild = template.fixedChildren.find(child => child.id === id)
-      return fixedChild && fixedChild.name ? fixedChild.name : id
+      return fixedChild && fixedChild.name ? fixedChild.name : startCase(id)
     })
 )
 
