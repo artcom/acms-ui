@@ -55,11 +55,11 @@ The environment variables can be omitted if a `config.json` file providing the f
       "name": "English"
     }
   ],
-  "users": [                    // optional list of users to filter content based on whitelist patterns
+  "users": [                    // optional list of users to filter content based on allowList patterns
     {
       "id": "admin",
       "name": "Admin",
-      "whitelist": [
+      "allowList": [
         "**"
       ]
     }
