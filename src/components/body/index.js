@@ -22,9 +22,9 @@ import { fromPath } from "../../utils/hash"
 import {
   getLanguages,
   selectTemplateChildren,
-  selectWhitelistedFixedChildren,
-  selectWhitelistedChildren,
-  selectWhitelistedFields,
+  selectAllowedFixedChildren,
+  selectAllowedChildren,
+  selectAllowedFields,
   getChildrenLabel,
   getFieldsLabel
 } from "../../selectors"
@@ -61,9 +61,9 @@ export default connect(mapStateToProps)(Body)
 function mapStateToProps(state) {
   return {
     canHaveChildren: selectTemplateChildren(state).length > 0,
-    children: selectWhitelistedChildren(state),
-    fixedChildren: selectWhitelistedFixedChildren(state),
-    fields: selectWhitelistedFields(state),
+    children: selectAllowedChildren(state),
+    fixedChildren: selectAllowedFixedChildren(state),
+    fields: selectAllowedFields(state),
     languages: getLanguages(state),
     childrenLabel: getChildrenLabel(state),
     fieldsLabel: getFieldsLabel(state)

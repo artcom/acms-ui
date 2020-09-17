@@ -1,5 +1,5 @@
-export function isWhitelisted(whitelist, path) {
-  return whitelist.some(pattern => matchesPattern(path, pattern))
+export function isAllowed(allowList, path) {
+  return allowList.some(pattern => matchesPattern(path, pattern))
 }
 
 function matchesPattern(path, patternString) {

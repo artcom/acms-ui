@@ -9,7 +9,7 @@ import mapValues from "lodash/mapValues"
 import startCase from "lodash/startCase"
 import { evaluate } from "./utils/condition"
 import { isLocalized } from "./utils/language"
-import { isWhitelisted } from "./utils/whitelist"
+import { isAllowed } from "./utils/permission"
 import * as utils from "./utils"
 
 const TEMPLATE_KEY = "template"
@@ -29,11 +29,11 @@ export const getNewEntity = state => state.newEntity
 export const getRenamedEntity = state => state.renamedEntity
 export const getTemplates = state => state.templates
 
-export const getWhitelist = createSelector(
+export const getAllowList = createSelector(
   [getUser, getUsers],
   (user, users) => {
     const userConfig = users.find(({ id }) => id === user)
-    return userConfig && userConfig.whitelist ? userConfig.whitelist : ["**"]
+    return userConfig && userConfig.allowList ? userConfig.allowList : ["**"]
   }
 )
 
@@ -163,9 +163,9 @@ const selectFields = createSelector(
     })
 )
 
-export const selectWhitelistedFields = createSelector(
-  [selectFields, getWhitelist],
-  (fields, whitelist) => fields.filter(field => isWhitelisted(whitelist, field.path))
+export const selectAllowedFields = createSelector(
+  [selectFields, getAllowList],
+  (fields, allowList) => fields.filter(field => isAllowed(allowList, field.path))
 )
 
 const selectChildren = createSelector(
@@ -191,9 +191,9 @@ const selectChildren = createSelector(
   }
 )
 
-export const selectWhitelistedChildren = createSelector(
-  [selectChildren, getWhitelist],
-  (children, whitelist) => children.filter(child => isWhitelisted(whitelist, child.path))
+export const selectAllowedChildren = createSelector(
+  [selectChildren, getAllowList],
+  (children, allowList) => children.filter(child => isAllowed(allowList, child.path))
 )
 
 const selectFixedChildren = createSelector(
@@ -237,7 +237,7 @@ function subtitle(child, content, defaultLanguage) {
   }
 }
 
-export const selectWhitelistedFixedChildren = createSelector(
-  [selectFixedChildren, getWhitelist],
-  (children, whitelist) => children.filter(child => isWhitelisted(whitelist, child.path))
+export const selectAllowedFixedChildren = createSelector(
+  [selectFixedChildren, getAllowList],
+  (children, allowList) => children.filter(child => isAllowed(allowList, child.path))
 )

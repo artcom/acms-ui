@@ -15,7 +15,7 @@
         {
             "id": "admin",
             "name": "Admin",
-            "whitelist": [
+            "allowList": [
                 "**"
             ]
         }
