@@ -114,7 +114,7 @@ function renderFixedChild(child, dispatch) {
     displayName :
     <a
       href={ fromPath(child.path) }
-      className={ child.isActive ? "" : "text-muted" }>
+      className={ child.isEnabled ? "" : "text-muted" }>
       { displayName }
     </a>
 

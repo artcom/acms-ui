@@ -210,14 +210,14 @@ const selectFixedChildren = createSelector(
         hasChanged: !utils.deepEqual(originalEntity[id], changedEntity[id]),
         isNew: isUndefined(originalEntity[id]),
         isDeleted: isUndefined(changedEntity[id]),
-        isActive: isActive(fixedChilds[id], changedEntity[id], languages[0].id),
+        isEnabled: isEnabled(fixedChilds[id], changedEntity[id], languages[0].id),
         subtitle: subtitle(fixedChilds[id], changedEntity[id], languages[0].id),
         path: [...path, id]
       }))
   }
 )
 
-function isActive(child, content, defaultLanguage) {
+function isEnabled(child, content, defaultLanguage) {
   if (child.enabledField) {
     return isBoolean(content[child.enabledField])
       ? content[child.enabledField]
