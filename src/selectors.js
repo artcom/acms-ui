@@ -29,7 +29,7 @@ export const getNewEntity = state => state.newEntity
 export const getRenamedEntity = state => state.renamedEntity
 export const getTemplates = state => state.templates
 
-export const getAllowList = createSelector(
+export const selectAllowList = createSelector(
   [getUser, getUsers],
   (user, users) => {
     const userConfig = users.find(({ id }) => id === user)
@@ -164,7 +164,7 @@ const selectFields = createSelector(
 )
 
 export const selectAllowedFields = createSelector(
-  [selectFields, getAllowList],
+  [selectFields, selectAllowList],
   (fields, allowList) => fields.filter(field => isAllowed(allowList, field.path))
 )
 
@@ -192,13 +192,20 @@ const selectChildren = createSelector(
 )
 
 export const selectAllowedChildren = createSelector(
-  [selectChildren, getAllowList],
+  [selectChildren, selectAllowList],
   (children, allowList) => children.filter(child => isAllowed(allowList, child.path))
 )
 
 const selectFixedChildren = createSelector(
-  [selectTemplate, selectOriginalEntity, selectChangedEntity, getLanguages, getPath],
-  (template, originalEntity = {}, changedEntity, languages, path) => {
+  [
+    selectTemplate,
+    selectOriginalEntity,
+    selectChangedEntity,
+    getLanguages,
+    getPath,
+    selectTemplates
+  ],
+  (template, originalEntity = {}, changedEntity, languages, path, templates) => {
     const allIds = Object.keys({ ...originalEntity, ...changedEntity })
     const fixedChilds = template.fixedChildren
       .reduce((result, child) => ({ ...result, [child.id]: child }), {})
@@ -210,7 +217,7 @@ const selectFixedChildren = createSelector(
         hasChanged: !utils.deepEqual(originalEntity[id], changedEntity[id]),
         isNew: isUndefined(originalEntity[id]),
         isDeleted: isUndefined(changedEntity[id]),
-        isEnabled: isEnabled(fixedChilds[id], changedEntity[id], languages[0].id),
+        isEnabled: isEnabled(changedEntity[id], templates, languages[0].id),
         subtitle: subtitle(fixedChilds[id], changedEntity[id], languages[0].id),
         path: [...path, id]
       }))
@@ -238,6 +245,6 @@ function subtitle(child, content, defaultLanguage) {
 }
 
 export const selectAllowedFixedChildren = createSelector(
-  [selectFixedChildren, getAllowList],
+  [selectFixedChildren, selectAllowList],
   (children, allowList) => children.filter(child => isAllowed(allowList, child.path))
 )
