@@ -9,7 +9,7 @@ import { updateUser } from "./actions/user"
 import bootstrap from "./bootstrap"
 import { configureStore } from "./store"
 
-import Application from "./containers/application"
+import Application from "./components/application"
 
 import "bootstrap/dist/css/bootstrap.min.css"
 
