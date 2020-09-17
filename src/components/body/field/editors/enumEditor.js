@@ -3,7 +3,6 @@ import isString from "lodash/isString"
 import startCase from "lodash/startCase"
 import StyledFormControl from "./styledFormControl"
 
-
 export default function EnumEditor({ field, onChange }) {
   function onChangeEnum(event) {
     onChange({

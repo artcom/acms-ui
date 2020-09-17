@@ -6,7 +6,6 @@ import * as utils from "../utils"
 import { isLocalized } from "../utils/language"
 import defaultConfig from "../defaultConfig.json"
 
-
 export function loadData(configServer, configPath) {
   return async dispatch => {
     try {

@@ -8,12 +8,10 @@ import { isValidField } from "../../../../utils"
 const MULTI_LINE_STYLE = { as: "textarea", rows: "3" }
 const SINGLE_LINE_STYLE = { type: "text" }
 
-
 export default function StringEditor({ field, onChange }) {
   const maxLength = get(field, "maxLength", Infinity)
   const multiline = get(field, "multiline", false)
   const valid = isValidField(field.value, field)
-
 
   return (
     <>
