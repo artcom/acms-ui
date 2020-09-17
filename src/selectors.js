@@ -2,8 +2,6 @@ import { createSelector } from "reselect"
 
 import camelCase from "lodash/camelCase"
 import get from "lodash/get"
-import isBoolean from "lodash/isBoolean"
-import isString from "lodash/isString"
 import isUndefined from "lodash/isUndefined"
 import mapValues from "lodash/mapValues"
 import startCase from "lodash/startCase"
@@ -28,6 +26,11 @@ export const getPath = state => state.path
 export const getNewEntity = state => state.newEntity
 export const getRenamedEntity = state => state.renamedEntity
 export const getTemplates = state => state.templates
+
+export const selectDefaultLanguage = createSelector(
+  [getLanguages],
+  languages => languages[0]
+)
 
 export const selectAllowList = createSelector(
   [getUser, getUsers],
@@ -202,10 +205,10 @@ const selectFixedChildren = createSelector(
     selectOriginalEntity,
     selectChangedEntity,
     getLanguages,
-    getPath,
-    selectTemplates
+    selectTemplates,
+    getPath
   ],
-  (template, originalEntity = {}, changedEntity, languages, path, templates) => {
+  (template, originalEntity = {}, changedEntity, languages, templates, path) => {
     const allIds = Object.keys({ ...originalEntity, ...changedEntity })
     const fixedChilds = template.fixedChildren
       .reduce((result, child) => ({ ...result, [child.id]: child }), {})
@@ -213,35 +216,47 @@ const selectFixedChildren = createSelector(
     return allIds
       .filter(id => fixedChilds[id])
       .sort()
-      .map(id => ({ ...fixedChilds[id],
-        hasChanged: !utils.deepEqual(originalEntity[id], changedEntity[id]),
-        isNew: isUndefined(originalEntity[id]),
-        isDeleted: isUndefined(changedEntity[id]),
-        isEnabled: isEnabled(changedEntity[id], templates, languages[0].id),
-        subtitle: subtitle(fixedChilds[id], changedEntity[id], languages[0].id),
-        path: [...path, id]
-      }))
+      .map(id => {
+        const originalChildContent = originalEntity[id]
+        const changedChildContent = changedEntity[id]
+        const childTemplate = utils.getTemplate(changedChildContent.template, templates)
+
+        return {
+          ...fixedChilds[id],
+          hasChanged: !utils.deepEqual(originalChildContent, changedChildContent),
+          isNew: isUndefined(originalChildContent),
+          isDeleted: isUndefined(changedChildContent),
+          isEnabled: isEnabled(changedChildContent, childTemplate, languages),
+          subtitle: subtitle(changedChildContent, childTemplate, languages),
+          path: [...path, id]
+        }
+      }
+      )
   }
 )
 
-function isEnabled(child, content, defaultLanguage) {
-  if (child.enabledField) {
-    return isBoolean(content[child.enabledField])
-      ? content[child.enabledField]
-      : content[child.enabledField][defaultLanguage]
-  } else {
-    return true
+function isEnabled(content, { enabledField, fields }, languages) {
+  if (enabledField) {
+    const field = fields.find(({ id }) => id === enabledField)
+    if (field && field.type === "boolean") {
+      const value = content[enabledField]
+      return isLocalized(value, languages) ? value[languages[0].id] : value
+    }
   }
+
+  return true
 }
 
-function subtitle(child, content, defaultLanguage) {
-  if (child.subtitleField) {
-    return isString(content[child.subtitleField])
-      ? content[child.subtitleField]
-      : content[child.subtitleField][defaultLanguage]
-  } else {
-    return null
+function subtitle(content, { subtitleField, fields }, languages) {
+  if (subtitleField) {
+    const field = fields.find(({ id }) => id === subtitleField)
+    if (field && field.type === "string") {
+      const value = content[subtitleField]
+      return isLocalized(value, languages) ? value[languages[0].id] : value
+    }
   }
+
+  return null
 }
 
 export const selectAllowedFixedChildren = createSelector(
