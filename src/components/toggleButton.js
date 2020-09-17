@@ -1,12 +1,16 @@
 import React from "react"
 import { Button } from "react-bootstrap"
+import styled from "styled-components"
+
+const StyledButton = styled(Button)`
+  padding: 0px 5px;
+`
 
 // The forwardRef is important!!
 // Dropdown needs access to the DOM node in order to position the Menu
 export default React.forwardRef(({ children, onClick }, ref) =>
-  <Button
+  <StyledButton
     variant="outline-secondary"
-    style={ { padding: "0px 5px" } }
     ref={ ref }
     onClick={ e => {
       e.preventDefault()
@@ -14,5 +18,5 @@ export default React.forwardRef(({ children, onClick }, ref) =>
     } }>
     { children }
     &#9776;
-  </Button>
+  </StyledButton>
 )

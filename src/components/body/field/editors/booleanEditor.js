@@ -1,5 +1,16 @@
 import React from "react"
 import FormCheck from "react-bootstrap/FormCheck"
+import styled from "styled-components"
+
+const StyledFormCheck = styled(FormCheck)`
+  height: 2em;
+  padding-top: 5px;
+  padding-left: 35px;
+`
+
+const StyledFormCheckInput = styled(FormCheck.Input)`
+  transform: scale(1.3);
+`
 
 export default function BooleanEditor({ field, onChange }) {
   function onChangeBoolean(event) {
@@ -11,12 +22,11 @@ export default function BooleanEditor({ field, onChange }) {
   }
 
   return (
-    <FormCheck style={ { height: "2em", paddingTop: "5px", paddingLeft: "35px" } }>
-      <FormCheck.Input
+    <StyledFormCheck>
+      <StyledFormCheckInput
         type="checkbox"
         checked={ field.value }
-        style={ { transform: "scale(1.3)" } }
         onChange={ onChangeBoolean } />
-    </FormCheck>
+    </StyledFormCheck>
   )
 }

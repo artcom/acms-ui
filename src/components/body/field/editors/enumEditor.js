@@ -1,7 +1,7 @@
 import React from "react"
-import Form from "react-bootstrap/Form"
 import isString from "lodash/isString"
 import startCase from "lodash/startCase"
+import StyledFormControl from "./styledFormControl"
 
 
 export default function EnumEditor({ field, onChange }) {
@@ -18,13 +18,13 @@ export default function EnumEditor({ field, onChange }) {
     : field.values
 
   return (
-    <Form.Control style={ { border: "0px", boxShadow: "none" } }
+    <StyledFormControl
       as="select"
       value={ field.value }
       onChange={ onChangeEnum }>
       { values.map(({ id, name }, index) =>
         <option key={ index } value={ id }>{ name }</option>
       ) }
-    </Form.Control>
+    </StyledFormControl>
   )
 }

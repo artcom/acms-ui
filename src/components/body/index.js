@@ -1,6 +1,7 @@
 import startCase from "lodash/startCase"
 import React from "react"
 import { connect } from "react-redux"
+import styled from "styled-components"
 
 import Col from "react-bootstrap/Col"
 import Dropdown from "react-bootstrap/Dropdown"
@@ -12,11 +13,11 @@ import Row from "react-bootstrap/Row"
 
 import Field from "./field"
 
-import ToggleButton from "../components/toggleButton"
+import ToggleButton from "../toggleButton"
 
-import { deleteEntity, startEntityCreation, startEntityRenaming } from "../actions/entity"
-import { undoChanges } from "../actions/value"
-import { fromPath } from "../hash"
+import { deleteEntity, startEntityCreation, startEntityRenaming } from "../../actions/entity"
+import { undoChanges } from "../../actions/value"
+import { fromPath } from "../../utils/hash"
 
 import {
   getLanguages,
@@ -26,30 +27,36 @@ import {
   selectWhitelistedFields,
   getChildrenLabel,
   getFieldsLabel
-} from "../selectors"
+} from "../../selectors"
 
-const ITEM_STYLE = {
-  display: "flex",
-  justifyContent: "space-between",
-  alignItems: "center",
-  height: "60px"
-}
+const Child = styled(ListGroupItem)`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 60px;
+`
 
-const ITEM_TEXT_STYLE = {
-  display: "flex",
-  flexDirection: "column",
-  flexGrow: "1",
-  flexShrink: "1",
-  minWidth: "0"
-}
+const ItemText = styled.div`
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  flex-shrink: 1;
+  min-width: 0;
+`
 
-const SUBTITLE_STYLE = {
-  textOverflow: "ellipsis",
-  whiteSpace: "nowrap",
-  overflowX: "hidden"
-}
+const Subtitle = styled(Form.Text)`
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow-x: hidden;
+`
 
-export default connect(mapStateToProps)(Entity)
+const AddButton = styled(ListGroupItem)`
+  padding: 0px;
+  text-align: center; 
+  outline: none;
+`
+
+export default connect(mapStateToProps)(Body)
 
 function mapStateToProps(state) {
   return {
@@ -63,7 +70,7 @@ function mapStateToProps(state) {
   }
 }
 
-function Entity({
+function Body({
   canHaveChildren,
   children,
   fixedChildren,
@@ -81,7 +88,8 @@ function Entity({
           && <h4>{ childrenLabel }</h4>
         }
         { fixedChildren.length > 0 && renderFixedChildren(fixedChildren, dispatch) }
-        { children.length > 0 && renderChildren(children, dispatch) }
+        { (children.length > 0 || canHaveChildren) &&
+          renderChildren(children, dispatch, canHaveChildren) }
       </Col>
 
       <Col md={ 8 }>
@@ -111,14 +119,13 @@ function renderFixedChild(child, dispatch) {
     </a>
 
   return (
-    <ListGroupItem
+    <Child
       key={ child.id }
-      variant={ childStyle(child) }
-      style={ ITEM_STYLE }>
-      <div style={ ITEM_TEXT_STYLE }>
+      variant={ childStyle(child) }>
+      <ItemText>
         { link }
-        <Form.Text style={ SUBTITLE_STYLE } muted>{ child.subtitle }</Form.Text>
-      </div>
+        <Subtitle muted>{ child.subtitle }</Subtitle>
+      </ItemText>
       <Dropdown className="float-right btn-sm" id={ child.id } drop="right">
         <Dropdown.Toggle as={ ToggleButton } />
         <Dropdown.Menu>
@@ -129,20 +136,21 @@ function renderFixedChild(child, dispatch) {
           </DropDownItem>
         </Dropdown.Menu>
       </Dropdown>
-    </ListGroupItem>
+    </Child>
   )
 }
 
-function renderChildren(children, dispatch) {
+function renderChildren(children, dispatch, canHaveChildren) {
   return (
     <ListGroup className="mb-3">
       { children.map(child => renderChild(child, dispatch)) }
-      <ListGroupItem
-        variant="secondary"
-        style={ { padding: "0px", textAlign: "center", outline: "none" } }
-        action
-        onClick={ () => dispatch(startEntityCreation()) }>+
-      </ListGroupItem>
+      { canHaveChildren &&
+        <AddButton
+          variant="secondary"
+          action
+          onClick={ () => dispatch(startEntityCreation()) }>+
+        </AddButton>
+      }
     </ListGroup>
   )
 }
@@ -156,10 +164,9 @@ function renderChild(child, dispatch) {
     </a>
 
   return (
-    <ListGroupItem
+    <Child
       key={ child.id }
-      variant={ childStyle(child) }
-      style={ ITEM_STYLE }>
+      variant={ childStyle(child) }>
       { link }
 
       <Dropdown className="float-right btn-sm" id={ child.id } drop="right">
@@ -182,7 +189,7 @@ function renderChild(child, dispatch) {
           </DropDownItem>
         </Dropdown.Menu>
       </Dropdown>
-    </ListGroupItem>
+    </Child>
   )
 }
 

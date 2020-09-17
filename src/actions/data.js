@@ -3,7 +3,7 @@ import isPlainObject from "lodash/isPlainObject"
 import { getChangedContent, selectTemplates, getVersion, getContentPath } from "../selectors"
 import { showError } from "./error"
 import * as utils from "../utils"
-import { isLocalized } from "../language"
+import { isLocalized } from "../utils/language"
 import defaultConfig from "../defaultConfig.json"
 
 

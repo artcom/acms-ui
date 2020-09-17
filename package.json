@@ -38,6 +38,7 @@
     "reselect": "^4.0.0",
     "sha.js": "^2.4.11",
     "style-loader": "^1.2.1",
+    "styled-components": "^5.2.0",
     "webpack": "^4.44.1",
     "webpack-cli": "^3.3.12",
     "webpack-dev-server": "^3.11.0"
