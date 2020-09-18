@@ -155,7 +155,8 @@ const selectFields = createSelector(
       const changedValue = changedEntity[field.id]
       const fieldPath = [...path, field.id]
 
-      return { ...field,
+      return {
+        ...field,
         hasChanged: !utils.deepEqual(originalValue, changedValue),
         isNew: isUndefined(originalValue),
         isLocalized: isLocalized(changedValue, languages),
@@ -247,8 +248,7 @@ const selectFixedChildren = createSelector(
           subtitle: subtitle(changedChildContent, childTemplate, languages),
           path: [...path, id]
         }
-      }
-      )
+      })
   }
 )
 
