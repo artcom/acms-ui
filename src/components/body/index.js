@@ -1,4 +1,3 @@
-import startCase from "lodash/startCase"
 import React from "react"
 import { connect } from "react-redux"
 import styled from "styled-components"
@@ -109,13 +108,12 @@ function renderFixedChildren(children, dispatch) {
 }
 
 function renderFixedChild(child, dispatch) {
-  const displayName = child.name ? child.name : startCase(child.id)
   const link = child.isDeleted ?
-    displayName :
+    child.name :
     <a
       href={ fromPath(child.path) }
       className={ child.isEnabled ? "" : "text-muted" }>
-      { displayName }
+      { child.name }
     </a>
 
   return (
@@ -156,19 +154,22 @@ function renderChildren(children, dispatch, canHaveChildren) {
 }
 
 function renderChild(child, dispatch) {
-  const displayName = startCase(child.id)
   const link = child.isDeleted ?
-    displayName :
-    <a href={ fromPath(child.path) } >
-      { displayName }
+    child.name :
+    <a
+      href={ fromPath(child.path) }
+      className={ child.isEnabled ? "" : "text-muted" }>
+      { child.name }
     </a>
 
   return (
     <Child
       key={ child.id }
       variant={ childStyle(child) }>
-      { link }
-
+      <ItemText>
+        { link }
+        <Subtitle muted>{ child.subtitle }</Subtitle>
+      </ItemText>
       <Dropdown className="float-right btn-sm" id={ child.id } drop="right">
         <Dropdown.Toggle as={ ToggleButton } />
         <Dropdown.Menu>

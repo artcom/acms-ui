@@ -172,8 +172,15 @@ export const selectAllowedFields = createSelector(
 )
 
 const selectChildren = createSelector(
-  [selectTemplate, selectOriginalEntity, selectChangedEntity, getPath],
-  (template, originalEntity = {}, changedEntity, path) => {
+  [
+    selectTemplate,
+    selectOriginalEntity,
+    selectChangedEntity,
+    getLanguages,
+    selectTemplates,
+    getPath
+  ],
+  (template, originalEntity = {}, changedEntity, languages, templates, path) => {
     const allIds = Object.keys({ ...originalEntity, ...changedEntity })
     const fieldIds = template.fields.map(({ id }) => id)
     const fixedChildIds = template.fixedChildren.map(({ id }) => id)
@@ -184,13 +191,22 @@ const selectChildren = createSelector(
         !fieldIds.includes(id) &&
         !fixedChildIds.includes(id))
       .sort()
-      .map(id => ({
-        hasChanged: !utils.deepEqual(originalEntity[id], changedEntity[id]),
-        isNew: isUndefined(originalEntity[id]),
-        isDeleted: isUndefined(changedEntity[id]),
-        id,
-        path: [...path, id]
-      }))
+      .map(id => {
+        const originalChildContent = originalEntity[id]
+        const changedChildContent = changedEntity[id]
+        const childTemplate = utils.getTemplate(changedChildContent.template, templates)
+
+        return {
+          id,
+          name: startCase(id),
+          hasChanged: !utils.deepEqual(originalChildContent, changedChildContent),
+          isNew: isUndefined(originalChildContent),
+          isDeleted: isUndefined(changedChildContent),
+          isEnabled: isEnabled(changedChildContent, childTemplate, languages),
+          subtitle: subtitle(changedChildContent, childTemplate, languages),
+          path: [...path, id]
+        }
+      })
   }
 )
 
@@ -222,7 +238,8 @@ const selectFixedChildren = createSelector(
         const childTemplate = utils.getTemplate(changedChildContent.template, templates)
 
         return {
-          ...fixedChilds[id],
+          id,
+          name: fixedChilds[id].name || startCase(id),
           hasChanged: !utils.deepEqual(originalChildContent, changedChildContent),
           isNew: isUndefined(originalChildContent),
           isDeleted: isUndefined(changedChildContent),
