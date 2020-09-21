@@ -84,10 +84,15 @@ Template files specify the structure of the content data while the actual values
 {
   "fields": [                      // optional list of fields
         {
-            "id": "buttonLabel",   // unique id within the whole template
-            "name": "Button Text", // optional display name shown in the CMS frontend, default startCase(id)
+            "id": "title",         // unique id within the whole template
+            "name": "Main Title",  // optional display name shown in the CMS frontend, default startCase(id)
             "type": "string",      // field type see below
             "maxLength": 8         // optional type specific properties
+        },
+        {
+            "id": "enabled",
+            "name": "Page Enabled",
+            "type": "boolean"
         },
         {
             "id": "numLoops",
@@ -115,7 +120,9 @@ Template files specify the structure of the content data while the actual values
   "children": [                    // optional list of of allowed templates for the children 
     "template1",
     "template2"
-  ]
+  ],
+  "enabledField": "enabled",       // optional field reference defining if the instance is shown enabled or disabled in its parent children list
+  "subtitleField": "title"         // optional field reference defining a subtitle shown in its parent children list
 }
 ```
 
