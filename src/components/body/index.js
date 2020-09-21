@@ -5,18 +5,15 @@ import styled from "styled-components"
 import Col from "react-bootstrap/Col"
 import Dropdown from "react-bootstrap/Dropdown"
 import DropDownItem from "react-bootstrap/DropdownItem"
-import Form from "react-bootstrap/Form"
 import ListGroup from "react-bootstrap/ListGroup"
 import ListGroupItem from "react-bootstrap/ListGroupItem"
 import Row from "react-bootstrap/Row"
 
+import ChildItem from "./childItem"
 import Field from "./field"
-
-import ToggleButton from "../toggleButton"
 
 import { deleteEntity, startEntityCreation, startEntityRenaming } from "../../actions/entity"
 import { undoChanges } from "../../actions/value"
-import { fromPath } from "../../utils/hash"
 
 import {
   getLanguages,
@@ -27,27 +24,6 @@ import {
   getChildrenLabel,
   getFieldsLabel
 } from "../../selectors"
-
-const Child = styled(ListGroupItem)`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  height: 60px;
-`
-
-const ItemText = styled.div`
-  display: flex;
-  flex-direction: column;
-  flex-grow: 1;
-  flex-shrink: 1;
-  min-width: 0;
-`
-
-const Subtitle = styled(Form.Text)`
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  overflow-x: hidden;
-`
 
 const AddButton = styled(ListGroupItem)`
   padding: 0px;
@@ -102,46 +78,45 @@ function Body({
 function renderFixedChildren(children, dispatch) {
   return (
     <ListGroup className="mb-3">
-      { children.map(child => renderFixedChild(child, dispatch)) }
+      { children.map(child =>
+        <ChildItem key={ child.id } child={ child } dispatch={ dispatch }>
+          <Dropdown.Menu>
+            <DropDownItem
+              disabled={ !child.hasChanged }
+              onSelect={ () => dispatch(undoChanges(child.path)) }>
+              Undo Changes
+            </DropDownItem>
+          </Dropdown.Menu>
+        </ChildItem>
+      ) }
     </ListGroup>
-  )
-}
-
-function renderFixedChild(child, dispatch) {
-  const link = child.isDeleted ?
-    child.name :
-    <a
-      href={ fromPath(child.path) }
-      className={ child.isEnabled ? "" : "text-muted" }>
-      { child.name }
-    </a>
-
-  return (
-    <Child
-      key={ child.id }
-      variant={ childStyle(child) }>
-      <ItemText>
-        { link }
-        <Subtitle muted>{ child.subtitle }</Subtitle>
-      </ItemText>
-      <Dropdown className="float-right btn-sm" id={ child.id } drop="right">
-        <Dropdown.Toggle as={ ToggleButton } />
-        <Dropdown.Menu>
-          <DropDownItem
-            disabled={ !child.hasChanged }
-            onSelect={ () => dispatch(undoChanges(child.path)) }>
-            Undo Changes
-          </DropDownItem>
-        </Dropdown.Menu>
-      </Dropdown>
-    </Child>
   )
 }
 
 function renderChildren(children, dispatch, canHaveChildren) {
   return (
     <ListGroup className="mb-3">
-      { children.map(child => renderChild(child, dispatch)) }
+      { children.map(child =>
+        <ChildItem key={ child.id } child={ child } dispatch={ dispatch }>
+          <Dropdown.Menu>
+            <DropDownItem
+              disabled={ child.isDeleted }
+              onSelect={ () => dispatch(startEntityRenaming(child.id)) }>
+              Rename...
+            </DropDownItem>
+            <DropDownItem
+              disabled={ !child.hasChanged || child.isNew }
+              onSelect={ () => dispatch(undoChanges(child.path)) }>
+              Undo Changes
+            </DropDownItem>
+            <DropDownItem
+              disabled={ child.isDeleted }
+              onSelect={ () => dispatch(deleteEntity(child.path)) }>
+              Delete
+            </DropDownItem>
+          </Dropdown.Menu>
+        </ChildItem>
+      ) }
       { canHaveChildren &&
         <AddButton
           variant="secondary"
@@ -151,63 +126,6 @@ function renderChildren(children, dispatch, canHaveChildren) {
       }
     </ListGroup>
   )
-}
-
-function renderChild(child, dispatch) {
-  const link = child.isDeleted ?
-    child.name :
-    <a
-      href={ fromPath(child.path) }
-      className={ child.isEnabled ? "" : "text-muted" }>
-      { child.name }
-    </a>
-
-  return (
-    <Child
-      key={ child.id }
-      variant={ childStyle(child) }>
-      <ItemText>
-        { link }
-        <Subtitle muted>{ child.subtitle }</Subtitle>
-      </ItemText>
-      <Dropdown className="float-right btn-sm" id={ child.id } drop="right">
-        <Dropdown.Toggle as={ ToggleButton } />
-        <Dropdown.Menu>
-          <DropDownItem
-            disabled={ child.isDeleted }
-            onSelect={ () => dispatch(startEntityRenaming(child.id)) }>
-            Rename...
-          </DropDownItem>
-          <DropDownItem
-            disabled={ !child.hasChanged || child.isNew }
-            onSelect={ () => dispatch(undoChanges(child.path)) }>
-            Undo Changes
-          </DropDownItem>
-          <DropDownItem
-            disabled={ child.isDeleted }
-            onSelect={ () => dispatch(deleteEntity(child.path)) }>
-            Delete
-          </DropDownItem>
-        </Dropdown.Menu>
-      </Dropdown>
-    </Child>
-  )
-}
-
-function childStyle(child) {
-  if (child.isNew) {
-    return "success"
-  }
-
-  if (child.isDeleted) {
-    return "danger"
-  }
-
-  if (child.hasChanged) {
-    return "warning"
-  }
-
-  return ""
 }
 
 function renderFields(fields, languages, assetServer, dispatch) {
