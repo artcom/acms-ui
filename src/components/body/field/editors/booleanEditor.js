@@ -5,7 +5,7 @@ import styled from "styled-components"
 const StyledFormCheck = styled(FormCheck)`
   height: 2em;
   padding-top: 5px;
-  padding-left: 35px;
+  margin-left: 20px;
 `
 
 const StyledFormCheckInput = styled(FormCheck.Input)`
