@@ -3,12 +3,10 @@ import React from "react"
 import Form from "react-bootstrap/Form"
 import StyledFormControl from "./styledFormControl"
 
-import { isValidField } from "../../../../utils"
-
 export default function NumberEditor({ field, onChange }) {
   const min = get(field, "min", -Infinity)
   const max = get(field, "max", Infinity)
-  const valid = isValidField(field.value, field)
+  const valid = field.value >= min && field.value <= max
 
   function onChangeFloat(event) {
     onChange({

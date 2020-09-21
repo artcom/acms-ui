@@ -71,20 +71,9 @@ export function isValidField(value, field) {
       return isString(value)
     case "markdown":
     case "string":
-      return isString(value) && value.length <= get(field, "maxLength", Infinity)
+      return isString(value)
     case "number":
-    {
-      if (!isNumber(value)) {
-        return false
-      }
-      if (isNumber(field.min) && value < field.min) {
-        return false
-      }
-      if (isNumber(field.max) && value > field.max) {
-        return false
-      }
-      return true
-    }
+      return isNumber(value)
     default:
       return true
   }
