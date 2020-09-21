@@ -195,7 +195,8 @@ const selectChildren = createSelector(
       .map(id => {
         const originalChildContent = originalEntity[id]
         const changedChildContent = changedEntity[id]
-        const childTemplate = utils.getTemplate(changedChildContent.template, templates)
+        const referenceContent = changedChildContent || originalChildContent
+        const childTemplate = utils.getTemplate(referenceContent.template, templates)
 
         return {
           id,
@@ -203,8 +204,8 @@ const selectChildren = createSelector(
           hasChanged: !utils.deepEqual(originalChildContent, changedChildContent),
           isNew: isUndefined(originalChildContent),
           isDeleted: isUndefined(changedChildContent),
-          isEnabled: isEnabled(changedChildContent, childTemplate, languages),
-          subtitle: subtitle(changedChildContent, childTemplate, languages),
+          isEnabled: isEnabled(referenceContent, childTemplate, languages),
+          subtitle: subtitle(referenceContent, childTemplate, languages),
           path: [...path, id]
         }
       })
