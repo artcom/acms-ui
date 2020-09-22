@@ -19,7 +19,7 @@ function mapStateToProps(state) {
     hasChanged: state.originalContent !== state.changedContent,
     isLoading: state.originalContent === null,
     isSaving: state.isSaving,
-    title: state.config.title,
+    config: state.config,
     path: state.path,
     pathNames: getPathNames(state)
   }

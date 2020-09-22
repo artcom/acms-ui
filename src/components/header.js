@@ -37,7 +37,7 @@ const StyledBreadcrumb = styled(Breadcrumb)`
 `
 
 const Header = ({
-  title,
+  config,
   configPath,
   configServer,
   dispatch,
@@ -49,7 +49,7 @@ const Header = ({
   <Navbar sticky="top" bg="light" variant="light" className={ "flex-column mb-2" }>
     <Container>
       <Col>
-        <Navbar.Text className={ "h2" }>{ title }</Navbar.Text>
+        <Navbar.Text className={ "h2" }>{ config.title }</Navbar.Text>
         <StyledButtonGroup aria-label="First group">
           <HomeButton
             variant="secondary"
@@ -73,7 +73,7 @@ const Header = ({
           <SaveButton
             disabled={ !hasChanged || isSaving }
             onClick={ () => dispatch(saveData(configServer, configPath)) }>
-            { isSaving ? "Saving..." : "Save" }
+            { config.saveLabel }
           </SaveButton>
         </StyledButtonGroup>
       </Col>
