@@ -107,13 +107,8 @@ Template files specify the structure of the content data while the actual values
       "template": "location"       // template id/path
     },
     {
-      "id": "sculptureHallNorth",
-      "name": "Skulpturensaal Nord",
-      "template": "location"
-    },
-    {
-      "id": "northCabinet",
-      "name": "Nordkabinett",
+      "id": "backScreen",
+      "name": "Back of the Entry",
       "template": "location"
     }
   ],
