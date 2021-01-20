@@ -4,3 +4,4 @@ COPY . /app
 WORKDIR /app
 RUN npm install
 CMD ["/usr/local/bin/npm", "start"]
+EXPOSE 5000
