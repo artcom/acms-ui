@@ -1,23 +1,23 @@
 {
-    "title": "CMS",
-    "contentPath": "content",
-    "templatesPath": "templates",
-    "childrenLabel": "Children",
-    "fieldsLabel": "Fields",
-    "saveLabel": "Save",
-    "languages": [
-        {
-            "id": "en",
-            "name": "English"
-        }
-    ],
-    "users": [
-        {
-            "id": "admin",
-            "name": "Admin",
-            "allowList": [
-                "**"
-            ]
-        }
-    ]
+  "title": "CMS",
+  "contentPath": "content",
+  "templatesPath": "templates",
+  "childrenLabel": "Children",
+  "fieldsLabel": "Fields",
+  "saveLabel": "Save",
+  "languages": [
+    {
+      "id": "en",
+      "name": "English"
+    }
+  ],
+  "users": [
+    {
+      "id": "admin",
+      "name": "Admin",
+      "allowList": [
+        "**"
+      ]
+    }
+  ]
 }
