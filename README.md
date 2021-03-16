@@ -1,6 +1,6 @@
-# CMS Frontend
+# ACMS UI
 
-A frontend webapp which allows browsing/editing the json content served by the git-json-api service.
+A webapp ui which allows browsing/editing the json content served by the [`acms-api`](https://github.com/artcom/acms-api) service.
 
 ## Usage
 
@@ -24,9 +24,9 @@ The web app is served on port `5000` by default if environment variable `PORT` i
 
 ### Environment Variables
 
-`ASSET_SERVER_URI`: Fully qualified URI to a [`WebDav enabled server`](https://github.com/artcom/git-json-cms-asset-server).  
-`CONFIG_SERVER_URI`: Fully qualified URI to the [`git-json-api`](https://github.com/artcom/git-json-api) service.  
-`CMS_CONFIG_PATH`: Directory path inside the configuration to the CMS frontend configuration (e.g. `/cmsConfig.json` => `cmsConfig`).
+`ASSET_SERVER_URI`: Fully qualified URI to a [`WebDav enabled server`](https://github.com/artcom/acms-assets).  
+`CONFIG_SERVER_URI`: Fully qualified URI to the [`acms-api`](https://github.com/artcom/acms-api) service.  
+`CMS_CONFIG_PATH`: Directory path inside the configuration to the ACMS UI configuration (e.g. `/cmsConfig.json` => `cmsConfig`).
 
 ### Config file
 
