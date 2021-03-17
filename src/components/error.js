@@ -8,7 +8,7 @@ const Error = ({ dispatch, flash }) =>
     <h4>{ flash.title }</h4>
     <pre>
       <code>
-        { flash.details }
+        { flash.details.stack ? flash.details.stack : flash.details.message }
       </code>
     </pre>
   </Alert>
