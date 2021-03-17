@@ -1,8 +1,7 @@
 import React from "react"
 import ProgressBar from "react-bootstrap/ProgressBar"
 import styled from "styled-components"
-
-import path from "path"
+import path from "path-browserify"
 
 import FileSelector from "./fileSelector"
 

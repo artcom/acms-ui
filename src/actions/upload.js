@@ -1,4 +1,4 @@
-import { basename, extname } from "path"
+import { basename, extname } from "path-browserify"
 
 import { sha256 } from "../utils/sha"
 
