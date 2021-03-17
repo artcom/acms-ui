@@ -4,7 +4,7 @@ import Alert from "react-bootstrap/Alert"
 import { hideError } from "../actions/error"
 
 const Error = ({ dispatch, flash }) =>
-  <Alert variant="danger" onClose={ () => dispatch(hideError()) }>
+  <Alert variant="danger" onClose={ () => dispatch(hideError()) } dismissible>
     <h4>{ flash.title }</h4>
     <pre>
       <code>
