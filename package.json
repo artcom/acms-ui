@@ -1,7 +1,8 @@
 {
-  "name": "cms",
+  "name": "acms-ui",
   "version": "2.2.0",
-  "private": true,
+  "repository": "artcom/acms-ui",
+  "license": "MIT",
   "scripts": {
     "lint": "eslint src --fix",
     "stats": "webpack --profile --json --env.production > stats.json",
