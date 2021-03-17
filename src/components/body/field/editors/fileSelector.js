@@ -1,38 +1,48 @@
 import React from "react"
 import Dropzone from "react-dropzone"
+import styled, { css } from "styled-components"
 
-const style = {
-  borderWidth: "2px",
-  borderColor: "#555",
-  borderStyle: "dashed",
-  borderRadius: "0.3rem",
-  padding: "1rem",
-  textAlign: "center",
-  width: "100%"
+const getColorCss = props => {
+  if (props.isDragAccept) {
+    return css`
+      background-color: #dff0d8;
+      border-color: #3c763d;
+      border-style: solid;
+    `
+  }
+  if (props.isDragReject) {
+    return css`
+      background-color: #f2dede;
+      border-color: #a94442;
+      border-style: solid;
+    `
+  }
 }
 
-const activeStyle = {
-  color: "#3c763d",
-  backgroundColor: "#dff0d8",
-  borderStyle: "solid"
-}
-
-const rejectStyle = {
-  color: "#a94442",
-  backgroundColor: "#f2dede",
-  borderStyle: "solid"
-}
+const Container = styled.div`
+  border-width: 2px;
+  border-color: #555;
+  border-style: dashed;
+  border-radius: 0.3rem;
+  ${props => getColorCss(props)}
+  padding: 1rem;
+  text-align: center;
+  width: 100%;
+`
 
 export default function FileSelector({ accept, children, onSelect }) {
   return (
     <Dropzone
       accept={ accept }
-      multiple={ false }
-      style={ style }
-      activeStyle={ activeStyle }
-      rejectStyle={ rejectStyle }
-      onDrop={ onSelect }>
-      { children }
+      onDrop={ acceptedFiles => onSelect(acceptedFiles) }
+      multiple={ false }>
+      {
+        ({ getRootProps, getInputProps, isDragAccept, isDragReject }) =>
+          <Container { ...getRootProps({ isDragAccept, isDragReject }) }>
+            <input { ...getInputProps() } />
+            { children }
+          </Container>
+      }
     </Dropzone>
   )
 }
