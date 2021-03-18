@@ -13,7 +13,6 @@
   "dependencies": {
     "@babel/cli": "^7.13.10",
     "@babel/core": "^7.13.10",
-    "@babel/polyfill": "^7.10.4",
     "@babel/preset-env": "^7.13.10",
     "@babel/preset-react": "^7.12.13",
     "@isomorphic-git/lightning-fs": "^4.4.1",
