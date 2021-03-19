@@ -8,7 +8,6 @@ import FileSelector from "./fileSelector"
 const Editor = styled.div`
   display: flex;
   flex-direction: column;
-  align-items: center;
 `
 
 const Image = styled.img`
