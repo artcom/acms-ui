@@ -34,7 +34,7 @@ export default function FileSelector({ accept, children, onSelect }) {
   return (
     <Dropzone
       accept={ accept }
-      onDrop={ acceptedFiles => onSelect(acceptedFiles) }
+      onDropAccepted={ acceptedFiles => onSelect(acceptedFiles) }
       multiple={ false }>
       {
         ({ getRootProps, getInputProps, isDragAccept, isDragReject }) =>
