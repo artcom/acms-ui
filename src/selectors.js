@@ -226,31 +226,23 @@ const selectFixedChildren = createSelector(
     selectTemplates,
     getPath
   ],
-  (template, originalEntity = {}, changedEntity, languages, templates, path) => {
-    const allIds = Object.keys({ ...originalEntity, ...changedEntity })
-    const fixedChilds = template.fixedChildren
-      .reduce((result, child) => ({ ...result, [child.id]: child }), {})
-
-    return allIds
-      .filter(id => fixedChilds[id])
-      .sort()
-      .map(id => {
+  (template, originalEntity = {}, changedEntity, languages, templates, path) =>
+    template.fixedChildren
+      .map(({ id, name }) => {
         const originalChildContent = originalEntity[id]
         const changedChildContent = changedEntity[id]
         const childTemplate = utils.getTemplate(changedChildContent.template, templates)
 
         return {
           id,
-          name: fixedChilds[id].name || startCase(id),
+          name: name || startCase(id),
           hasChanged: !utils.deepEqual(originalChildContent, changedChildContent),
           isNew: isUndefined(originalChildContent),
-          isDeleted: isUndefined(changedChildContent),
           isEnabled: isEnabled(changedChildContent, childTemplate, languages),
           subtitle: subtitle(changedChildContent, childTemplate, languages),
           path: [...path, id]
         }
       })
-  }
 )
 
 function isEnabled(content, { enabledField, fields }, languages) {
