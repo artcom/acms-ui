@@ -1,45 +1,20 @@
 # ACMS UI
 
-A webapp ui which allows browsing/editing the json content served by the [`acms-api`](https://github.com/artcom/acms-api) service.
-
-## Usage
-
-The CMS frontend bootstraps the necessary parameters either from environmental variables or from a `config.json` file located in the same serving directory. See below.
-
-### Development
-
-```bash
-npm install
-ASSET_SERVER_URI=<uri> CONFIG_SERVER_URI=<uri> CMS_CONFIG_PATH=<path> npm run watch
-```
-
-### Production
-
-```bash
-ASSET_SERVER_URI=<uri> CONFIG_SERVER_URI=<uri> CMS_CONFIG_PATH=<path> npm start
-```
-The web app is served on port `5000` by default if environment variable `PORT` is not set.
+A webapp UI which allows browsing/editing the json content served by the [`acms-api`](https://github.com/artcom/acms-api) service.
 
 ## Documentation
 
-### Environment Variables
-
-`ASSET_SERVER_URI`: Fully qualified URI to a [`WebDav enabled server`](https://github.com/artcom/acms-assets).  
-`CONFIG_SERVER_URI`: Fully qualified URI to the [`acms-api`](https://github.com/artcom/acms-api) service.  
-`CMS_CONFIG_PATH`: Directory path inside the configuration to the ACMS UI configuration (e.g. `/cmsConfig.json` => `cmsConfig`).
-
 ### Config file
 
-The environment variables can be omitted if a `config.json` file providing the following information is served:
-```json5
-{
-  "assetServerUri": "<uri>",
-  "configServerUri": "<uri>",
-  "cmsConfigPath": "<path>"
-}
-```
+Copy `config.json.template` into `config.json` and change values accordingly. `config.json`is served by webpack dev server or provided in a production environment.
 
-### CMS Configuration
+`assetServerUri`: Fully qualified URI to a WebDav enabled server, [`acms-assets`](https://github.com/artcom/acms-assets).  
+`configServerUri`: Fully qualified URI to the [`acms-api`](https://github.com/artcom/acms-api) service.  
+`cmsConfigPath`: Relative directory path inside the [`acms-config`](https://github.com/artcom/acms-config) to the ACMS UI configuration JSON file (usually `cmsConfig`, see below).
+
+### ACMS UI Configuration file
+
+Create a configuration file (e.g. `cmsConfig.json`) inside the [`acms-config`](https://github.com/artcom/acms-config) repo:
 
 ```json5
 {
