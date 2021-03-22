@@ -1,7 +1,6 @@
 /* eslint-disable import/no-commonjs */
 
 const HtmlWebpackPlugin = require("html-webpack-plugin")
-const { EnvironmentPlugin } = require("webpack")
 
 module.exports = (env = {}) => ({
   mode: env.production ? "production" : "development",
@@ -28,11 +27,6 @@ module.exports = (env = {}) => ({
     ]
   },
   plugins: [
-    new EnvironmentPlugin({
-      CONFIG_SERVER_URI: null,
-      CMS_CONFIG_PATH: null,
-      ASSET_SERVER_URI: null
-    }),
     new HtmlWebpackPlugin({
       template: "./src/index.html"
     })
