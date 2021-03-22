@@ -38,7 +38,7 @@ const StyledBreadcrumb = styled(Breadcrumb)`
 
 const Header = ({
   config,
-  configPath,
+  acmsConfigPath,
   acmsApi,
   dispatch,
   hasChanged,
@@ -72,7 +72,7 @@ const Header = ({
           </StyledBreadcrumb>
           <SaveButton
             disabled={ !hasChanged || isSaving }
-            onClick={ () => dispatch(saveData(acmsApi, configPath)) }>
+            onClick={ () => dispatch(saveData(acmsApi, acmsConfigPath)) }>
             { config.saveLabel }
           </SaveButton>
         </StyledButtonGroup>

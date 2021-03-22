@@ -13,10 +13,10 @@ import Application from "./components/application"
 
 import "bootstrap/dist/css/bootstrap.min.css"
 
-bootstrap().then(async ({ acmsAssets, acmsApi, cmsConfigPath }) => {
+bootstrap().then(async ({ acmsApi, acmsAssets, acmsConfigPath }) => {
   const store = configureStore()
 
-  await store.dispatch(loadData(acmsApi, cmsConfigPath))
+  await store.dispatch(loadData(acmsApi, acmsConfigPath))
 
   store.dispatch(updateUser())
 
@@ -31,8 +31,8 @@ bootstrap().then(async ({ acmsAssets, acmsApi, cmsConfigPath }) => {
     <Provider store={ store } >
       <Application
         acmsApi={ acmsApi }
-        configPath={ cmsConfigPath }
-        acmsAssets={ acmsAssets } />
+        acmsAssets={ acmsAssets }
+        acmsConfigPath={ acmsConfigPath } />
     </Provider>
     , document.getElementById("app"))
 })

@@ -1,16 +1,16 @@
-import AcmsAssets from "./apis/acmsAssets"
 import AcmsApi from "./apis/acmsApi"
+import AcmsAssets from "./apis/acmsAssets"
 
 export default async () => {
   const response = await fetch("config.json")
 
   if (response.ok) {
-    const { acmsAssetsUri, acmsApiUri, cmsConfigPath } = await response.json()
+    const { acmsApiUri, acmsAssetsUri, acmsConfigPath } = await response.json()
 
-    const acmsAssets = new AcmsAssets(acmsAssetsUri)
     const acmsApi = new AcmsApi(acmsApiUri)
+    const acmsAssets = new AcmsAssets(acmsAssetsUri)
 
-    return { acmsAssets, acmsApi, cmsConfigPath }
+    return { acmsApi, acmsAssets, acmsConfigPath }
   } else {
     throw new Error(response.statusText)
   }

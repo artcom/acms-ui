@@ -10,11 +10,11 @@ Copy `config.json.template` into `config.json` and change values accordingly. `c
 
 `acmsAssetsUri`: Fully qualified URI to a WebDav enabled server, [`acms-assets`](https://github.com/artcom/acms-assets).  
 `acmsApiUri`: Fully qualified URI to the [`acms-api`](https://github.com/artcom/acms-api) service.  
-`cmsConfigPath`: Relative directory path inside the [`acms-config`](https://github.com/artcom/acms-config) to the ACMS UI configuration JSON file (usually `cmsConfig`, see below).
+`acmsConfigPath`: Relative directory path inside the [`acms-config`](https://github.com/artcom/acms-config) to the ACMS UI configuration JSON file (usually `acmsConfig`, see below).
 
 ### ACMS UI Configuration file
 
-Create a configuration file (e.g. `cmsConfig.json`) inside the [`acms-config`](https://github.com/artcom/acms-config) repo:
+Create a configuration file (e.g. `acmsConfig.json`) inside the [`acms-config`](https://github.com/artcom/acms-config) repo:
 
 ```json5
 {
