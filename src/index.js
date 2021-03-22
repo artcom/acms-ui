@@ -13,7 +13,7 @@ import Application from "./components/application"
 
 import "bootstrap/dist/css/bootstrap.min.css"
 
-bootstrap().then(async ({ assetServer, cmsConfigPath, acmsApi }) => {
+bootstrap().then(async ({ acmsAssets, acmsApi, cmsConfigPath }) => {
   const store = configureStore()
 
   await store.dispatch(loadData(acmsApi, cmsConfigPath))
@@ -32,7 +32,7 @@ bootstrap().then(async ({ assetServer, cmsConfigPath, acmsApi }) => {
       <Application
         acmsApi={ acmsApi }
         configPath={ cmsConfigPath }
-        assetServer={ assetServer } />
+        acmsAssets={ acmsAssets } />
     </Provider>
     , document.getElementById("app"))
 })

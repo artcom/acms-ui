@@ -1,7 +1,7 @@
 import axios from "axios"
 import URL from "url"
 
-export default class AssetServer {
+export default class AcmsAssets {
   constructor(url) {
     this.api = axios.create({ baseURL: url })
     this.url = url

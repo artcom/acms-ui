@@ -49,7 +49,7 @@ function Body({
   canHaveChildren,
   children,
   fixedChildren,
-  assetServer,
+  acmsAssets,
   dispatch,
   fields,
   languages,
@@ -69,7 +69,7 @@ function Body({
 
       <Col md={ 8 }>
         { fields.length > 0 && <h4>{ fieldsLabel }</h4> }
-        { renderFields(fields, languages, assetServer, dispatch) }
+        { renderFields(fields, languages, acmsAssets, dispatch) }
       </Col>
     </Row>
   )
@@ -128,13 +128,13 @@ function renderChildren(children, dispatch, canHaveChildren) {
   )
 }
 
-function renderFields(fields, languages, assetServer, dispatch) {
+function renderFields(fields, languages, acmsAssets, dispatch) {
   return fields.map(field =>
     <Field
       key={ field.id }
       field={ field }
       languages={ languages }
-      assetServer={ assetServer }
+      acmsAssets={ acmsAssets }
       dispatch={ dispatch } />
   )
 }

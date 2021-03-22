@@ -1,4 +1,4 @@
-import AssetServer from "./apis/assetServer"
+import AcmsAssets from "./apis/acmsAssets"
 import AcmsApi from "./apis/acmsApi"
 
 export default async () => {
@@ -7,10 +7,10 @@ export default async () => {
   if (response.ok) {
     const { acmsAssetsUri, acmsApiUri, cmsConfigPath } = await response.json()
 
-    const assetServer = new AssetServer(acmsAssetsUri)
+    const acmsAssets = new AcmsAssets(acmsAssetsUri)
     const acmsApi = new AcmsApi(acmsApiUri)
 
-    return { assetServer, cmsConfigPath, acmsApi }
+    return { acmsAssets, acmsApi, cmsConfigPath }
   } else {
     throw new Error(response.statusText)
   }

@@ -5,7 +5,7 @@ import { sha256 } from "../utils/sha"
 import { showError } from "./error"
 import { changeValue } from "./value"
 
-export function uploadFile(path, file, assetServer) {
+export function uploadFile(path, file, acmsAssets) {
   return async dispatch => {
     function onUploadProgress(event) {
       dispatch(progressUpload(path, event.loaded / event.total))
@@ -15,7 +15,7 @@ export function uploadFile(path, file, assetServer) {
       dispatch(startUpload(path))
       const filename = await generateFilename(file)
 
-      const url = await assetServer.uploadFile(filename, file, { onUploadProgress })
+      const url = await acmsAssets.uploadFile(filename, file, { onUploadProgress })
 
       dispatch(changeValue(path, url))
     } catch (error) {

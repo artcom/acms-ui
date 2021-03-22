@@ -34,7 +34,7 @@ function Application(props) {
 
         { !props.isLoading &&
         <>
-          <Body assetServer={ props.assetServer } />
+          <Body acmsAssets={ props.acmsAssets } />
           <EntityCreationModal />
           <EntityRenamingModal />
           <FieldLocalizationModal />

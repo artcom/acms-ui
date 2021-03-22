@@ -20,7 +20,7 @@ const StyledCardHeader = styled(Card.Header)`
   padding-bottom: 0.3rem;
 `
 
-const FieldContent = ({ assetServer, dispatch, field, languages }) => {
+const FieldContent = ({ acmsAssets, dispatch, field, languages }) => {
   const Editor = editors[field.type]
 
   if (!Editor) {
@@ -28,11 +28,11 @@ const FieldContent = ({ assetServer, dispatch, field, languages }) => {
   }
 
   return field.isLocalized
-    ? renderLocalizedEditors(field, languages, assetServer, dispatch, Editor)
-    : renderEditor(field, assetServer, dispatch, Editor)
+    ? renderLocalizedEditors(field, languages, acmsAssets, dispatch, Editor)
+    : renderEditor(field, acmsAssets, dispatch, Editor)
 }
 
-function renderLocalizedEditors(field, languages, assetServer, dispatch, Editor) {
+function renderLocalizedEditors(field, languages, acmsAssets, dispatch, Editor) {
   const items = Object.keys(field.value).map(languageId => {
     const languageField = { ...field,
       path: [...field.path, languageId],
@@ -45,7 +45,7 @@ function renderLocalizedEditors(field, languages, assetServer, dispatch, Editor)
           { getLanguageName(languageId, languages) }
         </StyledCardHeader>
 
-        { renderEditor(languageField, assetServer, dispatch, Editor) }
+        { renderEditor(languageField, acmsAssets, dispatch, Editor) }
       </StyledListGroupItem>
     )
   })
@@ -53,12 +53,12 @@ function renderLocalizedEditors(field, languages, assetServer, dispatch, Editor)
   return <ListGroup variant="flush">{ items }</ListGroup>
 }
 
-function renderEditor(field, assetServer, dispatch, Editor) {
+function renderEditor(field, acmsAssets, dispatch, Editor) {
   return (
     <Editor
       field={ field }
       onChange={ event => dispatch(changeValue(field.path, event.target.value)) }
-      onFileSelect={ files => dispatch(uploadFile(field.path, files[0], assetServer)) } />
+      onFileSelect={ files => dispatch(uploadFile(field.path, files[0], acmsAssets)) } />
   )
 }
 
