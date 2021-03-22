@@ -2,7 +2,7 @@ import axios from "axios"
 
 const DEFAULT_BRANCH = "master"
 
-export default class ConfigServer {
+export default class AcmsApi {
   constructor(url) {
     this.api = axios.create({ baseURL: url })
   }

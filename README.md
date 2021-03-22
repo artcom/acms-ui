@@ -8,8 +8,8 @@ A webapp UI which allows browsing/editing the json content served by the [`acms-
 
 Copy `config.json.template` into `config.json` and change values accordingly. `config.json`is served by webpack dev server or provided in a production environment.
 
-`assetServerUri`: Fully qualified URI to a WebDav enabled server, [`acms-assets`](https://github.com/artcom/acms-assets).  
-`configServerUri`: Fully qualified URI to the [`acms-api`](https://github.com/artcom/acms-api) service.  
+`acmsAssetsUri`: Fully qualified URI to a WebDav enabled server, [`acms-assets`](https://github.com/artcom/acms-assets).  
+`acmsApiUri`: Fully qualified URI to the [`acms-api`](https://github.com/artcom/acms-api) service.  
 `cmsConfigPath`: Relative directory path inside the [`acms-config`](https://github.com/artcom/acms-config) to the ACMS UI configuration JSON file (usually `cmsConfig`, see below).
 
 ### ACMS UI Configuration file

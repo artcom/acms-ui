@@ -6,14 +6,14 @@ import * as utils from "../utils"
 import { isLocalized } from "../utils/language"
 import defaultConfig from "../defaultConfig.json"
 
-export function loadData(configServer, configPath) {
+export function loadData(acmsApi, configPath) {
   return async dispatch => {
     try {
-      const { data: config, version } = await configServer.queryJson(configPath)
+      const { data: config, version } = await acmsApi.queryJson(configPath)
 
       const [{ data: templates }, { data: originalContent }] = await Promise.all([
-        configServer.queryFiles(config.templatesPath, version),
-        configServer.queryJson(config.contentPath, version)
+        acmsApi.queryFiles(config.templatesPath, version),
+        acmsApi.queryJson(config.contentPath, version)
       ])
 
       const changedContent = produce(originalContent,
@@ -81,7 +81,7 @@ function fixContent(content, draft, templates, languages) {
   })
 }
 
-export function saveData(configServer, configPath) {
+export function saveData(acmsApi, configPath) {
   return async (dispatch, getState) => {
     const state = getState()
     const version = getVersion(state)
@@ -93,9 +93,9 @@ export function saveData(configServer, configPath) {
       dispatch({ type: "START_SAVING" })
 
       const contentFiles = toFiles(content, templates)
-      await configServer.save(contentFiles, contentPath, version)
+      await acmsApi.save(contentFiles, contentPath, version)
 
-      dispatch(loadData(configServer, configPath))
+      dispatch(loadData(acmsApi, configPath))
     } catch (error) {
       dispatch(showError("Failed to save Data", error))
     }
