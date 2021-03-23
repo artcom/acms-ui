@@ -18,7 +18,7 @@ Create a configuration file (e.g. `acmsConfig.json`) inside the [`acms-config`](
 
 ```json5
 {
-  "title": "CMS",               // optional title shown in the header
+  "title": "ACMS",               // optional title shown in the header
   "contentPath": "content",     // root directory containing the content data
   "templatesPath": "templates", // root directory containing the (nested) template files
   "childrenLabel": "Children",  // optional label shown above the children, default: "Children"
@@ -60,7 +60,7 @@ Template files specify the structure of the content data while the actual values
   "fields": [                      // optional list of fields
         {
             "id": "title",         // unique id within the whole template
-            "name": "Main Title",  // optional display name shown in the CMS frontend, default startCase(id)
+            "name": "Main Title",  // optional display name shown in the ACMS UI, default startCase(id)
             "type": "string",      // field type see below
             "maxLength": 8         // optional type specific properties
         },
@@ -78,7 +78,7 @@ Template files specify the structure of the content data while the actual values
   "fixedChildren": [               // optional list of fixed/named children
     {
       "id": "frontScreen",         // unique id within the whole template
-      "name": "Front of the Entry",// optional display name shown in the CMS frontend, default startCase(id)
+      "name": "Front of the Entry",// optional display name shown in the ACMS UI, default startCase(id)
       "template": "location"       // template id/path
     },
     {
