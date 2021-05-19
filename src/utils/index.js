@@ -4,12 +4,22 @@ import isNumber from "lodash/isNumber"
 import isUndefined from "lodash/isUndefined"
 import isPlainObject from "lodash/isPlainObject"
 
+const DEFAULT_TEMPLATE = { fields: [], fixedChildren: [], children: [] }
+
 export function getFromPath(object, path, defaultValue) {
   return path.length === 0 ? object : get(object, path, defaultValue)
 }
 
 export function getTemplate(id, templates) {
-  return templates[id] ? templates[id] : templates[`${id}/index`]
+  if (templates[id]) {
+    return { ...DEFAULT_TEMPLATE, ...templates[id] }
+  }
+
+  if (templates[`${id}/index`]) {
+    return { ...DEFAULT_TEMPLATE, ...templates[`${id}/index`] }
+  }
+
+  return DEFAULT_TEMPLATE
 }
 
 export function createEntry(entry, templates) {
