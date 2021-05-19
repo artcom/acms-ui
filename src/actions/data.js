@@ -39,7 +39,10 @@ export function loadData(acmsApi, acmsConfigPath) {
 
 function fixContent(content, draft, templates, languages) {
   const { template, ...allEntries } = content
-  const { fields = [], fixedChildren = [], children = [] } = utils.getTemplate(template, templates)
+  const {
+    fields = [],
+    fixedChildren = [],
+    children = [] } = utils.getTemplate(template, templates) || {}
 
   // fix invalid fields
   fields.forEach(field => {
