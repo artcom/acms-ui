@@ -4,7 +4,7 @@ import Card from "react-bootstrap/Card"
 import ListGroup from "react-bootstrap/ListGroup"
 import styled from "styled-components"
 
-import { getLanguageName } from "../../../utils/language"
+import { getDefaultLanguage, getLanguage } from "../../../utils/language"
 
 import { uploadFile } from "../../../actions/upload"
 import { changeValue } from "../../../actions/value"
@@ -29,23 +29,26 @@ const FieldContent = ({ acmsAssets, dispatch, field, languages }) => {
 
   return field.isLocalized
     ? renderLocalizedEditors(field, languages, acmsAssets, dispatch, Editor)
-    : renderEditor(field, acmsAssets, dispatch, Editor)
+    : renderEditor(field, getDefaultLanguage(languages).textDirection, acmsAssets, dispatch, Editor)
 }
 
 function renderLocalizedEditors(field, languages, acmsAssets, dispatch, Editor) {
   const items = Object.keys(field.value).map(languageId => {
-    const languageField = { ...field,
+    const languageField = {
+      ...field,
       path: [...field.path, languageId],
       value: field.value[languageId]
     }
 
+    const { name, textDirection } = getLanguage(languageId, languages)
+
     return (
       <StyledListGroupItem key={ languageId }>
         <StyledCardHeader className="text-muted">
-          { getLanguageName(languageId, languages) }
+          { name }
         </StyledCardHeader>
 
-        { renderEditor(languageField, acmsAssets, dispatch, Editor) }
+        { renderEditor(languageField, textDirection, acmsAssets, dispatch, Editor) }
       </StyledListGroupItem>
     )
   })
@@ -53,10 +56,11 @@ function renderLocalizedEditors(field, languages, acmsAssets, dispatch, Editor) 
   return <ListGroup variant="flush">{ items }</ListGroup>
 }
 
-function renderEditor(field, acmsAssets, dispatch, Editor) {
+function renderEditor(field, textDirection, acmsAssets, dispatch, Editor) {
   return (
     <Editor
       field={ field }
+      textDirection={ textDirection }
       onChange={ event => dispatch(changeValue(field.path, event.target.value)) }
       onFileSelect={ files => dispatch(uploadFile(field.path, files[0], acmsAssets)) } />
   )

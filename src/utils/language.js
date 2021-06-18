@@ -8,7 +8,12 @@ function isLanguage(id, languages) {
   return languages.findIndex(language => language.id === id) >= 0
 }
 
-export function getLanguageName(id, languages) {
-  const language = languages.find(lang => lang.id === id)
-  return language ? language.name : `Unknown Language (${id})`
+export function getDefaultLanguage(languages) {
+  const language = languages[0] || {}
+  return { id: "default", name: "default", textDirection: "ltr", ...language }
+}
+
+export function getLanguage(id, languages) {
+  const language = languages.find(lang => lang.id === id) || {}
+  return { id, name: id, textDirection: "ltr", ...language }
 }
