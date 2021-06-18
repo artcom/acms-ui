@@ -27,11 +27,6 @@ export const getNewEntity = state => state.newEntity
 export const getRenamedEntity = state => state.renamedEntity
 export const getTemplates = state => state.templates
 
-export const selectDefaultLanguage = createSelector(
-  [getLanguages],
-  languages => languages[0]
-)
-
 export const selectAllowList = createSelector(
   [getUser, getUsers],
   (user, users) => {
