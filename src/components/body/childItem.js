@@ -22,6 +22,12 @@ const TextContainer = styled.div`
   min-width: 0;
 `
 
+const ItemName = styled.div`
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow-x: hidden;
+`
+
 const ItemLink = styled.a`
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -40,7 +46,7 @@ export default ({ child, children }) =>
     variant={ childStyle(child) }>
     <TextContainer>
       { child.isDeleted ?
-        child.name :
+        <ItemName>{ child.name }</ItemName> :
         <ItemLink
           href={ fromPath(child.path) }
           title={ child.name }
