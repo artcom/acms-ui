@@ -25,7 +25,7 @@ function EntityCreationModal({ dispatch, newEntity }) {
   return (
     <Modal show={ newEntity.isVisible } onHide={ () => dispatch(cancelEntityCreation()) }>
       <Modal.Header closeButton>
-        <Modal.Title>Add Child</Modal.Title>
+        <Modal.Title>New Item</Modal.Title>
       </Modal.Header>
       <Modal.Body>
         <Form.Label>Name</Form.Label>
@@ -38,22 +38,21 @@ function EntityCreationModal({ dispatch, newEntity }) {
             onChange={
               event => dispatch(updateEntityCreationId(event.target.value))
             } />
-          <Form.Control.Feedback type="invalid" tooltip>
-            Contains invalid characters or id already exists
-          </Form.Control.Feedback>
         </div>
-        <Form.Group>
-          <Form.Label>Template</Form.Label>
-          <Form.Control
-            as="select"
-            value={ newEntity.template }
-            disabled={ newEntity.templates.length < 2 }
-            onChange={ event => dispatch(updateEntityCreationTemplate(event.target.value)) }>
-            { newEntity.templates.map(template =>
-              <option key={ template } value={ template }>{ template }</option>
-            ) }
-          </Form.Control>
-        </Form.Group>
+        {
+          newEntity.templates.length > 1 &&
+          <Form.Group>
+            <Form.Label>Template</Form.Label>
+            <Form.Control
+              as="select"
+              value={ newEntity.template }
+              onChange={ event => dispatch(updateEntityCreationTemplate(event.target.value)) }>
+              { newEntity.templates.map(template =>
+                <option key={ template } value={ template }>{ template }</option>
+              ) }
+            </Form.Control>
+          </Form.Group>
+        }
       </Modal.Body>
       <Modal.Footer>
         <Button

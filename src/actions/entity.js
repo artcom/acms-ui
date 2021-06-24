@@ -17,7 +17,7 @@ export function startEntityCreation() {
     dispatch({
       type: "START_ENTITY_CREATION",
       payload: {
-        id: "New Child",
+        id: "",
         template: templates[0],
         templates
       }

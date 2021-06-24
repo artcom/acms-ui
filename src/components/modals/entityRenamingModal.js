@@ -33,9 +33,6 @@ function EntityRenamingModal({ dispatch, renamedEntity }) {
             isInvalid={ renamedEntity.isVisible && !renamedEntity.isValidId }
             autoFocus
             onChange={ event => dispatch(updateEntityRenaming(event.target.value)) } />
-          <Form.Control.Feedback type="invalid" tooltip>
-            Contains invalid characters or id already exists
-          </Form.Control.Feedback>
         </div>
       </Modal.Body>
       <Modal.Footer>
