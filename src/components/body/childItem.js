@@ -14,12 +14,18 @@ const StyledListGroupItem = styled(ListGroupItem)`
   height: 60px;
 `
 
-const ItemText = styled.div`
+const TextContainer = styled.div`
   display: flex;
   flex-direction: column;
   flex-grow: 1;
   flex-shrink: 1;
   min-width: 0;
+`
+
+const ItemLink = styled.a`
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow-x: hidden;
 `
 
 const Subtitle = styled(Form.Text)`
@@ -28,30 +34,28 @@ const Subtitle = styled(Form.Text)`
   overflow-x: hidden;
 `
 
-export default ({ child, children }) => {
-  const link = child.isDeleted ?
-    child.name :
-    <a
-      href={ fromPath(child.path) }
-      className={ child.isEnabled ? "" : "text-muted" }>
-      { child.name }
-    </a>
+export default ({ child, children }) =>
+  <StyledListGroupItem
+    key={ child.id }
+    variant={ childStyle(child) }>
+    <TextContainer>
+      { child.isDeleted ?
+        child.name :
+        <ItemLink
+          href={ fromPath(child.path) }
+          title={ child.name }
+          className={ child.isEnabled ? "" : "text-muted" }>
+          { child.name }
+        </ItemLink>
+      }
+      <Subtitle title={ child.subtitle } muted>{ child.subtitle }</Subtitle>
+    </TextContainer>
+    <Dropdown className="float-right btn-sm" id={ child.id } drop="right">
+      <Dropdown.Toggle as={ ToggleButton } />
+      { children }
+    </Dropdown>
+  </StyledListGroupItem>
 
-  return (
-    <StyledListGroupItem
-      key={ child.id }
-      variant={ childStyle(child) }>
-      <ItemText>
-        { link }
-        <Subtitle muted>{ child.subtitle }</Subtitle>
-      </ItemText>
-      <Dropdown className="float-right btn-sm" id={ child.id } drop="right">
-        <Dropdown.Toggle as={ ToggleButton } />
-        { children }
-      </Dropdown>
-    </StyledListGroupItem>
-  )
-}
 
 function childStyle(child) {
   if (child.isNew) {
