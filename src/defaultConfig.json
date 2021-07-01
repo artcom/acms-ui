@@ -1,16 +1,12 @@
 {
-  "title": "ACMS",
+  "title": null,
+  "logoImageUri": null,
   "contentPath": "content",
   "templatesPath": "templates",
   "childrenLabel": "Children",
   "fieldsLabel": "Fields",
   "saveLabel": "Save",
-  "languages": [
-    {
-      "id": "en",
-      "name": "English"
-    }
-  ],
+  "languages": [],
   "users": [
     {
       "id": "admin",

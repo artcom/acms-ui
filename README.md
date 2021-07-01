@@ -18,19 +18,19 @@ Create a configuration file (e.g. `acmsConfig.json`) inside the [`acms-config`](
 
 ```json5
 {
-  "title": "ACMS",               // optional title shown in the header
+  "title": "ACMS",              // title shown in the header
   "contentPath": "content",     // root directory containing the content data
   "templatesPath": "templates", // root directory containing the (nested) template files
-  "childrenLabel": "Children",  // optional label shown above the children, default: "Children"
-  "fieldsLabel": "Fields",      // optional label shown above the fields, default: "Fields"
-  "saveLabel": "Save",          // optional label of the save button, default: "Save"
-  "languages": [                // optional list of supported languages, the first one is the default language
+  "childrenLabel": "Children",  // label shown above the children, default: "Children"
+  "fieldsLabel": "Fields",      // label shown above the fields, default: "Fields"
+  "saveLabel": "Save",          // label of the save button, default: "Save"
+  "languages": [                // list of supported languages, the first one is the default language
     {
       "id": "en",
       "name": "English"
     }
   ],
-  "users": [                    // optional list of users to filter content based on allowList patterns
+  "users": [                    // list of users to filter content based on allowList patterns
     {
       "id": "admin",
       "name": "Admin",
@@ -41,6 +41,8 @@ Create a configuration file (e.g. `acmsConfig.json`) inside the [`acms-config`](
   ]
 }
 ```
+
+If a property is omitted the default is used from [here](src/defaultConfig.json).
 
 ### Templates
 

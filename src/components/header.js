@@ -5,10 +5,27 @@ import ButtonGroup from "react-bootstrap/ButtonGroup"
 import Navbar from "react-bootstrap/Navbar"
 
 import Col from "react-bootstrap/Col"
+import Row from "react-bootstrap/Row"
 import Container from "react-bootstrap/Container"
 import styled from "styled-components"
 import { saveData } from "../actions/data"
 import { fromPath } from "../utils/hash"
+
+const Logo = styled.img`
+  width: auto;
+  padding-right: 1.0rem;
+  max-height: 150px;
+  padding-bottom: 0.5rem;
+`
+const LogoContainer = styled(Row)`
+    margin: 0px;
+    align-items: center;
+`
+
+const Title = styled(Navbar.Text)`
+  margin-bottom: 0px;
+  padding-bottom: 0.5rem;
+`
 
 const StyledButtonGroup = styled(ButtonGroup)`
   width: 100%;
@@ -49,7 +66,10 @@ const Header = ({
   <Navbar sticky="top" bg="light" variant="light" className={ "flex-column mb-2" }>
     <Container>
       <Col>
-        <Navbar.Text className={ "h2" }>{ config.title }</Navbar.Text>
+        <LogoContainer>
+          { config.logoImageUri && <Logo src={ config.logoImageUri } /> }
+          { config.title && <Title className={ "h1" }>{ config.title }</Title> }
+        </LogoContainer>
         <StyledButtonGroup aria-label="First group">
           <HomeButton
             variant="secondary"

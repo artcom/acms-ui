@@ -15,10 +15,11 @@ const TEMPLATE_KEY = "template"
 export const getVersion = state => state.version
 export const getOriginalContent = state => state.originalContent
 export const getChangedContent = state => state.changedContent
-export const getLanguages = state => state.config.languages || []
+export const getLanguages = state => state.config.languages
 export const getContentPath = state => state.config.contentPath
 export const getChildrenLabel = state => state.config.childrenLabel
 export const getFieldsLabel = state => state.config.fieldsLabel
+export const getLogoImageUri = state => state.config.logoImageUri
 export const getProgress = state => state.progress
 export const getUser = state => state.user
 export const getUsers = state => state.config.users
