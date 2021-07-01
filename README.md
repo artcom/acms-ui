@@ -18,19 +18,20 @@ Create a configuration file (e.g. `acmsConfig.json`) inside the [`acms-config`](
 
 ```json5
 {
-  "title": "ACMS",              // title shown in the header
-  "contentPath": "content",     // root directory containing the content data
-  "templatesPath": "templates", // root directory containing the (nested) template files
-  "childrenLabel": "Children",  // label shown above the children, default: "Children"
-  "fieldsLabel": "Fields",      // label shown above the fields, default: "Fields"
-  "saveLabel": "Save",          // label of the save button, default: "Save"
-  "languages": [                // list of supported languages, the first one is the default language
+  "title": "ACMS",                           // title shown in the header
+  "logoImageUri": "https://assets/logo.jpg", // logo shown in the header
+  "contentPath": "content",                  // root directory containing the content data
+  "templatesPath": "templates",              // root directory containing the (nested) template files
+  "childrenLabel": "Children",               // label shown above the children, default: "Children"
+  "fieldsLabel": "Fields",                   // label shown above the fields, default: "Fields"
+  "saveLabel": "Save",                       // label of the save button, default: "Save"
+  "languages": [                             // list of supported languages, the first one is the default language
     {
       "id": "en",
       "name": "English"
     }
   ],
-  "users": [                    // list of users to filter content based on allowList patterns
+  "users": [                                 // list of users to filter content based on allowList patterns
     {
       "id": "admin",
       "name": "Admin",
