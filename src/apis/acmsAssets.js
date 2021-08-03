@@ -1,5 +1,5 @@
 import axios from "axios"
-import URL from "url"
+import * as urlJoin from "url-join"
 
 export default class AcmsAssets {
   constructor(url) {
@@ -11,7 +11,8 @@ export default class AcmsAssets {
     if (!await this.exists(path)) {
       await this.api.put(path, file, options)
     }
-    return URL.resolve(this.url, path)
+
+    return urlJoin(this.url, path)
   }
 
   async exists(path) {
@@ -23,4 +24,3 @@ export default class AcmsAssets {
     }
   }
 }
-
