@@ -8,7 +8,10 @@ import StyledFormControl from "./styledFormControl"
 const MULTI_LINE_STYLE = { as: "textarea", rows: "3" }
 const SINGLE_LINE_STYLE = { type: "text" }
 
-const StringFormControl = styled(StyledFormControl)`
+const StringFormControl = styled(StyledFormControl).withConfig({
+  // eslint-disable-next-line no-unused-vars
+  shouldForwardProp: (prop, defaultValidatorFn) => !["textDirection", "isInvalid"].includes(prop),
+})`
     direction: ${props => props.textDirection};
 `
 
