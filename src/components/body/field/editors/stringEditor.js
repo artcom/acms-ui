@@ -15,7 +15,7 @@ const StringFormControl = styled(StyledFormControl)`
 export default function StringEditor({ field, onChange, textDirection }) {
   const maxLength = get(field, "maxLength", Infinity)
   const multiline = get(field, "multiline", false)
-  const valid = field.value.length <= get(field, "maxLength", Infinity)
+  const valid = field.value.length <= maxLength
 
   return (
     <>
