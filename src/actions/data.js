@@ -4,7 +4,6 @@ import { getChangedContent, selectTemplates, getVersion, getContentPath } from "
 import { showError } from "./error"
 import * as utils from "../utils"
 import { isLocalized } from "../utils/language"
-import defaultConfig from "../defaultConfig.json"
 
 export function loadData(acmsApi, acmsConfigPath) {
   return async dispatch => {
@@ -23,7 +22,7 @@ export function loadData(acmsApi, acmsConfigPath) {
       dispatch({
         type: "UPDATE_DATA",
         payload: {
-          config: { ...defaultConfig, ...config },
+          config,
           originalContent,
           changedContent,
           templates,

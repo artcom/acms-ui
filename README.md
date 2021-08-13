@@ -18,32 +18,38 @@ Create a configuration file (e.g. `acmsConfig.json`) inside the [`acms-config`](
 
 ```json5
 {
-  "title": "ACMS",                           // title shown in the header
-  "logoImageUri": "https://assets/logo.jpg", // logo shown in the header
-  "contentPath": "content",                  // root directory containing the content data
-  "templatesPath": "templates",              // root directory containing the (nested) template files
+  "title": "ACMS",                           // title shown in the header, default: null
+  "logoImageUri": "https://assets/logo.jpg", // logo shown in the header, default: null
+  "contentPath": "content",                  // root directory containing the content data, default: "content"
+  "templatesPath": "templates",              // root directory containing the (nested) template files, default: "templates"
   "childrenLabel": "Children",               // label shown above the children, default: "Children"
   "fieldsLabel": "Fields",                   // label shown above the fields, default: "Fields"
   "saveLabel": "Save",                       // label of the save button, default: "Save"
-  "languages": [                             // list of supported languages, the first one is the default language
+  "languages": [                             // list of supported languages, the first one is the default language, default: shown here
     {
-      "id": "en",
-      "name": "English"
+      "id": "en",                            // unique language id
+      "name": "English",                     // language name, default: id
+      "textDirection": "ltr"                 // direction of the text, default: "ltr", see https://developer.mozilla.org/de/docs/Web/CSS/direction
     }
   ],
-  "users": [                                 // list of users to filter content based on allowList patterns
+  "users": [                                 // list of users, default: shown here
     {
-      "id": "admin",
-      "name": "Admin",
-      "allowList": [
-        "**"
-      ]
+      "id": "admin",                         // unique user id
+      "name": "Admin",                       // user name, default: id
+      "permissions": {                       // permission settings, default: shown here
+        "include": [
+          "**"                               // list of glob patterns defining which fields to include, default: shown here
+        ],
+        "exclude": []                        // list of glob patterns defining which fields to exclude, default: shown here
+      }
     }
   ]
 }
 ```
 
-If a property is omitted the default is used from [here](src/defaultConfig.json).
+### User Management
+
+The user management is **not safe** and only meant to provide convenience views on the content. Its possible to filter fields and children by path (see `users/permissions`) to separate *internal* data.
 
 ### Templates
 

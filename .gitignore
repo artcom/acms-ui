@@ -1,7 +1,4 @@
-node_modules
-npm-debug.log
-stats.json
-
-dist
-artifacts
-config.json
+/node_modules
+/dist
+/stats.json
+/config.json

@@ -28,11 +28,11 @@ export const getNewEntity = state => state.newEntity
 export const getRenamedEntity = state => state.renamedEntity
 export const getTemplates = state => state.templates
 
-export const selectAllowList = createSelector(
+export const selectPermissions = createSelector(
   [getUser, getUsers],
   (user, users) => {
     const userConfig = users.find(({ id }) => id === user)
-    return userConfig && userConfig.allowList ? userConfig.allowList : ["**"]
+    return userConfig ? userConfig.permissions : users[0].permissions
   }
 )
 
@@ -164,8 +164,8 @@ const selectFields = createSelector(
 )
 
 export const selectAllowedFields = createSelector(
-  [selectFields, selectAllowList],
-  (fields, allowList) => fields.filter(field => isAllowed(allowList, field.path))
+  [selectFields, selectPermissions],
+  (fields, permissions) => fields.filter(field => isAllowed(field.path, permissions))
 )
 
 const selectChildren = createSelector(
@@ -209,8 +209,8 @@ const selectChildren = createSelector(
 )
 
 export const selectAllowedChildren = createSelector(
-  [selectChildren, selectAllowList],
-  (children, allowList) => children.filter(child => isAllowed(allowList, child.path))
+  [selectChildren, selectPermissions],
+  (children, permissions) => children.filter(child => isAllowed(child.path, permissions))
 )
 
 const selectFixedChildren = createSelector(
@@ -266,6 +266,6 @@ function subtitle(content, { subtitleField, fields }, languages) {
 }
 
 export const selectAllowedFixedChildren = createSelector(
-  [selectFixedChildren, selectAllowList],
-  (children, allowList) => children.filter(child => isAllowed(allowList, child.path))
+  [selectFixedChildren, selectPermissions],
+  (children, permissions) => children.filter(child => isAllowed(child.path, permissions))
 )

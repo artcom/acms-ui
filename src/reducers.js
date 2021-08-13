@@ -5,12 +5,13 @@ import get from "lodash/get"
 import set from "lodash/set"
 import unset from "lodash/unset"
 
+import resolveConfig from "./resolveConfig"
 import { createFieldValue } from "./utils"
 
 export const config = produce((draft, { type, payload }) => {
   switch (type) {
     case "UPDATE_DATA":
-      return payload.config
+      return resolveConfig(payload.config)
   }
 }, null)
 
