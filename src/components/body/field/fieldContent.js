@@ -10,6 +10,7 @@ import { uploadFile } from "../../../actions/upload"
 import { changeValue } from "../../../actions/value"
 
 import editors from "./editors"
+import CharacterCount from "./characterCount"
 
 const StyledListGroupItem = styled(ListGroup.Item)`
   padding: 0px;
@@ -18,6 +19,8 @@ const StyledListGroupItem = styled(ListGroup.Item)`
 const StyledCardHeader = styled(Card.Header)`
   padding-top: 0.3rem;
   padding-bottom: 0.3rem;
+  display: flex;
+  justify-content: space-between;
 `
 
 const FieldContent = ({ acmsAssets, dispatch, field, languages }) => {
@@ -46,6 +49,7 @@ function renderLocalizedEditors(field, languages, acmsAssets, dispatch, Editor) 
       <StyledListGroupItem key={ languageId }>
         <StyledCardHeader className="text-muted">
           { name }
+          { field.maxLength ? <CharacterCount field={ field } languageId={ languageId } /> : "" }
         </StyledCardHeader>
 
         { renderEditor(languageField, textDirection, acmsAssets, dispatch, Editor) }

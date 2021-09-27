@@ -1,30 +1,17 @@
 import React from "react"
 import styled from "styled-components"
 
-const Flexbox = styled.div`
-    display: flex;
+const MutedText = styled.div`
+  color: #6c757d;
 `
 
-const FlexItem = styled.span`
-    margin-left: 1.3rem;
-`
-
-const CharacterCount = ({ field }) => {
-  const values = []
-
-  if (field.isLocalized) {
-    Object.values(field.value).forEach(value => values.push(value.length))
-  } else {
-    values.push(field.value.length)
-  }
-
+const CharacterCount = ({ field, languageId }) => {
   if (field.isLocalized) {
     return (
-      <Flexbox>
-        { values.map((value, index) => <FlexItem key={ index } > { `${field.maxLength - value}  / ${field.maxLength}` } </FlexItem>) }
-      </Flexbox>
+      <MutedText> { `${field.maxLength - field.value[languageId].length}  / ${field.maxLength}` } </MutedText>
     )
   }
-  return <div> { `${field.maxLength - values[0]}  / ${field.maxLength}` } </div>
+  return <MutedText> { `${field.maxLength - field.value.length}  / ${field.maxLength}` } </MutedText>
 }
+
 export default CharacterCount
