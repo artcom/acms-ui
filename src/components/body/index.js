@@ -22,7 +22,8 @@ import {
   selectAllowedChildren,
   selectAllowedFields,
   getChildrenLabel,
-  getFieldsLabel
+  getFieldsLabel,
+  getTextDirection
 } from "../../selectors"
 
 const AddButton = styled(ListGroupItem)`
@@ -40,6 +41,7 @@ function mapStateToProps(state) {
     fixedChildren: selectAllowedFixedChildren(state),
     fields: selectAllowedFields(state),
     languages: getLanguages(state),
+    textDirection: getTextDirection(state),
     childrenLabel: getChildrenLabel(state),
     fieldsLabel: getFieldsLabel(state)
   }
@@ -53,6 +55,7 @@ function Body({
   dispatch,
   fields,
   languages,
+  textDirection,
   childrenLabel,
   fieldsLabel }) {
   return (
@@ -69,7 +72,7 @@ function Body({
 
       <Col md={ 8 }>
         { fields.length > 0 && <h4>{ fieldsLabel }</h4> }
-        { renderFields(fields, languages, acmsAssets, dispatch) }
+        { renderFields(fields, languages, textDirection, acmsAssets, dispatch) }
       </Col>
     </Row>
   )
@@ -128,12 +131,13 @@ function renderChildren(children, dispatch, canHaveChildren) {
   )
 }
 
-function renderFields(fields, languages, acmsAssets, dispatch) {
+function renderFields(fields, languages, textDirection, acmsAssets, dispatch) {
   return fields.map(field =>
     <Field
       key={ field.id }
       field={ field }
       languages={ languages }
+      textDirection={ textDirection }
       acmsAssets={ acmsAssets }
       dispatch={ dispatch } />
   )

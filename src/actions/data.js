@@ -1,9 +1,10 @@
+/* eslint-disable no-param-reassign */
+
 import { produce } from "immer"
 import isPlainObject from "lodash/isPlainObject"
 import { getChangedContent, selectTemplates, getVersion, getContentPath } from "../selectors"
 import { showError } from "./error"
 import * as utils from "../utils"
-import { isLocalized } from "../utils/language"
 
 export function loadData(acmsApi, acmsConfigPath) {
   return async dispatch => {
@@ -16,7 +17,7 @@ export function loadData(acmsApi, acmsConfigPath) {
       ])
 
       const changedContent = produce(originalContent,
-        draft => fixContent(originalContent, draft, templates, config.languages)
+        draft => fixContent(originalContent, draft, templates)
       )
 
       dispatch({
@@ -36,22 +37,24 @@ export function loadData(acmsApi, acmsConfigPath) {
   }
 }
 
-function fixContent(content, draft, templates, languages) {
+function fixContent(content, draft, templates) {
   const { template, ...allEntries } = content
   const { fields = [], fixedChildren = [], children = [] } = utils.getTemplate(template, templates)
 
   // fix invalid fields
   fields.forEach(field => {
-    if (isLocalized(content[field.id], languages)) {
-      for (const [language, value] of Object.entries(content[field.id])) {
-        if (!utils.isValidField(value, field)) {
-          // eslint-disable-next-line no-param-reassign
-          draft[field.id][language] = utils.createFieldValue(field)
+    if (field.localization) {
+      draft[field.id] = {}
+      for (const locale of field.localization) {
+        const value = content[field.id][locale]
+        if (utils.isValidField(value, field)) {
+          draft[field.id][locale] = value
+        } else {
+          draft[field.id][locale] = utils.createFieldValue(field)
         }
       }
     } else {
       if (!utils.isValidField(content[field.id], field)) {
-        // eslint-disable-next-line no-param-reassign
         draft[field.id] = utils.createFieldValue(field)
       }
     }
@@ -60,10 +63,9 @@ function fixContent(content, draft, templates, languages) {
   // fix fixedChildren
   fixedChildren.forEach(child => {
     if (!isPlainObject(content[child.id])) {
-      // eslint-disable-next-line no-param-reassign
       draft[child.id] = utils.createChildValue(child.template, templates)
     } else {
-      fixContent(content[child.id], draft[child.id], templates, languages)
+      fixContent(content[child.id], draft[child.id], templates)
     }
   })
 
@@ -73,9 +75,9 @@ function fixContent(content, draft, templates, languages) {
   additionalChildIds.forEach(id => {
     if (!children.includes(content[id].template)) {
       // delete children with invalid template
-      delete draft[id] // eslint-disable-line no-param-reassign
+      delete draft[id]
     } else {
-      fixContent(content[id], draft[id], templates, languages)
+      fixContent(content[id], draft[id], templates)
     }
   })
 }

@@ -25,7 +25,8 @@ Create a configuration file (e.g. `acmsConfig.json`) inside the [`acms-config`](
   "childrenLabel": "Children",               // label shown above the children, default: "Children"
   "fieldsLabel": "Fields",                   // label shown above the fields, default: "Fields"
   "saveLabel": "Save",                       // label of the save button, default: "Save"
-  "languages": [                             // list of supported languages, the first one is the default language, default: shown here
+  "textDirection": "ltr",                    // optional text direction for non localized text, default: "ltr", see https://developer.mozilla.org/de/docs/Web/CSS/
+  "languages": [                             // optional language configuration
     {
       "id": "en",                            // unique language id
       "name": "English",                     // language name, default: id
@@ -49,7 +50,7 @@ Create a configuration file (e.g. `acmsConfig.json`) inside the [`acms-config`](
 
 ### User Management
 
-The user management is **not safe** and only meant to provide convenience views on the content. Its possible to filter fields and children by path (see `users/permissions`) to separate *internal* data.
+The user management is **not safe** and only meant to provide convenience views on the content. Its possible to filter fields and children by path (see `users/permissions`) to filter *internal* data.
 
 ### Templates
 
@@ -66,12 +67,13 @@ Template files specify the structure of the content data while the actual values
 #### Example
 ```json5
 {
-  "fields": [                      // optional list of fields
+  "fields": [                            // optional list of fields
         {
-            "id": "title",         // unique id within the whole template
-            "name": "Main Title",  // optional display name shown in the ACMS UI, default startCase(id)
-            "type": "string",      // field type see below
-            "maxLength": 8         // optional type specific properties
+            "id": "title",               // unique id within the whole template
+            "name": "Main Title",        // optional display name shown in the ACMS UI, default startCase(id)
+            "type": "string",            // field type see below
+            "maxLength": 8,              // optional type specific properties
+            "localization": ["en", "ar"] // optional localization
         },
         {
             "id": "enabled",
@@ -84,11 +86,11 @@ Template files specify the structure of the content data while the actual values
             "type": "number"
         }
   ]
-  "fixedChildren": [               // optional list of fixed/named children
+  "fixedChildren": [                     // optional list of fixed/named children
     {
-      "id": "frontScreen",         // unique id within the whole template
-      "name": "Front of the Entry",// optional display name shown in the ACMS UI, default startCase(id)
-      "template": "location"       // template id/path
+      "id": "frontScreen",               // unique id within the whole template
+      "name": "Front of the Entry",      // optional display name shown in the ACMS UI, default startCase(id)
+      "template": "location"             // template id/path
     },
     {
       "id": "backScreen",
@@ -96,12 +98,12 @@ Template files specify the structure of the content data while the actual values
       "template": "location"
     }
   ],
-  "children": [                    // optional list of of allowed templates for the children 
+  "children": [                          // optional list of of allowed templates for the children 
     "template1",
     "template2"
   ],
-  "enabledField": "enabled",       // optional field reference defining if the instance is shown enabled or disabled in its parent children list
-  "subtitleField": "title"         // optional field reference defining a subtitle shown in its parent children list
+  "enabledField": "enabled",             // optional field reference defining if the instance is shown enabled or disabled in its parent children list
+  "subtitleField": "title"               // optional field reference defining a subtitle shown in its parent children list
 }
 ```
 
