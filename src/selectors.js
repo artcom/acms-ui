@@ -102,19 +102,6 @@ export const selectNewEntityValues = createSelector(
   (newEntity, templates) => utils.createEntry(newEntity, templates)
 )
 
-export const selectFieldLocalization = state => {
-  if (!state.fieldLocalization) {
-    return {
-      languageIds: {},
-      isVisible: false
-    }
-  }
-
-  return { ...state.fieldLocalization,
-    isVisible: true
-  }
-}
-
 export const selectOriginalEntity = createSelector(
   [getOriginalContent, getPath],
   (originalContent, path) => path.length ? get(originalContent, path) : originalContent

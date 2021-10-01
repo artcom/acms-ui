@@ -5,7 +5,6 @@ import Dropdown from "react-bootstrap/Dropdown"
 import DropdownItem from "react-bootstrap/DropdownItem"
 import styled from "styled-components"
 
-import { startFieldLocalization } from "../../../actions/localization"
 import { undoChanges } from "../../../actions/value"
 
 import ToggleButton from "../../toggleButton"
@@ -26,11 +25,6 @@ const FieldHeader = ({ field, dispatch }) =>
           disabled={ !field.hasChanged || field.isNew }
           onSelect={ () => dispatch(undoChanges(field.path)) }>
           Undo Changes
-        </DropdownItem>
-        <DropdownItem
-          key="localize"
-          onSelect={ () => dispatch(startFieldLocalization(field)) }>
-          Localize...
         </DropdownItem>
       </Dropdown.Menu>
     </StyledDropdown>
