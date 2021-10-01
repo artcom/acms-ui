@@ -22,7 +22,8 @@ import {
   selectAllowedChildren,
   selectAllowedFields,
   getChildrenLabel,
-  getFieldsLabel
+  getFieldsLabel,
+  selectTemplateId
 } from "../../selectors"
 
 const AddButton = styled(ListGroupItem)`
@@ -36,6 +37,7 @@ export default connect(mapStateToProps)(Body)
 function mapStateToProps(state) {
   return {
     canHaveChildren: selectTemplateChildren(state).length > 0,
+    templateId: selectTemplateId(state),
     children: selectAllowedChildren(state),
     fixedChildren: selectAllowedFixedChildren(state),
     fields: selectAllowedFields(state),
@@ -48,6 +50,7 @@ function mapStateToProps(state) {
 function Body({
   canHaveChildren,
   children,
+  templateId,
   fixedChildren,
   acmsAssets,
   dispatch,
@@ -55,6 +58,10 @@ function Body({
   languages,
   childrenLabel,
   fieldsLabel }) {
+  const templateIdSplit = templateId.split("/")
+  let shouldShow = false
+  if (templateIdSplit.length >= 2 && fields.length >= 1) {shouldShow = true}
+
   return (
     <Row>
       <Col md={ 4 }>
@@ -68,7 +75,12 @@ function Body({
       </Col>
 
       <Col md={ 8 }>
-        { fields.length > 0 && <h4>{ fieldsLabel }</h4> }
+        <div className="container">
+          <div className="row">
+            { fields.length > 0 && <h4>{ fieldsLabel }</h4> }
+            { shouldShow ? <h4 className="text-muted col-sm" data-toggle="tooltip" title={ templateId }> { `(${templateIdSplit[templateIdSplit.length - 1]})` } </h4> : "" }
+          </div>
+        </div>
         { renderFields(fields, languages, acmsAssets, dispatch) }
       </Col>
     </Row>

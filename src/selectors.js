@@ -120,6 +120,11 @@ export const selectOriginalEntity = createSelector(
   (originalContent, path) => path.length ? get(originalContent, path) : originalContent
 )
 
+export const selectTemplateId = createSelector(
+  [selectChangedEntity],
+  changedEntity => changedEntity[TEMPLATE_KEY]
+)
+
 export const selectTemplate = createSelector(
   [selectTemplates, selectChangedEntity],
   (templates, changedEntity) => utils.getTemplate(changedEntity[TEMPLATE_KEY], templates)
