@@ -60,6 +60,12 @@ export function createFieldValue(field) {
       const max = isNumber(field.max) ? field.max : Infinity
       return Math.max(min, Math.min(0, max))
     }
+    case "integer":
+    {
+      const min = isNumber(field.min) ? field.min : -Infinity
+      const max = isNumber(field.max) ? field.max : Infinity
+      return Math.max(min, Math.min(0, max))
+    }
 
     default:
       return null
@@ -83,6 +89,8 @@ export function isValidField(value, field) {
     case "string":
       return isString(value)
     case "number":
+      return isNumber(value)
+    case "integer":
       return isNumber(value)
     default:
       return true
