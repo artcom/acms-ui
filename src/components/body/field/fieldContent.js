@@ -31,17 +31,17 @@ const FieldContent = ({ acmsAssets, dispatch, field, languages, textDirection })
 }
 
 function renderLocalizedEditors(field, languages, textDirection, acmsAssets, dispatch, Editor) {
-  const items = field.localization.map(locale => {
+  const items = field.localization.map(id => {
     const languageField = {
       ...field,
-      path: [...field.path, locale],
-      value: field.value[locale]
+      path: [...field.path, id],
+      value: field.value[id]
     }
 
-    const language = languages.find(({ id }) => id === locale) || { name: locale, textDirection }
+    const language = languages.find(lang => lang.id === id) || { name: id, textDirection }
 
     return (
-      <StyledListGroupItem key={ locale }>
+      <StyledListGroupItem key={ id }>
         <StyledCardHeader className="text-muted">
           { language.name }
         </StyledCardHeader>

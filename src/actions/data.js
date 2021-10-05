@@ -45,12 +45,12 @@ function fixContent(content, draft, templates) {
   fields.forEach(field => {
     if (field.localization) {
       draft[field.id] = {}
-      for (const locale of field.localization) {
-        const value = content[field.id][locale]
+      for (const id of field.localization) {
+        const value = content[field.id][id]
         if (utils.isValidField(value, field)) {
-          draft[field.id][locale] = value
+          draft[field.id][id] = value
         } else {
-          draft[field.id][locale] = utils.createFieldValue(field)
+          draft[field.id][id] = utils.createFieldValue(field)
         }
       }
     } else {
