@@ -28,7 +28,7 @@ Create a configuration file (e.g. `acmsConfig.json`) inside the [`acms-config`](
   "textDirection": "ltr",                    // optional text direction for non localized text, default: "ltr", see https://developer.mozilla.org/de/docs/Web/CSS/
   "languages": [                             // optional language configuration
     {
-      "id": "en",                            // unique language id
+      "id": "en",                            // unique language id (e.g. "en"), see language subtag registry: https://www.iana.org/assignments/language-subtag-registry/language-subtag-registry
       "name": "English",                     // language name, default: id
       "textDirection": "ltr"                 // direction of the text, default: "ltr", see https://developer.mozilla.org/de/docs/Web/CSS/direction
     }
