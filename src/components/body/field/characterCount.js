@@ -6,7 +6,10 @@ const MutedText = styled.div`
 `
 
 const CharacterCount = ({ field, languageId }) => {
-  if (field.isLocalized) {
+  console.log("field: ", field)
+  console.log("field.value @ language id: ", field.value[languageId])
+  
+  if (field.hasOwnProperty("localization")) {
     return (
       <MutedText> { `${field.maxLength - field.value[languageId].length}  / ${field.maxLength}` } </MutedText>
     )
