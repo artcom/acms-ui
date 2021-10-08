@@ -8,15 +8,27 @@ import styled from "styled-components"
 import { undoChanges } from "../../../actions/value"
 
 import ToggleButton from "../../toggleButton"
+import CharacterCount from "./characterCount"
 
 const StyledDropdown = styled(Dropdown)`
-  float: right;
+  margin-left: 0.5rem;
+`
+
+const Flexbox = styled.div`
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+`
+
+const Fieldname = styled.div`
+  margin-right: auto;
 `
 
 const FieldHeader = ({ field, dispatch }) =>
-  <div>
-    { field.name ? field.name : startCase(field.id) }
-
+  <Flexbox>
+    <Fieldname > { field.name ? field.name : startCase(field.id) } </Fieldname>
+    { field.maxLength && !field.localization &&
+    <CharacterCount value={ field.value } maxLength={ field.maxLength } /> }
     <StyledDropdown id={ field.id }>
       <Dropdown.Toggle as={ ToggleButton } />
       <Dropdown.Menu>
@@ -28,6 +40,6 @@ const FieldHeader = ({ field, dispatch }) =>
         </DropdownItem>
       </Dropdown.Menu>
     </StyledDropdown>
-  </div>
+  </Flexbox>
 
 export default FieldHeader
