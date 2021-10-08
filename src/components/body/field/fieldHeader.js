@@ -27,7 +27,8 @@ const Fieldname = styled.div`
 const FieldHeader = ({ field, dispatch }) =>
   <Flexbox>
     <Fieldname > { field.name ? field.name : startCase(field.id) } </Fieldname>
-    { field.maxLength && !field.hasOwnProperty("localization") ? <CharacterCount field={ field } /> : "" }
+    { field.maxLength && !field.localization &&
+    <CharacterCount value={ field.value } maxLength={ field.maxLength } /> }
     <StyledDropdown id={ field.id }>
       <Dropdown.Toggle as={ ToggleButton } />
       <Dropdown.Menu>

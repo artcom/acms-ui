@@ -47,7 +47,8 @@ function renderLocalizedEditors(field, languages, textDirection, acmsAssets, dis
       <StyledListGroupItem key={ id }>
         <StyledCardHeader className="text-muted">
           { language.name }
-          { field.maxLength ? <CharacterCount field={ field } languageId={ language.id } /> : "" }
+          { field.maxLength &&
+          <CharacterCount value={ languageField.value } maxLength={ field.maxLength } /> }
         </StyledCardHeader>
 
         { renderEditor(languageField, language.textDirection, acmsAssets, dispatch, Editor) }
