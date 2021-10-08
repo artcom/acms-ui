@@ -4,8 +4,6 @@ import Card from "react-bootstrap/Card"
 import ListGroup from "react-bootstrap/ListGroup"
 import styled from "styled-components"
 
-import { getDefaultLanguage, getLanguage } from "../../../utils/language"
-
 import { uploadFile } from "../../../actions/upload"
 import { changeValue } from "../../../actions/value"
 
@@ -23,36 +21,36 @@ const StyledCardHeader = styled(Card.Header)`
   justify-content: space-between;
 `
 
-const FieldContent = ({ acmsAssets, dispatch, field, languages }) => {
+const FieldContent = ({ acmsAssets, dispatch, field, languages, textDirection }) => {
   const Editor = editors[field.type]
 
   if (!Editor) {
     return <span>Unknown field type <code>{ field.type }</code></span>
   }
 
-  return field.isLocalized
-    ? renderLocalizedEditors(field, languages, acmsAssets, dispatch, Editor)
-    : renderEditor(field, getDefaultLanguage(languages).textDirection, acmsAssets, dispatch, Editor)
+  return field.localization
+    ? renderLocalizedEditors(field, languages, textDirection, acmsAssets, dispatch, Editor)
+    : renderEditor(field, textDirection, acmsAssets, dispatch, Editor)
 }
 
-function renderLocalizedEditors(field, languages, acmsAssets, dispatch, Editor) {
-  const items = Object.keys(field.value).map(languageId => {
+function renderLocalizedEditors(field, languages, textDirection, acmsAssets, dispatch, Editor) {
+  const items = field.localization.map(id => {
     const languageField = {
       ...field,
-      path: [...field.path, languageId],
-      value: field.value[languageId]
+      path: [...field.path, id],
+      value: field.value[id]
     }
 
-    const { name, textDirection } = getLanguage(languageId, languages)
+    const language = languages.find(lang => lang.id === id) || { name: id, textDirection }
 
     return (
-      <StyledListGroupItem key={ languageId }>
+      <StyledListGroupItem key={ id }>
         <StyledCardHeader className="text-muted">
-          { name }
+          { language.name }
           { field.maxLength ? <CharacterCount field={ field } languageId={ languageId } /> : "" }
         </StyledCardHeader>
 
-        { renderEditor(languageField, textDirection, acmsAssets, dispatch, Editor) }
+        { renderEditor(languageField, language.textDirection, acmsAssets, dispatch, Editor) }
       </StyledListGroupItem>
     )
   })

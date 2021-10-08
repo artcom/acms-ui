@@ -9,7 +9,6 @@ import Error from "./error"
 import Header from "./header"
 import EntityCreationModal from "./modals/entityCreationModal"
 import EntityRenamingModal from "./modals/entityRenamingModal"
-import FieldLocalizationModal from "./modals/fieldLocalizationModal"
 
 export default connect(mapStateToProps)(Application)
 
@@ -37,7 +36,6 @@ function Application(props) {
           <Body acmsAssets={ props.acmsAssets } />
           <EntityCreationModal />
           <EntityRenamingModal />
-          <FieldLocalizationModal />
         </>
         }
       </Container>

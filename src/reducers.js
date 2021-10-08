@@ -1,12 +1,10 @@
 /* eslint-disable no-param-reassign */
 import { original, produce } from "immer"
-import isUndefined from "lodash/isUndefined"
 import get from "lodash/get"
 import set from "lodash/set"
 import unset from "lodash/unset"
 
 import resolveConfig from "./resolveConfig"
-import { createFieldValue } from "./utils"
 
 export const config = produce((draft, { type, payload }) => {
   switch (type) {
@@ -70,37 +68,6 @@ export const changedContent = produce((draft, { type, payload }) => {
     case "DELETE_ENTITY":
       unset(draft, payload.path)
       break
-    case "FINISH_FIELD_LOCALIZATION": {
-      // eslint-disable-next-line no-shadow
-      const { defaultLanguageId, fieldLocalization } = payload
-      const { field, languageIds } = fieldLocalization
-      const selectedLanguageIds = Object.keys(languageIds).filter(id => languageIds[id])
-      const shouldBeLocalized = selectedLanguageIds.length > 1
-
-      if (field.isLocalized) {
-        if (shouldBeLocalized) {
-          // Update localization
-          const newValue = {}
-          for (const id of selectedLanguageIds) {
-            newValue[id] = isUndefined(field.value[id]) ? createFieldValue(field) : field.value[id]
-          }
-          set(draft, field.path, newValue)
-        } else {
-          // Unlocalize field
-          const defaultLanguageValue = get(original(draft), [...field.path, defaultLanguageId])
-          set(draft, field.path, defaultLanguageValue)
-        }
-      } else {
-        if (shouldBeLocalized) {
-          // Localize field
-          const newValue = {}
-          for (const id of selectedLanguageIds) {
-            newValue[id] = id === defaultLanguageId ? field.value : createFieldValue(field)
-          }
-          set(draft, field.path, newValue)
-        }
-      }
-    }
   }
 }, null)
 
@@ -128,20 +95,6 @@ export const renamedEntity = produce((draft, { type, payload }) => {
       break
     case "FINISH_ENTITY_RENAMING":
     case "CANCEL_ENTITY_RENAMING":
-      return null
-  }
-}, null)
-
-export const fieldLocalization = produce((draft, { type, payload }) => {
-  switch (type) {
-    case "START_FIELD_LOCALIZATION":
-      return payload
-
-    case "UPDATE_FIELD_LOCALIZATION":
-      draft.languageIds[payload.languageId] = payload.hasLocalization
-      break
-    case "FINISH_FIELD_LOCALIZATION":
-    case "CANCEL_FIELD_LOCALIZATION":
       return null
   }
 }, null)

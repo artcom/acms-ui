@@ -23,7 +23,7 @@ export function getTemplate(id, templates) {
 }
 
 export function createEntry(entry, templates) {
-  return entry.type ? createFieldValue(entry) : createChildValue(entry.template, templates)
+  return entry.type ? createField(entry) : createChildValue(entry.template, templates)
 }
 
 export function createChildValue(template, templates) {
@@ -35,6 +35,17 @@ export function createChildValue(template, templates) {
   })
 
   return child
+}
+
+export function createField(field) {
+  if (field.localization) {
+    return field.localization.reduce((localizedField, id) => {
+      localizedField[id] = createFieldValue(field) // eslint-disable-line no-param-reassign
+      return localizedField
+    }, {})
+  } else {
+    return createFieldValue(field)
+  }
 }
 
 export function createFieldValue(field) {
