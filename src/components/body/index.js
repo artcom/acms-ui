@@ -23,7 +23,8 @@ import {
   selectAllowedFields,
   getChildrenLabel,
   getFieldsLabel,
-  selectTemplateId
+  selectTemplateId,
+  getTextDirection
 } from "../../selectors"
 
 const AddButton = styled(ListGroupItem)`
@@ -42,6 +43,7 @@ function mapStateToProps(state) {
     fixedChildren: selectAllowedFixedChildren(state),
     fields: selectAllowedFields(state),
     languages: getLanguages(state),
+    textDirection: getTextDirection(state),
     childrenLabel: getChildrenLabel(state),
     fieldsLabel: getFieldsLabel(state)
   }
@@ -56,6 +58,7 @@ function Body({
   dispatch,
   fields,
   languages,
+  textDirection,
   childrenLabel,
   fieldsLabel }) {
   const templateIdSplit = templateId.split("/")
@@ -81,7 +84,7 @@ function Body({
             { shouldShow ? <h4 className="text-muted col-sm" data-toggle="tooltip" title={ templateId }> { `(${templateIdSplit[templateIdSplit.length - 1]})` } </h4> : "" }
           </div>
         </div>
-        { renderFields(fields, languages, acmsAssets, dispatch) }
+        { renderFields(fields, languages, textDirection, acmsAssets, dispatch) }
       </Col>
     </Row>
   )
@@ -140,12 +143,13 @@ function renderChildren(children, dispatch, canHaveChildren) {
   )
 }
 
-function renderFields(fields, languages, acmsAssets, dispatch) {
+function renderFields(fields, languages, textDirection, acmsAssets, dispatch) {
   return fields.map(field =>
     <Field
       key={ field.id }
       field={ field }
       languages={ languages }
+      textDirection={ textDirection }
       acmsAssets={ acmsAssets }
       dispatch={ dispatch } />
   )
