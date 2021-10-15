@@ -14,7 +14,6 @@ export default {
   markdown: StringEditor,
   integer: IntegerEditor,
   number: NumberEditor,
-  integer: IntegerEditor,
   string: StringEditor,
   video: AssetEditor
 }

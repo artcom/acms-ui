@@ -11,7 +11,7 @@ export default function IntegerEditor({ field, onChange }) {
   function onChangeInteger(event) {
     onChange({
       target: {
-        value: parseInt(event.target.value, 10)
+        value: /^[-]?\d*$/.test(event.target.value) ? event.target.value : field.value
       }
     })
   }
@@ -20,7 +20,7 @@ export default function IntegerEditor({ field, onChange }) {
     <>
       <StyledFormControl
         isInvalid={ !valid }
-        type="number"
+        type="text"
         value={ field.value }
         onChange={ onChangeInteger } />
 
