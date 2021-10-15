@@ -7,6 +7,7 @@ export default styled(Form.Control)`
     outline: none; 
     width: 100%;
     padding: 10px 20px;
+    ${props => props.direction && `direction: ${props.direction};`}
 
     :focus {
         border: 0px;

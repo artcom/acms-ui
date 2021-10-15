@@ -5,7 +5,8 @@ const defaultProperties = {
   templatesPath: "templates",
   childrenLabel: "Children",
   fieldsLabel: "Fields",
-  saveLabel: "Save"
+  saveLabel: "Save",
+  textDirection: "ltr"
 }
 
 const defaultInclude = [
@@ -29,35 +30,23 @@ const defaultUsers = [
   defaultUser
 ]
 
-const defaultLanguage = {
-  id: "en",
-  name: "English",
-  textDirection: "ltr"
-}
-
-const defaultLanguages = [
-  defaultLanguage
-]
+const defaultLanguages = []
 
 export default function resolveConfig({ users, languages, ...properties }) {
+  const resolvedProperties = { ...defaultProperties, ...properties }
   return {
-    ...defaultProperties,
-    ...properties,
-    languages: resolveLanguages(languages),
+    ...resolvedProperties,
+    languages: resolveLanguages(languages, resolvedProperties.textDirection),
     users: resolveUsers(users)
   }
 }
 
-function resolveLanguages(languages) {
-  if (!Array.isArray(languages) || languages.length === 0) {
-    return defaultLanguages
-  }
-
-  return languages.map(language => resolveLanguage(language))
-}
-
-function resolveLanguage({ id, name = id, textDirection = defaultLanguage.textDirection }) {
-  return { id, name, textDirection }
+function resolveLanguages(languages, defaultTextDirection) {
+  return Array.isArray(languages)
+    ? languages.map(
+      ({ id, name = id, textDirection = defaultTextDirection }) => ({ id, name, textDirection })
+    )
+    : defaultLanguages
 }
 
 function resolveUsers(users) {

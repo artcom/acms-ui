@@ -23,7 +23,8 @@ import {
   selectAllowedFields,
   getChildrenLabel,
   getFieldsLabel,
-  selectTemplateId
+  selectTemplateId,
+  getTextDirection
 } from "../../selectors"
 
 const AddButton = styled(ListGroupItem)`
@@ -42,6 +43,7 @@ function mapStateToProps(state) {
     fixedChildren: selectAllowedFixedChildren(state),
     fields: selectAllowedFields(state),
     languages: getLanguages(state),
+    textDirection: getTextDirection(state),
     childrenLabel: getChildrenLabel(state),
     fieldsLabel: getFieldsLabel(state)
   }
@@ -56,12 +58,9 @@ function Body({
   dispatch,
   fields,
   languages,
+  textDirection,
   childrenLabel,
   fieldsLabel }) {
-  const templateIdSplit = templateId.split("/")
-  let shouldShow = false
-  if (templateIdSplit.length >= 2 && fields.length >= 1) {shouldShow = true}
-
   return (
     <Row>
       <Col md={ 4 }>
@@ -75,13 +74,14 @@ function Body({
       </Col>
 
       <Col md={ 8 }>
-        <div className="container">
-          <div className="row">
-            { fields.length > 0 && <h4>{ fieldsLabel }</h4> }
-            { shouldShow ? <h4 className="text-muted col-sm" data-toggle="tooltip" title={ templateId }> { `(${templateIdSplit[templateIdSplit.length - 1]})` } </h4> : "" }
-          </div>
+        <div className="d-flex align-items-center">
+          { fields.length > 0 && <h4 className="pr-2">{ fieldsLabel }</h4> }
+          { templateId.split("/").length > 1 && fields.length > 0 &&
+          <small className="text-muted" data-toggle="tooltip" title={ templateId }>
+            { `(${templateId.split("/").at(-1)})` }
+          </small> }
         </div>
-        { renderFields(fields, languages, acmsAssets, dispatch) }
+        { renderFields(fields, languages, textDirection, acmsAssets, dispatch) }
       </Col>
     </Row>
   )
@@ -140,12 +140,13 @@ function renderChildren(children, dispatch, canHaveChildren) {
   )
 }
 
-function renderFields(fields, languages, acmsAssets, dispatch) {
+function renderFields(fields, languages, textDirection, acmsAssets, dispatch) {
   return fields.map(field =>
     <Field
       key={ field.id }
       field={ field }
       languages={ languages }
+      textDirection={ textDirection }
       acmsAssets={ acmsAssets }
       dispatch={ dispatch } />
   )

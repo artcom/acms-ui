@@ -6,7 +6,6 @@ import isUndefined from "lodash/isUndefined"
 import mapValues from "lodash/mapValues"
 import startCase from "lodash/startCase"
 import { evaluate } from "./utils/condition"
-import { isLocalized } from "./utils/language"
 import { isAllowed } from "./utils/permission"
 import * as utils from "./utils"
 
@@ -20,6 +19,7 @@ export const getContentPath = state => state.config.contentPath
 export const getChildrenLabel = state => state.config.childrenLabel
 export const getFieldsLabel = state => state.config.fieldsLabel
 export const getLogoImageUri = state => state.config.logoImageUri
+export const getTextDirection = state => state.config.textDirection
 export const getProgress = state => state.progress
 export const getUser = state => state.user
 export const getUsers = state => state.config.users
@@ -102,19 +102,6 @@ export const selectNewEntityValues = createSelector(
   (newEntity, templates) => utils.createEntry(newEntity, templates)
 )
 
-export const selectFieldLocalization = state => {
-  if (!state.fieldLocalization) {
-    return {
-      languageIds: {},
-      isVisible: false
-    }
-  }
-
-  return { ...state.fieldLocalization,
-    isVisible: true
-  }
-}
-
 export const selectOriginalEntity = createSelector(
   [getOriginalContent, getPath],
   (originalContent, path) => path.length ? get(originalContent, path) : originalContent
@@ -146,10 +133,9 @@ const selectFields = createSelector(
     selectOriginalEntity,
     selectChangedEntity,
     getPath,
-    getLanguages,
     getProgress
   ],
-  (template, originalEntity, changedEntity, path, languages, progress) => template.fields
+  (template, originalEntity, changedEntity, path, progress) => template.fields
     .filter(field => !field.condition || evaluate(field.condition, changedEntity))
     .map(field => {
       const originalValue = get(originalEntity, [field.id])
@@ -160,7 +146,6 @@ const selectFields = createSelector(
         ...field,
         hasChanged: !utils.deepEqual(originalValue, changedValue),
         isNew: isUndefined(originalValue),
-        isLocalized: isLocalized(changedValue, languages),
         path: fieldPath,
         value: changedValue,
         progress: progress[fieldPath.toString()]
@@ -178,11 +163,10 @@ const selectChildren = createSelector(
     selectTemplate,
     selectOriginalEntity,
     selectChangedEntity,
-    getLanguages,
     selectTemplates,
     getPath
   ],
-  (template, originalEntity = {}, changedEntity, languages, templates, path) => {
+  (template, originalEntity = {}, changedEntity, templates, path) => {
     const allIds = Object.keys({ ...originalEntity, ...changedEntity })
     const fieldIds = template.fields.map(({ id }) => id)
     const fixedChildIds = template.fixedChildren.map(({ id }) => id)
@@ -205,8 +189,8 @@ const selectChildren = createSelector(
           hasChanged: !utils.deepEqual(originalChildContent, changedChildContent),
           isNew: isUndefined(originalChildContent),
           isDeleted: isUndefined(changedChildContent),
-          isEnabled: isEnabled(referenceContent, childTemplate, languages),
-          subtitle: subtitle(referenceContent, childTemplate, languages),
+          isEnabled: isEnabled(referenceContent, childTemplate),
+          subtitle: subtitle(referenceContent, childTemplate),
           path: [...path, id]
         }
       })
@@ -223,11 +207,10 @@ const selectFixedChildren = createSelector(
     selectTemplate,
     selectOriginalEntity,
     selectChangedEntity,
-    getLanguages,
     selectTemplates,
     getPath
   ],
-  (template, originalEntity = {}, changedEntity, languages, templates, path) =>
+  (template, originalEntity = {}, changedEntity, templates, path) =>
     template.fixedChildren
       .map(({ id, name }) => {
         const originalChildContent = originalEntity[id]
@@ -239,31 +222,37 @@ const selectFixedChildren = createSelector(
           name: name || startCase(id),
           hasChanged: !utils.deepEqual(originalChildContent, changedChildContent),
           isNew: isUndefined(originalChildContent),
-          isEnabled: isEnabled(changedChildContent, childTemplate, languages),
-          subtitle: subtitle(changedChildContent, childTemplate, languages),
+          isEnabled: isEnabled(changedChildContent, childTemplate),
+          subtitle: subtitle(changedChildContent, childTemplate),
           path: [...path, id]
         }
       })
 )
 
-function isEnabled(content, { enabledField, fields }, languages) {
+function isEnabled(content, { enabledField, fields }) {
   if (enabledField) {
     const field = fields.find(({ id }) => id === enabledField)
     if (field && field.type === "boolean") {
-      const value = content[enabledField]
-      return isLocalized(value, languages) ? value[languages[0].id] : value
+      if (field.localization) {
+        return field.localization.length > 0 ? content[enabledField][field.localization[0]] : false
+      } else {
+        return content[enabledField]
+      }
     }
   }
 
   return true
 }
 
-function subtitle(content, { subtitleField, fields }, languages) {
+function subtitle(content, { subtitleField, fields }) {
   if (subtitleField) {
     const field = fields.find(({ id }) => id === subtitleField)
     if (field && field.type === "string") {
-      const value = content[subtitleField]
-      return isLocalized(value, languages) ? value[languages[0].id] : value
+      if (field.localization) {
+        return field.localization.length > 0 ? content[subtitleField][field.localization[0]] : ""
+      } else {
+        return content[subtitleField]
+      }
     }
   }
 
