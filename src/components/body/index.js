@@ -23,6 +23,7 @@ import {
   selectAllowedFields,
   getChildrenLabel,
   getFieldsLabel,
+  selectTemplateId,
   getTextDirection
 } from "../../selectors"
 
@@ -37,6 +38,7 @@ export default connect(mapStateToProps)(Body)
 function mapStateToProps(state) {
   return {
     canHaveChildren: selectTemplateChildren(state).length > 0,
+    templateId: selectTemplateId(state),
     children: selectAllowedChildren(state),
     fixedChildren: selectAllowedFixedChildren(state),
     fields: selectAllowedFields(state),
@@ -50,6 +52,7 @@ function mapStateToProps(state) {
 function Body({
   canHaveChildren,
   children,
+  templateId,
   fixedChildren,
   acmsAssets,
   dispatch,
@@ -71,7 +74,13 @@ function Body({
       </Col>
 
       <Col md={ 8 }>
-        { fields.length > 0 && <h4>{ fieldsLabel }</h4> }
+        <div className="d-flex align-items-center">
+          { fields.length > 0 && <h4 className="pr-2">{ fieldsLabel }</h4> }
+          { templateId.split("/").length > 1 && fields.length > 0 &&
+          <small className="text-muted" data-toggle="tooltip" title={ templateId }>
+            { `(${templateId.split("/").at(-1)})` }
+          </small> }
+        </div>
         { renderFields(fields, languages, textDirection, acmsAssets, dispatch) }
       </Col>
     </Row>
