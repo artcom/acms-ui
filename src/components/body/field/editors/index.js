@@ -12,6 +12,7 @@ export default {
   image: AssetEditor,
   file: AssetEditor,
   markdown: StringEditor,
+  integer: IntegerEditor,
   number: NumberEditor,
   integer: IntegerEditor,
   string: StringEditor,
