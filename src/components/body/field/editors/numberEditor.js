@@ -9,7 +9,6 @@ export default function NumberEditor({ field, onChange }) {
   const valid = field.value >= min && field.value <= max
 
   function onChangeFloat(event) {
-    console.log("event-value", event.target.value)
     onChange({
       target: {
         value: /^[-]?\d*[.,]?\d*$/.test(event.target.value) ? event.target.value : field.value
@@ -22,7 +21,6 @@ export default function NumberEditor({ field, onChange }) {
       <StyledFormControl
         isInvalid={ !valid }
         type="text"
-        step="0.1"
         value={ field.value }
         onChange={ onChangeFloat } />
 
