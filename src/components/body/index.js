@@ -1,7 +1,6 @@
 import React from "react"
 import { connect } from "react-redux"
 import styled from "styled-components"
-import Button from "react-bootstrap/Button"
 
 import Col from "react-bootstrap/Col"
 import Dropdown from "react-bootstrap/Dropdown"
@@ -15,7 +14,6 @@ import Field from "./field"
 
 import { deleteEntity, startEntityCreation, startEntityRenaming } from "../../actions/entity"
 import { undoChanges } from "../../actions/value"
-import { fromPath } from "../../utils/hash"
 
 import {
   getLanguages,
@@ -26,44 +24,13 @@ import {
   getChildrenLabel,
   getFieldsLabel,
   selectTemplateId,
-  getTextDirection,
-  getPath
+  getTextDirection
 } from "../../selectors"
 
 const AddButton = styled(ListGroupItem)`
   padding: 0px;
   text-align: center; 
   outline: none;
-`
-
-const RightArrowButton = styled(Button)`
-  height: 3em;
-  width: 3em;
-  border-radius: 100px;
-  background: #e9ecef;
-  border: none;
-  color: grey;
-`
-
-const LeftArrowButton = styled(Button)`
-  height: 3em;
-  width: 3em;
-  border-radius: 50px;
-  background: #e9ecef;
-  border: none;
-  color: grey;
-`
-
-const RightArrowIcon = styled.div`
-  margin-top: -10px;
-  font-size: 2.5em;
-  line-height: 1em;
-`
-
-const LeftArrowIcon = styled.div`
-  margin-top: -10px;
-  font-size: 2.5em;
-  line-height: 1em;
 `
 
 export default connect(mapStateToProps)(Body)
@@ -78,8 +45,7 @@ function mapStateToProps(state) {
     languages: getLanguages(state),
     textDirection: getTextDirection(state),
     childrenLabel: getChildrenLabel(state),
-    fieldsLabel: getFieldsLabel(state),
-    path: getPath(state)
+    fieldsLabel: getFieldsLabel(state)
   }
 }
 
@@ -94,24 +60,10 @@ function Body({
   languages,
   textDirection,
   childrenLabel,
-  fieldsLabel,
-  path }) {
+  fieldsLabel }) {
   return (
     <Row>
-      { console.log("path", path) }
-      { console.log("children", children) }
-      <Col md={ 1 }>
-        <LeftArrowButton
-          className="d-flex align-items-center"
-          variant="secondary"
-          href={ fromPath([]) }
-          disabled={ path.length === 0 }>
-          <LeftArrowIcon>
-            &#60;
-          </LeftArrowIcon>
-        </LeftArrowButton>
-      </Col>
-      <Col md={ 3 }>
+      <Col md={ 4 }>
         {
           (fixedChildren.length + children.length > 0 || canHaveChildren)
           && <h4>{ childrenLabel }</h4>
@@ -121,7 +73,7 @@ function Body({
           renderChildren(children, dispatch, canHaveChildren) }
       </Col>
 
-      <Col md={ 7 }>
+      <Col md={ 8 }>
         <div className="d-flex align-items-center">
           { fields.length > 0 && <h4 className="pr-2">{ fieldsLabel }</h4> }
           { templateId.split("/").length > 1 && fields.length > 0 &&
@@ -130,15 +82,6 @@ function Body({
           </small> }
         </div>
         { renderFields(fields, languages, textDirection, acmsAssets, dispatch) }
-      </Col>
-      <Col md={ 1 }>
-        <RightArrowButton
-          className="d-flex align-items-center"
-          variant="secondary">
-          <RightArrowIcon>
-            &#62;
-          </RightArrowIcon>
-        </RightArrowButton>
       </Col>
     </Row>
   )
