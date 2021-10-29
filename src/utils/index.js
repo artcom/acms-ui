@@ -71,6 +71,12 @@ export function createFieldValue(field) {
       const max = isNumber(field.max) ? field.max : Infinity
       return Math.max(min, Math.min(0, max))
     }
+    case "integer":
+    {
+      const min = isNumber(field.min) ? field.min : -Infinity
+      const max = isNumber(field.max) ? field.max : Infinity
+      return Math.max(min, Math.min(0, max))
+    }
 
     default:
       return null
