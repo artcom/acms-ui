@@ -48,7 +48,6 @@ const Invalid = styled.div`
     background-color: rgba(220,53,69,.9);
     border-radius: .25rem;
 `
-
 export default function AssetEditor({ field, onFileSelect }) {
   return (
     <Editor >
@@ -67,53 +66,20 @@ function renderView(field) {
     aspectRatio: field.aspectRatio }
   let valid
   useEffect(() => {
-    console.log("imageRef.current", imageRef.current)
     valid = imageValidator(imageRef.current, restrictions)
-    console.log("valid", valid)
   }, [imageRef])
 
-  console.log("restrictions", restrictions)
-  console.log("valid", valid)
 
   switch (field.type) {
     case "audio": return <Audio controls key={ src } src={ src } />
     case "file": return <File key={ src }>{ path.basename(src) }</File>
     case "image":
-      imageValidiation(src, { width: field.width, height: field.height })
-      console.log(field)
       return (
         <>
           <Image key={ src } src={ src } ref={ imageRef } />
           { !valid && <Invalid>Invalid image - Please check restrictions</Invalid> }
         </>)
-
     case "video": return <Video controls key={ src } src={ src } />
-  }
-}
-
-function imageValidiation(file, restrictions) {
-  if (restrictions) {
-    const { width, height } = restrictions
-    console.log(width, height)
-
-    switch (true) {
-      case width && width !== file.width:
-        console.log("width wrong")
-        break
-      case height && height !== file.height:
-        console.log("height wrong")
-        break
-      case width && height && (width !== file.width || height !== file.height):
-        console.log("width and height wrong")
-        break
-      default:
-        console.log("ok")
-    }
-
-
-    return (
-      console.log("imageValidation")
-    )
   }
 }
 
