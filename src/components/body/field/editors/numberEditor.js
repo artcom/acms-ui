@@ -1,5 +1,5 @@
 import get from "lodash/get"
-import React, { useState, useRef } from "react"
+import React, { useState } from "react"
 import Form from "react-bootstrap/Form"
 import StyledFormControl from "./styledFormControl"
 
@@ -8,39 +8,42 @@ export default function NumberEditor({ field, onChange }) {
   const max = get(field, "max", Infinity)
   const valid = field.value >= min && field.value <= max
 
-  const inputRef = useRef(null)
+  const [stringValue, setStringValue] = useState(field.value.toString())
 
-  const [stringValue, setStringValue] = useState(field.value)
+  console.log("fieldValue", field.value)
+  console.log("stringValue", stringValue)
 
   function onChangeFloat(event) {
-    console.log("fieldValue", field.value)
-    console.log("stringValue", stringValue)
-    console.log("eventValue", event.target.value)
     if (/^[-]?(\d*[.,]?)?\d*$/.test(event.target.value)) {
-      setStringValue(event.target.value)
+      let value
 
-      onChange({
-        target: {
-          value: event.target.value === "-" ? -0 : parseFloat(event.target.value)
-        }
-      })
+      if (event.target.value === "-") {
+        value = -0
+      } else if (event.target.value === "") {
+        value = 0
+      } else {
+        value = parseFloat(event.target.value)
+      }
+
+      onChange({ target: { value } })
+
+      setStringValue(event.target.value)
     }
   }
 
-  function onBlurFloat() {
-    if (inputRef.current.value === "") {
-      inputRef.current.value = 0
-    } else {
-      parseFloat(inputRef.current.value)
+  function onBlurFloat(event) {
+    if (event.target.value === "") {
+      setStringValue("0")
+    } else if (event.target.value === "-") {
+      setStringValue("-0")
     }
   }
 
   return (
     <>
       <StyledFormControl
-        ref={ inputRef }
         isInvalid={ !valid }
-        type="number"
+        type="text"
         value={ stringValue }
         onChange={ onChangeFloat }
         onBlur={ onBlurFloat } />
