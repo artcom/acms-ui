@@ -1,4 +1,4 @@
-export default function imageValidator(file,
+export default function imageValidator({ fileWidth, fileHeight },
   { width,
     height,
     maxWidth,
@@ -6,13 +6,18 @@ export default function imageValidator(file,
     maxHeight,
     minHeight,
     aspectRatio }) {
-  return (
-    !(width && file.width !== width ||
-        height && file.height !== height ||
-        maxWidth && file.width > maxWidth ||
-        minWidth && file.width < minWidth ||
-        maxHeight && file.heigth > maxHeight ||
-        minHeight && file.heigth < minHeight ||
-        aspectRatio && file.width / file.height !== aspectRatio))
+  if (width && width > maxWidth) {
+    return false
+  } else if (width && width < minWidth) {
+    return false
+  } else if (height && height > maxHeight) {
+    return false
+  } else if (height && height < minHeight) {
+    return false
+  } else if (aspectRatio &&
+    parseFloat((fileWidth / fileHeight).toFixed(2)) !== parseFloat(aspectRatio)) {
+    return false
+  }
+  return true
 }
 

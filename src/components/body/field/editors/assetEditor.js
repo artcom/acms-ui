@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from "react"
+import React, { useRef, useState } from "react"
 import ProgressBar from "react-bootstrap/ProgressBar"
 import styled from "styled-components"
 import path from "path-browserify"
@@ -59,18 +59,17 @@ export default function AssetEditor({ field, onFileSelect }) {
 }
 
 function renderView(field) {
+  const [valid, setValid] = useState(true)
   const src = field.value
-  let valid = true
   const imageRef = useRef(null)
+  const imageRestrictions = { width: field.width, heigth: field.heigth,
+    maxWidth: field.maxWidth, maxHeight: field.maxHeight,
+    minWidth: field.minWidth, minHeight: field.minHeight,
+    aspectRatio: field.aspectRatio }
 
-  if (field.type === "image") {
-    const restrictions = { width: field.width, heigth: field.heigth,
-      maxWidth: field.maxWidth, maxHeight: field.maxHeight,
-      minWidth: field.minWidth, minHeight: field.minHeight,
-      aspectRatio: field.aspectRatio }
-    useEffect(() => {
-      valid = imageValidator(imageRef.current, restrictions)
-    }, [imageRef])
+  const handleImageLoad = () => {
+    setValid(imageValidator({ fileWidth: imageRef.current.naturalWidth,
+      fileHeight: imageRef.current.naturalHeight }, imageRestrictions))
   }
 
   switch (field.type) {
@@ -79,7 +78,7 @@ function renderView(field) {
     case "image":
       return (
         <>
-          <Image key={ src } src={ src } ref={ imageRef } />
+          <Image key={ src } src={ src } ref={ imageRef } onLoad={ handleImageLoad } />
           { !valid && <Invalid>Invalid image - Please check restrictions</Invalid> }
         </>)
     case "video": return <Video controls key={ src } src={ src } />
