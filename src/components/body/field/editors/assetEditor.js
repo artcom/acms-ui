@@ -8,7 +8,7 @@ import imageValidator from "../../../../utils/imageValidator"
 const Editor = styled.div`
   display: flex;
   flex-direction: column;
-  position: relative; /* for absolute positioning of the tooltip */
+  position: relative;
 `
 
 const Image = styled.img`
@@ -35,7 +35,7 @@ const Video = styled.video`
     width: 100%;   
 `
 
-const Invalid = styled.div`
+const Invalid = styled.div` // copied from bootstrap styles
     position: absolute;
     top: 0;
     z-index: 5;
@@ -48,6 +48,7 @@ const Invalid = styled.div`
     background-color: rgba(220,53,69,.9);
     border-radius: .25rem;
 `
+
 export default function AssetEditor({ field, onFileSelect }) {
   return (
     <Editor >
@@ -59,16 +60,18 @@ export default function AssetEditor({ field, onFileSelect }) {
 
 function renderView(field) {
   const src = field.value
+  let valid = true
   const imageRef = useRef(null)
-  const restrictions = { width: field.width, heigth: field.heigth,
-    maxWidth: field.maxWidth, maxHeight: field.maxHeight,
-    minWidth: field.minWidth, minHeight: field.minHeight,
-    aspectRatio: field.aspectRatio }
-  let valid
-  useEffect(() => {
-    valid = imageValidator(imageRef.current, restrictions)
-  }, [imageRef])
 
+  if (field.type === "image") {
+    const restrictions = { width: field.width, heigth: field.heigth,
+      maxWidth: field.maxWidth, maxHeight: field.maxHeight,
+      minWidth: field.minWidth, minHeight: field.minHeight,
+      aspectRatio: field.aspectRatio }
+    useEffect(() => {
+      valid = imageValidator(imageRef.current, restrictions)
+    }, [imageRef])
+  }
 
   switch (field.type) {
     case "audio": return <Audio controls key={ src } src={ src } />

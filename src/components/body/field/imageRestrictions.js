@@ -17,28 +17,20 @@ const FontSize = styled.div`
 `
 
 export default function ImageRestrictions({ field }) {
-  const height = field.height
-  const width = field.width
-  const maxHeight = field.maxHeight
-  const maxWidth = field.maxWidth
-  const minHeight = field.minHeight
-  const minWidth = field.minWidth
-  const aspectRatio = field.aspectRatio
   return (
     <FontSize className="text-muted">
-      restrictions
       <Container>
-        { height && <div> heigth: { height }</div> }
-        { maxHeight && <div> maxWidth: { maxHeight }</div> }
-        { minHeight && <div> minWidth: { minHeight }</div> }
+        { field.height && <div> height: { field.height }</div> }
+        { field.maxHeight && <div> maxHeight: { field.maxHeight }</div> }
+        { field.minHeight && <div> minHeight: { field.minHeight }</div> }
       </Container>
       <Container>
-        { width && <div> width: { width }</div> }
-        { maxWidth && <div> maxWidth: { maxWidth }</div> }
-        { minWidth && <div> minWidth: { minWidth }</div> }
+        { field.width && <div> width: { field.width }</div> }
+        { field.maxWidth && <div> maxWidth: { field.maxWidth }</div> }
+        { field.minWidth && <div> minWidth: { field.minWidth }</div> }
       </Container>
       <Container>
-        { aspectRatio && `aspect ratio: ${aspectRatio}` }
+        { field.aspectRatio && `aspect ratio: ${field.aspectRatio}` }
       </Container>
     </FontSize>
   )
