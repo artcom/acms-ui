@@ -4,19 +4,17 @@ import styled from "styled-components"
 const Container = styled.div`
     display: flex;
     flex-direction: column;
-    margin-left: 25px; 
+    margin: -1rem 0 -1rem 2rem;
 `
-const FontSize = styled.div`
+const Restrictions = styled.div`
     display: flex;
-    justify-content: space-between;
     align-items: center;
-    font-size: 8px;
-    color: #828282;
+    font-size: 12px;
 `
 
 export default function ImageRestrictions({ field }) {
   return (
-    <FontSize className="text-muted">
+    <Restrictions className="text-muted">
       <Container>
         { field.height && <div> height: { field.height }</div> }
         { field.maxHeight && <div> maxHeight: { field.maxHeight }</div> }
@@ -30,6 +28,6 @@ export default function ImageRestrictions({ field }) {
       <Container>
         { field.aspectRatio && `aspect ratio: ${field.aspectRatio}` }
       </Container>
-    </FontSize>
+    </Restrictions>
   )
 }
