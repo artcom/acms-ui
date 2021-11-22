@@ -33,7 +33,10 @@ export default function ImageEditor({ field }) {
 
   return (
     <Container>
-      <Image key={ src } src={ src } ref={ imageRef }
+      <Image
+        key={ src }
+        src={ src }
+        ref={ imageRef }
         onLoad={ () => setValid(isValid(imageRef.current, field)) } />
       { !valid &&
       <Invalid>
