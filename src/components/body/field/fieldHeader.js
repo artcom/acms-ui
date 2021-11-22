@@ -9,6 +9,7 @@ import { undoChanges } from "../../../actions/value"
 
 import ToggleButton from "../../toggleButton"
 import CharacterCount from "./characterCount"
+import ImageRequirements from "./imageRequirements"
 
 const StyledDropdown = styled(Dropdown)`
   margin-left: 0.5rem;
@@ -29,6 +30,7 @@ const FieldHeader = ({ field, dispatch }) =>
     <Fieldname > { field.name ? field.name : startCase(field.id) } </Fieldname>
     { field.maxLength && !field.localization &&
     <CharacterCount value={ field.value } maxLength={ field.maxLength } /> }
+    { field.type === "image" && <ImageRequirements field={ field } /> }
     <StyledDropdown id={ field.id }>
       <Dropdown.Toggle as={ ToggleButton } />
       <Dropdown.Menu>
