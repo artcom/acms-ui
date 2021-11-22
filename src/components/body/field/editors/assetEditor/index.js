@@ -5,10 +5,9 @@ import ProgressBar from "react-bootstrap/ProgressBar"
 import ImageEditor from "./imageEditor"
 import FileSelector from "../fileSelector"
 
-export const Editor = styled.div`
+const Editor = styled.div`
   display: flex;
   flex-direction: column;
-  position: relative;
 `
 
 const File = styled.div`

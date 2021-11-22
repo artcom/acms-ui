@@ -1,33 +1,39 @@
 import React from "react"
-import styled from "styled-components"
+import OverlayTrigger from "react-bootstrap/OverlayTrigger"
+import Popover from "react-bootstrap/Popover"
 
-const Container = styled.div`
-    display: flex;
-    flex-direction: column;
-    margin: -1rem 0 -1rem 2rem;
-`
-const Restrictions = styled.div`
-    display: flex;
-    align-items: center;
-    font-size: 12px;
-`
+export default function ImageRestrictionsTooltip({ field }) {
+  const RestrictionIcon = () =>
+    <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" fillOpacity="0.6"
+      fill="currentColor" className="bi bi-info-lg" viewBox="0 0 16 16">
+      <path d="m9.708 6.075-3.024.379-.108.502.595.108c.387.093.464.232.38.619l-.975 4.577c-.255
+      1.183.14 1.74 1.067 1.74.72 0 1.554-.332 1.933-.789l.116-.549c-.263.232-.65.325-.905.325-.363
+      0-.494-.255-.402-.704l1.323-6.208Zm.091-2.755a1.32 1.32 0 1 1-2.64 0 1.32 1.32 0 0 1 2.64
+      0Z" />
+    </svg>
 
-export default function ImageRestrictions({ field }) {
+  const renderPopover =
+    <Popover>
+      <Popover.Title>Image requirements</Popover.Title>
+      <Popover.Content>
+        { field.height && <div> Height: { field.height }</div> }
+        { field.maxHeight && <div> Max. Height: { field.maxHeight }</div> }
+        { field.minHeight && <div> Min. Height: { field.minHeight }</div> }
+        { field.width && <div> Width: { field.width }</div> }
+        { field.maxWidth && <div> Max. Width: { field.maxWidth }</div> }
+        { field.minWidth && <div> Min. Width: { field.minWidth }</div> }
+        { field.aspectRatio && `Aspect ratio: ${field.aspectRatio}` }
+      </Popover.Content>
+    </Popover>
+
   return (
-    <Restrictions className="text-muted">
-      <Container>
-        { field.height && <div> height: { field.height }</div> }
-        { field.maxHeight && <div> maxHeight: { field.maxHeight }</div> }
-        { field.minHeight && <div> minHeight: { field.minHeight }</div> }
-      </Container>
-      <Container>
-        { field.width && <div> width: { field.width }</div> }
-        { field.maxWidth && <div> maxWidth: { field.maxWidth }</div> }
-        { field.minWidth && <div> minWidth: { field.minWidth }</div> }
-      </Container>
-      <Container>
-        { field.aspectRatio && `aspect ratio: ${field.aspectRatio}` }
-      </Container>
-    </Restrictions>
+    <OverlayTrigger
+      placement="bottom"
+      delay={ { show: 250, hide: 400 } }
+      overlay={ renderPopover }>
+      <div>
+        <RestrictionIcon />
+      </div>
+    </OverlayTrigger>
   )
 }

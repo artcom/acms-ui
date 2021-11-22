@@ -1,7 +1,6 @@
 import React, { useRef, useState } from "react"
 import styled from "styled-components"
 import Form from "react-bootstrap/Form"
-import imageValidator from "../../../../../utils/imageValidator"
 
 const Image = styled.img`
     max-width: 100%;
@@ -15,10 +14,19 @@ const Image = styled.img`
 
 // extracted style from bootstrap with additional
 // attributes to make it work outside of FormGroup
-const Invalid = styled(Form.Control.Feedback)` 
+// todo add attributes
+const Invalid = styled(Form.Control.Feedback).attrs({
+  type: "invalid",
+  tooltip: true
+})`
     top: 0;
     display: block;
 `
+
+const Container = styled.div`
+    position: relative;
+`
+
 
 export default function ImageEditor({ field }) {
   const imageRef = useRef(null)
@@ -31,12 +39,45 @@ export default function ImageEditor({ field }) {
   }
 
   return (
-    <>
+    <Container>
       <Image key={ src } src={ src } ref={ imageRef } onLoad={ handleImageLoad } />
       { !valid &&
-      <Invalid type="invalid" tooltip>
-        Invalid image - Please check restrictions
+      <Invalid>
+        Warning - image does not meet requirements
       </Invalid> }
-    </>)
+    </Container>)
+}
+
+function imageValidator({ fileWidth, fileHeight },
+  { width,
+    height,
+    maxWidth,
+    minWidth,
+    maxHeight,
+    minHeight,
+    aspectRatio }) {
+  if (width && width !== fileWidth) {
+    return false
+  }
+  if (height && height !== fileHeight) {
+    return false
+  }
+  if (minWidth && fileWidth < minWidth) {
+    return false
+  }
+  if (maxWidth && fileWidth > maxWidth) {
+    return false
+  }
+  if (minHeight && fileHeight < minHeight) {
+    return false
+  }
+  if (maxHeight && fileHeight > maxHeight) {
+    return false
+  }
+  if (aspectRatio && aspectRatio.split(":").map(Number)
+    .reduce((a, b) => a / b) !== fileWidth / fileHeight) {
+    return false
+  }
+  return true
 }
 
