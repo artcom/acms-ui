@@ -31,35 +31,10 @@ export default function ImageEditor({ field }) {
   const [valid, setValid] = useState(true)
   const src = field.value
 
-  const imageValidator = () => {
-    if (field.width && field.width !== imageRef.current.naturalWidth) {
-      return false
-    }
-    if (field.height && field.height !== imageRef.current.naturalHeight) {
-      return false
-    }
-    if (field.minWidth && imageRef.current.naturalWidth < field.minWidth) {
-      return false
-    }
-    if (field.maxWidth && imageRef.current.naturalWidth > field.maxWidth) {
-      return false
-    }
-    if (field.minHeight && imageRef.current.naturalHeight < field.minHeight) {
-      return false
-    }
-    if (field.maxHeight && imageRef.current.naturalHeight > field.maxHeight) {
-      return false
-    }
-    if (field.aspectRatio && field.aspectRatio.split(":").map(Number)
-      .reduce((a, b) => a / b) !== imageRef.current.naturalWidth / imageRef.current.naturalHeight) {
-      return false
-    }
-    return true
-  }
-
   return (
     <Container>
-      <Image key={ src } src={ src } ref={ imageRef } onLoad={ setValid(imageValidator()) } />
+      <Image key={ src } src={ src } ref={ imageRef }
+        onLoad={ () => setValid(isValid(imageRef.current, field)) } />
       { !valid &&
       <Invalid>
         Warning - image does not meet requirements
@@ -67,3 +42,35 @@ export default function ImageEditor({ field }) {
     </Container>)
 }
 
+function isValid({ naturalWidth, naturalHeight },
+  { width,
+    height,
+    maxWidth,
+    minWidth,
+    maxHeight,
+    minHeight,
+    aspectRatio }) {
+  if (width && width !== naturalWidth) {
+    return false
+  }
+  if (height && height !== naturalHeight) {
+    return false
+  }
+  if (minWidth && naturalWidth < minWidth) {
+    return false
+  }
+  if (maxWidth && naturalWidth > maxWidth) {
+    return false
+  }
+  if (minHeight && naturalHeight < minHeight) {
+    return false
+  }
+  if (maxHeight && naturalHeight > maxHeight) {
+    return false
+  }
+  if (aspectRatio && aspectRatio.split(":").map(Number)
+    .reduce((a, b) => a / b) !== naturalWidth / naturalHeight) {
+    return false
+  }
+  return true
+}
