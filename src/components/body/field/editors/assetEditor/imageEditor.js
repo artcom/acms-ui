@@ -14,7 +14,6 @@ const Image = styled.img`
 
 // extracted style from bootstrap with additional
 // attributes to make it work outside of FormGroup
-// todo add attributes
 const Invalid = styled(Form.Control.Feedback).attrs({
   type: "invalid",
   tooltip: true
@@ -27,57 +26,44 @@ const Container = styled.div`
     position: relative;
 `
 
-
 export default function ImageEditor({ field }) {
   const imageRef = useRef(null)
   const [valid, setValid] = useState(true)
   const src = field.value
 
-  const handleImageLoad = () => {
-    setValid(imageValidator({ fileWidth: imageRef.current.naturalWidth,
-      fileHeight: imageRef.current.naturalHeight }, field))
+  const imageValidator = () => {
+    if (field.width && field.width !== imageRef.current.naturalWidth) {
+      return false
+    }
+    if (field.height && field.height !== imageRef.current.naturalHeight) {
+      return false
+    }
+    if (field.minWidth && imageRef.current.naturalWidth < field.minWidth) {
+      return false
+    }
+    if (field.maxWidth && imageRef.current.naturalWidth > field.maxWidth) {
+      return false
+    }
+    if (field.minHeight && imageRef.current.naturalHeight < field.minHeight) {
+      return false
+    }
+    if (field.maxHeight && imageRef.current.naturalHeight > field.maxHeight) {
+      return false
+    }
+    if (field.aspectRatio && field.aspectRatio.split(":").map(Number)
+      .reduce((a, b) => a / b) !== imageRef.current.naturalWidth / imageRef.current.naturalHeight) {
+      return false
+    }
+    return true
   }
 
   return (
     <Container>
-      <Image key={ src } src={ src } ref={ imageRef } onLoad={ handleImageLoad } />
+      <Image key={ src } src={ src } ref={ imageRef } onLoad={ setValid(imageValidator()) } />
       { !valid &&
       <Invalid>
         Warning - image does not meet requirements
       </Invalid> }
     </Container>)
-}
-
-function imageValidator({ fileWidth, fileHeight },
-  { width,
-    height,
-    maxWidth,
-    minWidth,
-    maxHeight,
-    minHeight,
-    aspectRatio }) {
-  if (width && width !== fileWidth) {
-    return false
-  }
-  if (height && height !== fileHeight) {
-    return false
-  }
-  if (minWidth && fileWidth < minWidth) {
-    return false
-  }
-  if (maxWidth && fileWidth > maxWidth) {
-    return false
-  }
-  if (minHeight && fileHeight < minHeight) {
-    return false
-  }
-  if (maxHeight && fileHeight > maxHeight) {
-    return false
-  }
-  if (aspectRatio && aspectRatio.split(":").map(Number)
-    .reduce((a, b) => a / b) !== fileWidth / fileHeight) {
-    return false
-  }
-  return true
 }
 
