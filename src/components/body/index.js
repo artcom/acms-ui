@@ -27,7 +27,8 @@ import {
   getFieldsLabel,
   selectTemplateId,
   getTextDirection,
-  getPath
+  getPath,
+  selectOriginalEntity
 } from "../../selectors"
 
 const AddButton = styled(ListGroupItem)`
@@ -36,7 +37,7 @@ const AddButton = styled(ListGroupItem)`
   outline: none;
 `
 
-const RightArrowButton = styled(Button)`
+const ArrowButton = styled(Button)`
   height: 3em;
   width: 3em;
   border-radius: 100px;
@@ -45,22 +46,7 @@ const RightArrowButton = styled(Button)`
   color: grey;
 `
 
-const LeftArrowButton = styled(Button)`
-  height: 3em;
-  width: 3em;
-  border-radius: 50px;
-  background: #e9ecef;
-  border: none;
-  color: grey;
-`
-
-const RightArrowIcon = styled.div`
-  margin-top: -10px;
-  font-size: 2.5em;
-  line-height: 1em;
-`
-
-const LeftArrowIcon = styled.div`
+const ArrowIcon = styled.div`
   margin-top: -10px;
   font-size: 2.5em;
   line-height: 1em;
@@ -79,7 +65,8 @@ function mapStateToProps(state) {
     textDirection: getTextDirection(state),
     childrenLabel: getChildrenLabel(state),
     fieldsLabel: getFieldsLabel(state),
-    path: getPath(state)
+    path: getPath(state),
+    originalEntity: selectOriginalEntity(state),
   }
 }
 
@@ -95,52 +82,77 @@ function Body({
   textDirection,
   childrenLabel,
   fieldsLabel,
-  path }) {
+  path,
+  originalEntity }) {
+  const parentPath = [...path]
+  parentPath.pop()
   return (
-    <Row>
-      { console.log("path", path) }
-      { console.log("children", children) }
-      <Col md={ 1 }>
-        <LeftArrowButton
-          className="d-flex align-items-center"
-          variant="secondary"
-          href={ fromPath([]) }
-          disabled={ path.length === 0 }>
-          <LeftArrowIcon>
-            &#60;
-          </LeftArrowIcon>
-        </LeftArrowButton>
-      </Col>
-      <Col md={ 3 }>
-        {
-          (fixedChildren.length + children.length > 0 || canHaveChildren)
+    <div>
+      <Row className="d-flex align-items-center justify-content-center">
+        { console.log("canHaveChildren", canHaveChildren) }
+        { console.log("children", children) }
+        { console.log("templateId", templateId) }
+        { console.log("fixedChildren", fixedChildren) }
+        { console.log("acmsAssets", acmsAssets) }
+        { console.log("dispatch", dispatch) }
+        { console.log("fields", fields) }
+        { console.log("languages", languages) }
+        { console.log("textDirection", textDirection) }
+        { console.log("childrenLabel", childrenLabel) }
+        { console.log("fieldsLabel", fieldsLabel) }
+        { console.log("path", path) }
+        { console.log("originalEntity", originalEntity) }
+        { console.log("parentPath", parentPath) }
+        <Col md={ 3 }>
+          {
+            (fixedChildren.length + children.length > 0 || canHaveChildren)
           && <h4>{ childrenLabel }</h4>
-        }
-        { fixedChildren.length > 0 && renderFixedChildren(fixedChildren, dispatch) }
-        { (children.length > 0 || canHaveChildren) &&
+          }
+          { fixedChildren.length > 0 && renderFixedChildren(fixedChildren, dispatch) }
+          { (children.length > 0 || canHaveChildren) &&
           renderChildren(children, dispatch, canHaveChildren) }
-      </Col>
+        </Col>
 
-      <Col md={ 7 }>
-        <div className="d-flex align-items-center">
-          { fields.length > 0 && <h4 className="pr-2">{ fieldsLabel }</h4> }
-          { templateId.split("/").length > 1 && fields.length > 0 &&
-          <small className="text-muted" data-toggle="tooltip" title={ templateId }>
-            { `(${templateId.split("/").at(-1)})` }
-          </small> }
-        </div>
-        { renderFields(fields, languages, textDirection, acmsAssets, dispatch) }
-      </Col>
-      <Col md={ 1 }>
-        <RightArrowButton
-          className="d-flex align-items-center"
-          variant="secondary">
-          <RightArrowIcon>
-            &#62;
-          </RightArrowIcon>
-        </RightArrowButton>
-      </Col>
-    </Row>
+        <Col md={ 7 }>
+          <div className="d-flex align-items-center">
+            { fields.length > 0 && <h4 className="pr-2">{ fieldsLabel }</h4> }
+            { templateId.split("/").length > 1 && fields.length > 0 &&
+            <small className="text-muted" data-toggle="tooltip" title={ templateId }>
+              { `(${templateId.split("/").at(-1)})` }
+            </small> }
+          </div>
+          { renderFields(fields, languages, textDirection, acmsAssets, dispatch) }
+        </Col>
+      </Row>
+      { children.length === 0 &&
+      <Row>
+        <Col className="d-flex justify-content-left" md={ 1 }>
+          <ArrowButton
+            data-toggle="tooltip"
+            title="Previous Children"
+            className="d-flex align-items-center justify-content-center"
+            variant="secondary"
+            href={ fromPath(path.slice(0, -1)) }
+            disabled={ path.length === 0 }>
+            <ArrowIcon>
+              &#60;
+            </ArrowIcon>
+          </ArrowButton>
+        </Col>
+        <Col className="d-flex justify-content-right" md={ 6 }>
+          <ArrowButton
+            data-toggle="tooltip"
+            title="Next Children"
+            className="d-flex align-items-center justify-content-center"
+            variant="secondary">
+            <ArrowIcon>
+              &#62;
+            </ArrowIcon>
+          </ArrowButton>
+        </Col>
+      </Row>
+      }
+    </div>
   )
 }
 
