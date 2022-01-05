@@ -1,5 +1,5 @@
 import React from "react"
-import { connect } from "react-redux"
+import { connect, useDispatch, useSelector } from "react-redux"
 import styled from "styled-components"
 
 import Col from "react-bootstrap/Col"
@@ -49,18 +49,19 @@ function mapStateToProps(state) {
   }
 }
 
-function Body({
-  canHaveChildren,
-  children,
-  templateId,
-  fixedChildren,
-  acmsAssets,
-  dispatch,
-  fields,
-  languages,
-  textDirection,
-  childrenLabel,
-  fieldsLabel }) {
+function Body({ acmsAssets }) {
+  const dispatch = useDispatch()
+  const canHaveChildren = useSelector(selectTemplateChildren).length > 0
+  const templateId = useSelector(selectTemplateId)
+  const children = useSelector(selectAllowedChildren)
+  const fixedChildren = useSelector(selectAllowedFixedChildren)
+  const fields = useSelector(selectAllowedFields)
+  const languages = useSelector(getLanguages)
+  const textDirection = useSelector(getTextDirection)
+  const childrenLabel = useSelector(getChildrenLabel)
+  const fieldsLabel = useSelector(getFieldsLabel)
+
+
   return (
     <Row>
       <Col md={ 4 }>

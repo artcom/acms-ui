@@ -8,8 +8,11 @@ import Col from "react-bootstrap/Col"
 import Row from "react-bootstrap/Row"
 import Container from "react-bootstrap/Container"
 import styled from "styled-components"
+
+import { useSelector, useDispatch } from "react-redux"
 import { saveData } from "../actions/data"
 import { fromPath } from "../utils/hash"
+import { getPathNames } from "../selectors"
 
 const Logo = styled.img`
   width: auto;
@@ -53,51 +56,59 @@ const StyledBreadcrumb = styled(Breadcrumb)`
   width: 100%;
 `
 
-const Header = ({
-  config,
-  acmsConfigPath,
-  acmsApi,
-  dispatch,
-  hasChanged,
-  isSaving,
-  path,
-  pathNames }
-) =>
-  <Navbar sticky="top" bg="light" variant="light" className={ "flex-column mb-2" }>
-    <Container>
-      <Col>
-        <LogoContainer>
-          { config.logoImageUri && <Logo src={ config.logoImageUri } /> }
-          { config.title && <Title className={ "h1" }>{ config.title }</Title> }
-        </LogoContainer>
-        <StyledButtonGroup aria-label="First group">
-          <HomeButton
-            variant="secondary"
-            href={ fromPath([]) }
-            disabled={ path.length === 0 }>
-            <HomeIcon >
-              &#8962;
-            </HomeIcon>
-          </HomeButton>
-          <StyledBreadcrumb
-            listProps={ { style: { minHeight: "3em" } } }>
-            { path.map((item, i) =>
-              <Breadcrumb.Item
-                key={ i }
-                href={ fromPath(path.slice(0, i + 1)) }
-                active={ i === path.length - 1 }>
-                { pathNames[i] }
-              </Breadcrumb.Item>
-            ) }
-          </StyledBreadcrumb>
-          <SaveButton
-            disabled={ !hasChanged || isSaving }
-            onClick={ () => dispatch(saveData(acmsApi, acmsConfigPath)) }>
-            { config.saveLabel }
-          </SaveButton>
-        </StyledButtonGroup>
-      </Col>
-    </Container>
-  </Navbar>
+const Header = ({ acmsApi, acmsApiUri, acmsConfigPath }) => {
+  const dispatch = useDispatch()
+  const config = useSelector(state => state.config)
+  const hasChanged = useSelector(state => state.originalContent !== state.changedContent)
+  const isSaving = useSelector(state => state.isSaving)
+  const path = useSelector(state => state.path)
+  const pathNames = useSelector(getPathNames)
 
+  console.log("config: ", config)
+  console.log("acmsConfigPath: ", acmsConfigPath)
+  console.log("hasChanged: ", hasChanged)
+  console.log("isSaving: ", isSaving)
+  console.log("path: ", path)
+  console.log("pathNames: ", pathNames)
+
+  return (
+    <Navbar sticky="top" bg="light" variant="light" className={ "flex-column mb-2" }>
+      <Container>
+        <Col>
+          <LogoContainer>
+            { config.logoImageUri && <Logo src={ config.logoImageUri } /> }
+            { config.title && <Title className={ "h1" }>{ config.title }</Title> }
+          </LogoContainer>
+          <StyledButtonGroup aria-label="First group">
+            <HomeButton
+              variant="secondary"
+              href={ fromPath([]) }
+              disabled={ path.length === 0 }>
+              <HomeIcon >
+                &#8962;
+              </HomeIcon>
+            </HomeButton>
+            <StyledBreadcrumb
+              listProps={ { style: { minHeight: "3em" } } }>
+              { path.map((item, i) =>
+                <Breadcrumb.Item
+                  key={ i }
+                  href={ fromPath(path.slice(0, i + 1)) }
+                  active={ i === path.length - 1 }>
+                  { pathNames[i] }
+                </Breadcrumb.Item>
+              ) }
+            </StyledBreadcrumb>
+            <SaveButton
+              disabled={ !hasChanged || isSaving }
+              onClick={ () => dispatch(saveData(acmsApi, acmsApiUri, acmsConfigPath)) }>
+              { config.saveLabel }
+            </SaveButton>
+          </StyledButtonGroup>
+        </Col>
+      </Container>
+    </Navbar>
+  )
+}
 export default Header
+

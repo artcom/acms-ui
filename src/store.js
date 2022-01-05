@@ -1,5 +1,5 @@
 import { createLogger } from "redux-logger"
-import { applyMiddleware, combineReducers, createStore, compose } from "redux"
+import { applyMiddleware, combineReducers, createStore } from "redux"
 import thunkMiddleware from "redux-thunk"
 import { composeWithDevTools } from "redux-devtools-extension"
 
@@ -15,3 +15,4 @@ export function configureStore() {
       applyMiddleware(thunkMiddleware, loggerMiddleware))
   )
 }
+

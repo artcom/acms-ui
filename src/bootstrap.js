@@ -10,7 +10,7 @@ export default async () => {
     const acmsApi = new AcmsApi(acmsApiUri)
     const acmsAssets = new AcmsAssets(acmsAssetsUri)
 
-    return { acmsApi, acmsAssets, acmsConfigPath }
+    return { acmsApi, acmsApiUri, acmsAssets, acmsAssetsUri, acmsConfigPath }
   } else {
     throw new Error(response.statusText)
   }
