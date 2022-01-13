@@ -1,5 +1,5 @@
-import React from "react"
-import { connect, useDispatch, useSelector } from "react-redux"
+import React, { useContext } from "react"
+import { useDispatch, useSelector } from "react-redux"
 import styled from "styled-components"
 
 import Col from "react-bootstrap/Col"
@@ -27,29 +27,16 @@ import {
   getTextDirection
 } from "../../selectors"
 
+import { ApiContext } from "../../index"
+
 const AddButton = styled(ListGroupItem)`
   padding: 0px;
   text-align: center; 
   outline: none;
 `
 
-export default connect(mapStateToProps)(Body)
 
-function mapStateToProps(state) {
-  return {
-    canHaveChildren: selectTemplateChildren(state).length > 0,
-    templateId: selectTemplateId(state),
-    children: selectAllowedChildren(state),
-    fixedChildren: selectAllowedFixedChildren(state),
-    fields: selectAllowedFields(state),
-    languages: getLanguages(state),
-    textDirection: getTextDirection(state),
-    childrenLabel: getChildrenLabel(state),
-    fieldsLabel: getFieldsLabel(state)
-  }
-}
-
-function Body({ acmsAssets }) {
+const Body = () => {
   const dispatch = useDispatch()
   const canHaveChildren = useSelector(selectTemplateChildren).length > 0
   const templateId = useSelector(selectTemplateId)
@@ -61,6 +48,7 @@ function Body({ acmsAssets }) {
   const childrenLabel = useSelector(getChildrenLabel)
   const fieldsLabel = useSelector(getFieldsLabel)
 
+  const acmsAssets = useContext(ApiContext).acmsAssets
 
   return (
     <Row>
@@ -152,3 +140,5 @@ function renderFields(fields, languages, textDirection, acmsAssets, dispatch) {
       dispatch={ dispatch } />
   )
 }
+
+export default Body

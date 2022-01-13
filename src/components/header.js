@@ -1,4 +1,4 @@
-import React from "react"
+import React, { useContext } from "react"
 import Breadcrumb from "react-bootstrap/Breadcrumb"
 import Button from "react-bootstrap/Button"
 import ButtonGroup from "react-bootstrap/ButtonGroup"
@@ -8,8 +8,9 @@ import Col from "react-bootstrap/Col"
 import Row from "react-bootstrap/Row"
 import Container from "react-bootstrap/Container"
 import styled from "styled-components"
-
 import { useSelector, useDispatch } from "react-redux"
+import { ApiContext } from "../index"
+
 import { saveData } from "../actions/data"
 import { fromPath } from "../utils/hash"
 import { getPathNames } from "../selectors"
@@ -56,7 +57,7 @@ const StyledBreadcrumb = styled(Breadcrumb)`
   width: 100%;
 `
 
-const Header = ({ acmsApi, acmsApiUri, acmsConfigPath }) => {
+const Header = ({ acmsConfigPath }) => {
   const dispatch = useDispatch()
   const config = useSelector(state => state.config)
   const hasChanged = useSelector(state => state.originalContent !== state.changedContent)
@@ -64,12 +65,8 @@ const Header = ({ acmsApi, acmsApiUri, acmsConfigPath }) => {
   const path = useSelector(state => state.path)
   const pathNames = useSelector(getPathNames)
 
-  console.log("config: ", config)
-  console.log("acmsConfigPath: ", acmsConfigPath)
-  console.log("hasChanged: ", hasChanged)
-  console.log("isSaving: ", isSaving)
-  console.log("path: ", path)
-  console.log("pathNames: ", pathNames)
+  const context = useContext(ApiContext)
+
 
   return (
     <Navbar sticky="top" bg="light" variant="light" className={ "flex-column mb-2" }>
@@ -101,7 +98,7 @@ const Header = ({ acmsApi, acmsApiUri, acmsConfigPath }) => {
             </StyledBreadcrumb>
             <SaveButton
               disabled={ !hasChanged || isSaving }
-              onClick={ () => dispatch(saveData(acmsApi, acmsApiUri, acmsConfigPath)) }>
+              onClick={ () => dispatch(saveData(context.acmsApi, acmsConfigPath)) }>
               { config.saveLabel }
             </SaveButton>
           </StyledButtonGroup>

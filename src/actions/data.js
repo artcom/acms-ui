@@ -5,18 +5,14 @@ import isPlainObject from "lodash/isPlainObject"
 import { getChangedContent, selectTemplates, getVersion, getContentPath } from "../selectors"
 import { showError } from "./error"
 import * as utils from "../utils"
-import AcmsApi from "../apis/acmsApi"
 
-export function loadData(acmsApi, acmsApiUri, acmsConfigPath) {
-  console.log("acmsApiUri", acmsApiUri)
-  const acmsApi2 = new AcmsApi(acmsApiUri)
+export function loadData(acmsApi, acmsConfigPath) {
   return async dispatch => {
     try {
-      const { data: config, version } = await acmsApi2.queryJson(acmsConfigPath)
-      console.log("furigana", config.furigana)
+      const { data: config, version } = await acmsApi.queryJson(acmsConfigPath)
       const [{ data: templates }, { data: originalContent }] = await Promise.all([
-        acmsApi2.queryFiles(config.templatesPath, version),
-        acmsApi2.queryJson(config.contentPath, version)
+        acmsApi.queryFiles(config.templatesPath, version),
+        acmsApi.queryJson(config.contentPath, version)
       ])
 
       const changedContent = produce(originalContent,
@@ -85,8 +81,7 @@ function fixContent(content, draft, templates) {
   })
 }
 
-export function saveData(acmsApi, acmsApiUri, acmsConfigPath) {
-  console.log("saveData", acmsApiUri, acmsConfigPath)
+export function saveData(acmsApi, acmsConfigPath) {
   return async (dispatch, getState) => {
     const state = getState()
     const version = getVersion(state)
@@ -100,7 +95,7 @@ export function saveData(acmsApi, acmsApiUri, acmsConfigPath) {
       const contentFiles = toFiles(content, templates)
       await acmsApi.save(contentFiles, contentPath, version)
 
-      dispatch(loadData(acmsApi, acmsApiUri, acmsConfigPath))
+      dispatch(loadData(acmsApi, acmsConfigPath))
     } catch (error) {
       dispatch(showError("Failed to save Data", error))
     }

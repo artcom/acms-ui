@@ -7,16 +7,16 @@ import { updatePath } from "./actions/path"
 import { updateUser } from "./actions/user"
 
 import bootstrap from "./bootstrap"
-import { configureStore } from "./store"
+import store from "./store"
 
 import Application from "./components/application"
 
 import "bootstrap/dist/css/bootstrap.min.css"
 
-bootstrap().then(async ({ acmsApi, acmsApiUri, acmsAssets, acmsAssetsUri, acmsConfigPath }) => {
-  const store = configureStore()
+export const ApiContext = React.createContext()
 
-  await store.dispatch(loadData(acmsApi, acmsApiUri, acmsConfigPath))
+bootstrap().then(async ({ acmsApi, acmsAssets, acmsConfigPath }) => {
+  await store.dispatch(loadData(acmsApi, acmsConfigPath))
 
   store.dispatch(updateUser())
 
@@ -29,12 +29,11 @@ bootstrap().then(async ({ acmsApi, acmsApiUri, acmsAssets, acmsAssetsUri, acmsCo
 
   render(
     <Provider store={ store } >
-      <Application
-        acmsApi={ acmsApi }
-        acmsApiUri={ acmsApiUri }
-        acmsAssets={ acmsAssets }
-        acmsAssetsUri={ acmsAssetsUri }
-        acmsConfigPath={ acmsConfigPath } />
+      <ApiContext.Provider
+        value={ { acmsApi, acmsAssets } }>
+        <Application
+          acmsConfigPath={ acmsConfigPath } />
+      </ApiContext.Provider>
     </Provider>
     , document.getElementById("app"))
 })

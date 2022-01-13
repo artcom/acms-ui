@@ -9,6 +9,7 @@ import EntityCreationModal from "./modals/entityCreationModal"
 import EntityRenamingModal from "./modals/entityRenamingModal"
 
 export default function Application(props) {
+  console.log("Application props: ", props)
   return (
     <>
       { !props.isLoading && <Header { ...props } /> }
@@ -17,7 +18,7 @@ export default function Application(props) {
 
         { !props.isLoading &&
         <>
-          <Body acmsAssets={ props.acmsAssets } />
+          <Body />
           <EntityCreationModal />
           <EntityRenamingModal />
         </>
