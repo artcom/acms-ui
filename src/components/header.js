@@ -64,7 +64,6 @@ const Header = ({ acmsConfigPath }) => {
   const isSaving = useSelector(state => state.isSaving)
   const path = useSelector(state => state.path)
   const pathNames = useSelector(getPathNames)
-
   const context = useContext(ApiContext)
 
 
