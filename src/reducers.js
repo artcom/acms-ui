@@ -10,6 +10,10 @@ export const config = createReducer(null, {
   UPDATE_DATA: (state, { payload }) => resolveConfig(payload.config),
 })
 
+export const acmsConfigPath = createReducer(null, {
+  CONFIG_PATH: (state, { payload }) => payload.path,
+})
+
 export const user = createReducer(null, builder => {
   builder.addCase("UPDATE_USER", (state, action) => action.payload.user)
 })

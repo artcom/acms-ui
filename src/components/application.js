@@ -1,22 +1,21 @@
 import React from "react"
-
+import { useSelector } from "react-redux"
 import Container from "react-bootstrap/Container"
-
 import Body from "./body"
 import Error from "./error"
 import Header from "./header"
 import EntityCreationModal from "./modals/entityCreationModal"
 import EntityRenamingModal from "./modals/entityRenamingModal"
 
-export default function Application(props) {
-  console.log("Application props: ", props)
+const Application = () => {
+  const flash = useSelector(state => state.flash)
+  const isLoading = useSelector(state => state.originalContent === null)
   return (
     <>
-      { !props.isLoading && <Header { ...props } /> }
+      <Header />
       <Container>
-        { props.flash && <Error { ...props } /> }
-
-        { !props.isLoading &&
+        { flash && <Error /> }
+        { !isLoading &&
         <>
           <Body />
           <EntityCreationModal />
@@ -27,3 +26,5 @@ export default function Application(props) {
     </>
   )
 }
+
+export default Application

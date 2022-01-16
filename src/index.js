@@ -3,7 +3,8 @@ import { render } from "react-dom"
 import { Provider } from "react-redux"
 
 import { loadData } from "./actions/data"
-import { updatePath } from "./actions/path"
+import { updatePath, configPath } from "./actions/path"
+
 import { updateUser } from "./actions/user"
 
 import bootstrap from "./bootstrap"
@@ -17,6 +18,7 @@ export const ApiContext = React.createContext()
 
 bootstrap().then(async ({ acmsApi, acmsAssets, acmsConfigPath }) => {
   await store.dispatch(loadData(acmsApi, acmsConfigPath))
+  await store.dispatch(configPath(acmsConfigPath))
 
   store.dispatch(updateUser())
 
@@ -31,8 +33,7 @@ bootstrap().then(async ({ acmsApi, acmsAssets, acmsConfigPath }) => {
     <Provider store={ store } >
       <ApiContext.Provider
         value={ { acmsApi, acmsAssets } }>
-        <Application
-          acmsConfigPath={ acmsConfigPath } />
+        <Application />
       </ApiContext.Provider>
     </Provider>
     , document.getElementById("app"))

@@ -1,3 +1,4 @@
+import { createAction } from "react-redux"
 import { toPath } from "../utils/hash"
 
 export function updatePath(hash) {
@@ -7,6 +8,15 @@ export function updatePath(hash) {
     type: "UPDATE_PATH",
     payload: {
       path: toPath(hash)
+    }
+  }
+}
+
+export function configPath(path) {
+  return {
+    type: "CONFIG_PATH",
+    payload: {
+      path
     }
   }
 }

@@ -57,13 +57,14 @@ const StyledBreadcrumb = styled(Breadcrumb)`
   width: 100%;
 `
 
-const Header = ({ acmsConfigPath }) => {
+const Header = () => {
   const dispatch = useDispatch()
   const config = useSelector(state => state.config)
   const hasChanged = useSelector(state => state.originalContent !== state.changedContent)
   const isSaving = useSelector(state => state.isSaving)
   const path = useSelector(state => state.path)
   const pathNames = useSelector(getPathNames)
+  const acmsConfigPath = useSelector(state => state.acmsConfigPath)
   const context = useContext(ApiContext)
 
 
