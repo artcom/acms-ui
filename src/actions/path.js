@@ -1,4 +1,3 @@
-import { createAction } from "react-redux"
 import { toPath } from "../utils/hash"
 
 export function updatePath(hash) {
