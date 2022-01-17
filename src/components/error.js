@@ -7,7 +7,6 @@ import { hideError } from "../actions/error"
 const Error = () => {
   const dispatch = useDispatch()
   const flash = useSelector(state => state.flash)
-  console.log("flash in Error: ", flash)
   return (
     <Alert variant="danger" onClose={ () => dispatch(hideError()) } dismissible>
       <h4>{ flash.title }</h4>
