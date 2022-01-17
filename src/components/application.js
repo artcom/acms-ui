@@ -12,7 +12,7 @@ const Application = () => {
   const isLoading = useSelector(state => state.originalContent === null)
   return (
     <>
-      <Header />
+      { !isLoading && <Header /> } 
       <Container>
         { flash && <Error /> }
         { !isLoading &&
