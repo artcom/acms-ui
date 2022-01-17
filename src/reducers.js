@@ -9,6 +9,11 @@ export const config = createReducer(null, {
   UPDATE_DATA: (draft, { payload }) => resolveConfig(payload.config)
 })
 
+export const acmsConfigPath = createReducer(null, {
+  CONFIG_PATH: (draft, { payload }) => payload.path
+})
+
+
 export const isSaving = createReducer(false, {
   START_SAVING: () => true,
   UPDATE_DATA: () => false,
