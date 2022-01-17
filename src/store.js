@@ -1,13 +1,11 @@
 import { configureStore } from "@reduxjs/toolkit"
 import { createLogger } from "redux-logger"
-import * as reducers from "./reducers"
+import * as reducer from "./reducers"
 
 const loggerMiddleware = createLogger()
 
 const store = configureStore({
-  reducer: {
-    ...reducers,
-  },
+  reducer,
   middleware: getDefaultMiddleware => getDefaultMiddleware().concat(loggerMiddleware)
 })
 
