@@ -1,5 +1,5 @@
 import React from "react"
-import { connect } from "react-redux"
+import { useDispatch, useSelector } from "react-redux"
 
 import Button from "react-bootstrap/Button"
 import Form from "react-bootstrap/Form"
@@ -13,15 +13,9 @@ import { cancelEntityCreation,
 } from "../../actions/entity"
 import { selectNewEntity } from "../../selectors"
 
-export default connect(mapStateToProps)(EntityCreationModal)
-
-function mapStateToProps(state) {
-  return {
-    newEntity: selectNewEntity(state)
-  }
-}
-
-function EntityCreationModal({ dispatch, newEntity }) {
+export default function EntityCreationModal() {
+  const dispatch = useDispatch()
+  const newEntity = useSelector(selectNewEntity)
   return (
     <Modal show={ newEntity.isVisible } onHide={ () => dispatch(cancelEntityCreation()) }>
       <Modal.Header closeButton>

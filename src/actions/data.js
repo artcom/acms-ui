@@ -10,7 +10,6 @@ export function loadData(acmsApi, acmsConfigPath) {
   return async dispatch => {
     try {
       const { data: config, version } = await acmsApi.queryJson(acmsConfigPath)
-
       const [{ data: templates }, { data: originalContent }] = await Promise.all([
         acmsApi.queryFiles(config.templatesPath, version),
         acmsApi.queryJson(config.contentPath, version)
@@ -98,7 +97,7 @@ export function saveData(acmsApi, acmsConfigPath) {
 
       dispatch(loadData(acmsApi, acmsConfigPath))
     } catch (error) {
-      dispatch(showError("Failed to save Data", error))
+      dispatch(showError("Failed to save Data", error.stack))
     }
   }
 }

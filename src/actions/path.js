@@ -10,3 +10,12 @@ export function updatePath(hash) {
     }
   }
 }
+
+export function configPath(path) {
+  return {
+    type: "CONFIG_PATH",
+    payload: {
+      path
+    }
+  }
+}
