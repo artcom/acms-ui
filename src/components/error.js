@@ -11,7 +11,9 @@ const Error = () => {
     <Alert variant="danger" onClose={ () => dispatch(hideError()) } dismissible>
       <h4>{ flash.title }</h4>
       <pre>
-        <code> { flash.message }  </code>
+        <code>
+          { flash.details ? flash.details : flash.details.message }
+        </code>
       </pre>
     </Alert>
   )

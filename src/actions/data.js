@@ -97,7 +97,7 @@ export function saveData(acmsApi, acmsConfigPath) {
 
       dispatch(loadData(acmsApi, acmsConfigPath))
     } catch (error) {
-      dispatch(showError("Failed to save Data", error))
+      dispatch(showError("Failed to save Data", error.stack))
     }
   }
 }
