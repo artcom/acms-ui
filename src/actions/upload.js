@@ -20,7 +20,7 @@ export function uploadFile(path, file, acmsAssets) {
       dispatch(changeValue(path, url))
     } catch (error) {
       dispatch(cancelUpload(path))
-      dispatch(showError("Failed to Upload File", error))
+      dispatch(showError("Failed to Upload File", error.stack))
     }
   }
 }
