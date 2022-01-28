@@ -4,38 +4,28 @@ import Form from "react-bootstrap/Form"
 import StyledFormControl from "./styledFormControl"
 
 export default function NumberEditor({ field, onChange }) {
+  const [stringValue, setStringValue] = useState(field.value.toString())
   const min = get(field, "min", -Infinity)
   const max = get(field, "max", Infinity)
   const valid = field.value >= min && field.value <= max
+  const regex = /^[-]?((\d+(\.\d*)?))?$/
 
-  const [stringValue, setStringValue] = useState(field.value.toString())
-
-  console.log("fieldValue", field.value)
-  console.log("stringValue", stringValue)
-
-  function onChangeFloat(event) {
-    if (/^[-]?(\d*[.,]?)?\d*$/.test(event.target.value)) {
-      let value
-
-      if (event.target.value === "-") {
-        value = -0
-      } else if (event.target.value === "") {
-        value = 0
-      } else {
-        value = parseFloat(event.target.value)
-      }
-
-      onChange({ target: { value } })
-
+  const onChangeString = event => {
+    console.log("regex test ", regex.test(event.target.value))
+    console.log("event.target.value ", event.target.value)
+    if (regex.test(event.target.value) || event.target.value === "") {
       setStringValue(event.target.value)
+      let floatNumber = parseFloat(event.target.value)
+      if (event.target.value === "-" || event.target.value === "") {
+        floatNumber = 0
+      }
+      onChange({ target: { value: floatNumber } })
     }
   }
 
-  function onBlurFloat(event) {
-    if (event.target.value === "") {
+  const onBlurString = event => {
+    if (event.target.value === "" || event.target.value === "." || event.target.value === "-" || event.target.value === "+") {
       setStringValue("0")
-    } else if (event.target.value === "-") {
-      setStringValue("-0")
     }
   }
 
@@ -45,8 +35,8 @@ export default function NumberEditor({ field, onChange }) {
         isInvalid={ !valid }
         type="text"
         value={ stringValue }
-        onChange={ onChangeFloat }
-        onBlur={ onBlurFloat } />
+        onChange={ onChangeString }
+        onBlur={ onBlurString } />
 
       <Form.Control.Feedback type="invalid" tooltip>
         The number should be between { min } and { max }
