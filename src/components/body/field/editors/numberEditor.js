@@ -8,11 +8,15 @@ export default function NumberEditor({ field, onChange }) {
   const min = get(field, "min", -Infinity)
   const max = get(field, "max", Infinity)
   const valid = field.value >= min && field.value <= max
-  const regex = /^[-]?((\d+(\.\d*)?))?$/
+  let regex
+
+  if (field.integer) {
+    regex = /^[-]?\d*$/
+  } else {
+    regex = /^[-]?((\d+(\.\d*)?))?$/
+  }
 
   const onChangeString = event => {
-    console.log("regex test ", regex.test(event.target.value))
-    console.log("event.target.value ", event.target.value)
     if (regex.test(event.target.value) || event.target.value === "") {
       setStringValue(event.target.value)
       let floatNumber = parseFloat(event.target.value)
@@ -24,7 +28,8 @@ export default function NumberEditor({ field, onChange }) {
   }
 
   const onBlurString = event => {
-    if (event.target.value === "" || event.target.value === "." || event.target.value === "-" || event.target.value === "+") {
+    if (event.target.value === "" || event.target.value === "."
+    || event.target.value === "-" || event.target.value === "+") {
       setStringValue("0")
     }
   }
@@ -37,7 +42,6 @@ export default function NumberEditor({ field, onChange }) {
         value={ stringValue }
         onChange={ onChangeString }
         onBlur={ onBlurString } />
-
       <Form.Control.Feedback type="invalid" tooltip>
         The number should be between { min } and { max }
       </Form.Control.Feedback>
