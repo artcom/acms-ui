@@ -31,6 +31,8 @@ const FieldHeader = ({ field, dispatch }) =>
     { field.maxLength && !field.localization &&
     <CharacterCount value={ field.value } maxLength={ field.maxLength } /> }
     { field.type === "image" && <ImageRequirements field={ field } /> }
+    { field.type === "number" && !field.integer && <p> Float </p> }
+    { field.type === "number" && field.integer && <p> Integer </p> }
     <StyledDropdown id={ field.id }>
       <Dropdown.Toggle as={ ToggleButton } />
       <Dropdown.Menu>
