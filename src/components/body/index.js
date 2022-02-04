@@ -8,12 +8,15 @@ import DropDownItem from "react-bootstrap/DropdownItem"
 import ListGroup from "react-bootstrap/ListGroup"
 import ListGroupItem from "react-bootstrap/ListGroupItem"
 import Row from "react-bootstrap/Row"
+import { Button } from "react-bootstrap"
 
 import ChildItem from "./childItem"
 import Field from "./field"
 
 import { deleteEntity, startEntityCreation, startEntityRenaming } from "../../actions/entity"
 import { undoChanges } from "../../actions/value"
+
+import { fromPath } from "../../utils/hash"
 
 import {
   getLanguages,
@@ -24,7 +27,9 @@ import {
   getChildrenLabel,
   getFieldsLabel,
   selectTemplateId,
-  getTextDirection
+  getTextDirection,
+  getSiblingsPath,
+  getPath
 } from "../../selectors"
 
 import { ApiContext } from "../../index"
@@ -33,6 +38,21 @@ const AddButton = styled(ListGroupItem)`
   padding: 0px;
   text-align: center; 
   outline: none;
+`
+
+const ArrowButton = styled(Button)`
+  height: 3em;
+  width: 3em;
+  border-radius: 100px;
+  background: #e9ecef;
+  border: none;
+  color: grey;
+`
+
+const ArrowIcon = styled.div`
+  margin-top: -10px;
+  font-size: 2.5em;
+  line-height: 1em;
 `
 
 
@@ -47,12 +67,32 @@ const Body = () => {
   const textDirection = useSelector(getTextDirection)
   const childrenLabel = useSelector(getChildrenLabel)
   const fieldsLabel = useSelector(getFieldsLabel)
+  const siblingsPath = useSelector(getSiblingsPath)
+  console.log(siblingsPath)
+  const path = useSelector(getPath)
+  console.log(path)
+  const index = getIndex(siblingsPath, path)
+  console.log(index)
 
   const acmsAssets = useContext(ApiContext).acmsAssets
 
   return (
     <div>
-      <Row className="d-flex align-items-center justify-content-center">
+      { siblingsPath.length !== 0 &&
+      <Row>
+        <ArrowButton
+          variant="secondary"
+          disabled={ index === 0 || index === -1 }
+          title={ index !== 0 ? siblingsPath[index - 1][0] : "No more siblings" }
+          href={ index === 0 ? fromPath(siblingsPath[index]) :
+            fromPath(siblingsPath[index - 1]) }>
+          <ArrowIcon>
+            &#60;
+          </ArrowIcon>
+        </ArrowButton>
+      </Row>
+      }
+      <Row className="d-flex justify-content-center">
         { console.log("canHaveChildren", canHaveChildren) }
         { console.log("children", children) }
         { console.log("templateId", templateId) }
@@ -64,6 +104,9 @@ const Body = () => {
         { console.log("textDirection", textDirection) }
         { console.log("childrenLabel", childrenLabel) }
         { console.log("fieldsLabel", fieldsLabel) }
+        { console.log("siblingsPath", siblingsPath) }
+        { console.log("path", path) }
+        { console.log("index", index) }
         <Col md={ 3 }>
           {
             (fixedChildren.length + children.length > 0 || canHaveChildren)
@@ -85,6 +128,21 @@ const Body = () => {
           { renderFields(fields, languages, textDirection, acmsAssets, dispatch) }
         </Col>
       </Row>
+      { siblingsPath.length !== 0 &&
+      <Row>
+        <ArrowButton
+          variant="secondary"
+          disabled={ index === siblingsPath.length - 1 || index === -1 }
+          title={ index !== siblingsPath.length - 1 ? siblingsPath[index + 1][0] :
+            "No more siblings" }
+          href={ index === siblingsPath.length - 1 ? fromPath(siblingsPath[index]) :
+            fromPath(siblingsPath[index - 1]) }>
+          <ArrowIcon>
+            &#62;
+          </ArrowIcon>
+        </ArrowButton>
+      </Row>
+      }
     </div>
   )
 }
@@ -152,6 +210,15 @@ function renderFields(fields, languages, textDirection, acmsAssets, dispatch) {
       acmsAssets={ acmsAssets }
       dispatch={ dispatch } />
   )
+}
+
+function getIndex(siblingsPath, path) {
+  for (let i = 0; i < siblingsPath.length; i++) {
+    for (let k = 0; k < siblingsPath[i].length; k++) {
+      if (siblingsPath[i][k] === path[k]) {return i}
+    }
+  }
+  return -1
 }
 
 export default Body

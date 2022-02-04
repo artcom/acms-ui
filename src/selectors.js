@@ -58,12 +58,34 @@ export const getPathNames = createSelector(
     })
 )
 
+export const getSiblingsPath = createSelector(
+  [getPath, getChangedContent, getTemplates],
+  (path, changedContent, templates) => {
+    if (path.length === 0) {
+      return []
+    }
+
+    const parentPath = path.slice(0, path.length - 1)
+    const parentEntity = getChangedEntity(changedContent, parentPath)
+    const parentTemplate = utils.getTemplate(parentEntity.template, templates)
+
+    const siblingsPath = []
+    parentTemplate.fixedChildren.forEach(({ id }) => {
+      siblingsPath.push([...parentPath, id])
+    })
+
+    return siblingsPath
+  }
+)
+
+function getChangedEntity(changedContent, path) {
+  const entity = path.length ? get(changedContent, path) : changedContent
+  return entity
+}
+
 export const selectChangedEntity = createSelector(
   [getChangedContent, getPath],
-  (changedContent, path) => {
-    const entity = path.length ? get(changedContent, path) : changedContent
-    return entity
-  }
+  (changedContent, path) => getChangedEntity(changedContent, path)
 )
 
 export const selectNewEntity = createSelector(
