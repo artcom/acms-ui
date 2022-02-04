@@ -1,5 +1,5 @@
 import React from "react"
-import { connect } from "react-redux"
+import { useDispatch, useSelector } from "react-redux"
 
 import Button from "react-bootstrap/Button"
 import Form from "react-bootstrap/Form"
@@ -10,15 +10,9 @@ import { cancelEntityRenaming, finishEntityRenaming,
   updateEntityRenaming } from "../../actions/entity"
 import { selectRenamedEntity } from "../../selectors"
 
-export default connect(mapStateToProps)(EntityRenamingModal)
-
-function mapStateToProps(state) {
-  return {
-    renamedEntity: selectRenamedEntity(state)
-  }
-}
-
-function EntityRenamingModal({ dispatch, renamedEntity }) {
+export default function EntityRenamingModal() {
+  const dispatch = useDispatch()
+  const renamedEntity = useSelector(selectRenamedEntity)
   return (
     <Modal show={ renamedEntity.isVisible } onHide={ () => dispatch(cancelEntityRenaming()) }>
       <Modal.Header closeButton>
@@ -47,3 +41,4 @@ function EntityRenamingModal({ dispatch, renamedEntity }) {
     </Modal>
   )
 }
+

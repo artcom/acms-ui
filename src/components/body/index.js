@@ -1,7 +1,6 @@
-import React from "react"
-import { connect } from "react-redux"
+import React, { useContext } from "react"
+import { useDispatch, useSelector } from "react-redux"
 import styled from "styled-components"
-import Button from "react-bootstrap/Button"
 
 import Col from "react-bootstrap/Col"
 import Dropdown from "react-bootstrap/Dropdown"
@@ -15,7 +14,6 @@ import Field from "./field"
 
 import { deleteEntity, startEntityCreation, startEntityRenaming } from "../../actions/entity"
 import { undoChanges } from "../../actions/value"
-import { fromPath } from "../../utils/hash"
 
 import {
   getLanguages,
@@ -26,10 +24,10 @@ import {
   getChildrenLabel,
   getFieldsLabel,
   selectTemplateId,
-  getTextDirection,
-  getPath,
-  selectOriginalEntity
+  getTextDirection
 } from "../../selectors"
+
+import { ApiContext } from "../../index"
 
 const AddButton = styled(ListGroupItem)`
   padding: 0px;
@@ -37,55 +35,21 @@ const AddButton = styled(ListGroupItem)`
   outline: none;
 `
 
-const ArrowButton = styled(Button)`
-  height: 3em;
-  width: 3em;
-  border-radius: 100px;
-  background: #e9ecef;
-  border: none;
-  color: grey;
-`
 
-const ArrowIcon = styled.div`
-  margin-top: -10px;
-  font-size: 2.5em;
-  line-height: 1em;
-`
+const Body = () => {
+  const dispatch = useDispatch()
+  const canHaveChildren = useSelector(selectTemplateChildren).length > 0
+  const templateId = useSelector(selectTemplateId)
+  const children = useSelector(selectAllowedChildren)
+  const fixedChildren = useSelector(selectAllowedFixedChildren)
+  const fields = useSelector(selectAllowedFields)
+  const languages = useSelector(getLanguages)
+  const textDirection = useSelector(getTextDirection)
+  const childrenLabel = useSelector(getChildrenLabel)
+  const fieldsLabel = useSelector(getFieldsLabel)
 
-export default connect(mapStateToProps)(Body)
+  const acmsAssets = useContext(ApiContext).acmsAssets
 
-function mapStateToProps(state) {
-  return {
-    canHaveChildren: selectTemplateChildren(state).length > 0,
-    templateId: selectTemplateId(state),
-    children: selectAllowedChildren(state),
-    fixedChildren: selectAllowedFixedChildren(state),
-    fields: selectAllowedFields(state),
-    languages: getLanguages(state),
-    textDirection: getTextDirection(state),
-    childrenLabel: getChildrenLabel(state),
-    fieldsLabel: getFieldsLabel(state),
-    path: getPath(state),
-    originalEntity: selectOriginalEntity(state),
-  }
-}
-
-function Body({
-  canHaveChildren,
-  children,
-  templateId,
-  fixedChildren,
-  acmsAssets,
-  dispatch,
-  fields,
-  languages,
-  textDirection,
-  childrenLabel,
-  fieldsLabel,
-  path,
-  originalEntity }) {
-  const parentPath = [...path]
-  parentPath.pop()
   return (
     <div>
       <Row className="d-flex align-items-center justify-content-center">
@@ -100,9 +64,6 @@ function Body({
         { console.log("textDirection", textDirection) }
         { console.log("childrenLabel", childrenLabel) }
         { console.log("fieldsLabel", fieldsLabel) }
-        { console.log("path", path) }
-        { console.log("originalEntity", originalEntity) }
-        { console.log("parentPath", parentPath) }
         <Col md={ 3 }>
           {
             (fixedChildren.length + children.length > 0 || canHaveChildren)
@@ -124,34 +85,6 @@ function Body({
           { renderFields(fields, languages, textDirection, acmsAssets, dispatch) }
         </Col>
       </Row>
-      { children.length === 0 &&
-      <Row>
-        <Col className="d-flex justify-content-left" md={ 1 }>
-          <ArrowButton
-            data-toggle="tooltip"
-            title="Previous Children"
-            className="d-flex align-items-center justify-content-center"
-            variant="secondary"
-            href={ fromPath(path.slice(0, -1)) }
-            disabled={ path.length === 0 }>
-            <ArrowIcon>
-              &#60;
-            </ArrowIcon>
-          </ArrowButton>
-        </Col>
-        <Col className="d-flex justify-content-right" md={ 6 }>
-          <ArrowButton
-            data-toggle="tooltip"
-            title="Next Children"
-            className="d-flex align-items-center justify-content-center"
-            variant="secondary">
-            <ArrowIcon>
-              &#62;
-            </ArrowIcon>
-          </ArrowButton>
-        </Col>
-      </Row>
-      }
     </div>
   )
 }
@@ -220,3 +153,5 @@ function renderFields(fields, languages, textDirection, acmsAssets, dispatch) {
       dispatch={ dispatch } />
   )
 }
+
+export default Body
