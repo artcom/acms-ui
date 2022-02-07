@@ -41,18 +41,16 @@ const AddButton = styled(ListGroupItem)`
 `
 
 const ArrowButton = styled(Button)`
-  height: 3em;
-  width: 3em;
-  border-radius: 100px;
-  background: #e9ecef;
+  width: auto;
+  height: auto;  
+  border-radius: 50%;
   border: none;
-  color: grey;
 `
 
 const ArrowIcon = styled.div`
-  margin-top: -10px;
-  font-size: 2.5em;
-  line-height: 1em;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 `
 
 
@@ -68,30 +66,13 @@ const Body = () => {
   const childrenLabel = useSelector(getChildrenLabel)
   const fieldsLabel = useSelector(getFieldsLabel)
   const siblingsPath = useSelector(getSiblingsPath)
-  console.log(siblingsPath)
   const path = useSelector(getPath)
-  console.log(path)
   const index = getIndex(siblingsPath, path)
-  console.log(index)
 
   const acmsAssets = useContext(ApiContext).acmsAssets
 
   return (
     <div>
-      { siblingsPath.length !== 0 &&
-      <Row>
-        <ArrowButton
-          variant="secondary"
-          disabled={ index === 0 || index === -1 }
-          title={ index !== 0 ? siblingsPath[index - 1][0] : "No more siblings" }
-          href={ index === 0 ? fromPath(siblingsPath[index]) :
-            fromPath(siblingsPath[index - 1]) }>
-          <ArrowIcon>
-            &#60;
-          </ArrowIcon>
-        </ArrowButton>
-      </Row>
-      }
       <Row className="d-flex justify-content-center">
         { console.log("canHaveChildren", canHaveChildren) }
         { console.log("children", children) }
@@ -128,21 +109,35 @@ const Body = () => {
           { renderFields(fields, languages, textDirection, acmsAssets, dispatch) }
         </Col>
       </Row>
-      { siblingsPath.length !== 0 &&
       <Row>
-        <ArrowButton
-          variant="secondary"
-          disabled={ index === siblingsPath.length - 1 || index === -1 }
-          title={ index !== siblingsPath.length - 1 ? siblingsPath[index + 1][0] :
-            "No more siblings" }
-          href={ index === siblingsPath.length - 1 ? fromPath(siblingsPath[index]) :
-            fromPath(siblingsPath[index - 1]) }>
-          <ArrowIcon>
-            &#62;
-          </ArrowIcon>
-        </ArrowButton>
+        { siblingsPath.length !== 0 &&
+        <Col className="d-flex align-items-center" md={ 1 }>
+          <ArrowButton
+            variant="light"
+            disabled={ index === 0 || index === -1 }
+            title={ index > 0 ? siblingsPath[index - 1].name : "" }
+            href={ index > 0 ? fromPath(siblingsPath[index - 1].path) : "" }>
+            <ArrowIcon>
+              &#60;
+            </ArrowIcon>
+          </ArrowButton>
+        </Col>
+        }
+        { siblingsPath.length !== 0 &&
+        <Col className="d-flex align-items-center" md={ { span: 1, offset: 10 } }>
+          <ArrowButton
+            variant="light"
+            disabled={ index === siblingsPath.length - 1 || index === -1 }
+            title={ index !== siblingsPath.length - 1 ? siblingsPath[index + 1].name : "" }
+            href={ index !== siblingsPath.length - 1 ?
+              fromPath(siblingsPath[index + 1].path) : "" }>
+            <ArrowIcon>
+              &#62;
+            </ArrowIcon>
+          </ArrowButton>
+        </Col>
+        }
       </Row>
-      }
     </div>
   )
 }
@@ -214,8 +209,8 @@ function renderFields(fields, languages, textDirection, acmsAssets, dispatch) {
 
 function getIndex(siblingsPath, path) {
   for (let i = 0; i < siblingsPath.length; i++) {
-    for (let k = 0; k < siblingsPath[i].length; k++) {
-      if (siblingsPath[i][k] === path[k]) {return i}
+    for (let k = 0; k < siblingsPath[i].path.length; k++) {
+      if (siblingsPath[i].path[k] === path[k]) {return i}
     }
   }
   return -1

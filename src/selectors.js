@@ -58,25 +58,6 @@ export const getPathNames = createSelector(
     })
 )
 
-export const getSiblingsPath = createSelector(
-  [getPath, getChangedContent, getTemplates],
-  (path, changedContent, templates) => {
-    if (path.length === 0) {
-      return []
-    }
-
-    const parentPath = path.slice(0, path.length - 1)
-    const parentEntity = getChangedEntity(changedContent, parentPath)
-    const parentTemplate = utils.getTemplate(parentEntity.template, templates)
-
-    const siblingsPath = []
-    parentTemplate.fixedChildren.forEach(({ id }) => {
-      siblingsPath.push([...parentPath, id])
-    })
-
-    return siblingsPath
-  }
-)
 
 function getChangedEntity(changedContent, path) {
   const entity = path.length ? get(changedContent, path) : changedContent
@@ -284,4 +265,41 @@ function subtitle(content, { subtitleField, fields }) {
 export const selectAllowedFixedChildren = createSelector(
   [selectFixedChildren, selectPermissions],
   (children, permissions) => children.filter(child => isAllowed(child.path, permissions))
+)
+
+export const getSiblingsPath = createSelector(
+  [
+    getPath,
+    getChangedContent,
+    selectTemplates,
+    selectTemplate,
+  ],
+  (path, changedContent, templates) => {
+    if (path.length === 0) {
+      return [{ name: "", path: [] }]
+    }
+
+    const parentPath = path.slice(0, path.length - 1)
+    const parentEntity = getChangedEntity(changedContent, parentPath)
+    const parentTemplate = utils.getTemplate(parentEntity.template, templates)
+
+    const fieldIds = parentTemplate.fields.map(({ id }) => id)
+    const fixedChildIds = parentTemplate.fixedChildren.map(({ id }) => id)
+
+    const siblingsPath = []
+
+    for (const [key, { id, name }] of Object.entries(parentTemplate.fixedChildren)) {
+      siblingsPath.push({ name: name || startCase(id), path: [...parentPath, id] })
+    }
+
+    Object.keys(parentEntity).sort().forEach(id => {
+      if (id !== TEMPLATE_KEY &&
+        !fieldIds.includes(id) &&
+        !fixedChildIds.includes(id)) {
+        siblingsPath.push({ name: startCase(id), path: [...parentPath, id] })
+      }
+    })
+
+    return siblingsPath
+  }
 )
