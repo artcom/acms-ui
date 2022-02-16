@@ -2,7 +2,14 @@ import React from "react"
 import OverlayTrigger from "react-bootstrap/OverlayTrigger"
 import Popover from "react-bootstrap/Popover"
 
-export default function ImageRequirementsTooltip({ field }) {
+const ImageRequirements = ({ field }) => {
+  const hasRequirements = field.heigth || field.minHeight || field.maxHeight ||
+    field.width || field.minWidth || field.maxWidth || field.aspectRatio
+
+  if (!hasRequirements) {
+    return null
+  }
+
   const Icon = props =>
     <div { ...props }>
       <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" fillOpacity="0.6"
@@ -37,3 +44,5 @@ export default function ImageRequirementsTooltip({ field }) {
     </OverlayTrigger>
   )
 }
+
+export default ImageRequirements

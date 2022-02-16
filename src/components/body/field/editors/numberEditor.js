@@ -8,42 +8,36 @@ export default function NumberEditor({ field, onChange }) {
   const min = get(field, "min", -Infinity)
   const max = get(field, "max", Infinity)
   const valid = field.value >= min && field.value <= max
-  let regex
-
-  if (field.integer) {
-    regex = /^[-]?\d*$/
-  } else {
-    regex = /^[-]?((\d+(\.\d*)?))?$/
-  }
+  const isStringFloat = stringValue &&
+    stringValue.includes(",") || stringValue && stringValue.includes(".")
+  const invalidInteger = field.integer && isStringFloat
+  const regex = /^-?((\d+([.,]\d*)?))?$/
 
   const onChangeString = event => {
     if (regex.test(event.target.value) || event.target.value === "") {
       setStringValue(event.target.value)
-      let floatNumber = parseFloat(event.target.value)
-      if (event.target.value === "-" || event.target.value === "") {
+      let floatNumber = parseFloat(event.target.value.replace(",", "."))
+      if (event.target.value === "-" || event.target.value === "" || event.target.value === "-.") {
         floatNumber = 0
       }
       onChange({ target: { value: floatNumber } })
     }
   }
 
-  const onBlurString = event => {
-    if (event.target.value === "" || event.target.value === "."
-    || event.target.value === "-" || event.target.value === "+") {
-      setStringValue("0")
-    }
+  const onBlurString = () => {
+    setStringValue(field.value.toString())
   }
 
   return (
     <>
       <StyledFormControl
-        isInvalid={ !valid }
+        isInvalid={ !valid || invalidInteger }
         type="text"
         value={ stringValue }
         onChange={ onChangeString }
         onBlur={ onBlurString } />
       <Form.Control.Feedback type="invalid" tooltip>
-        The number should be between { min } and { max }
+        { field.integer && isStringFloat ? "Should be an integer" : `The number should be between ${min} and ${max}` }
       </Form.Control.Feedback>
     </>
   )
