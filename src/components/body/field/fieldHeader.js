@@ -8,7 +8,7 @@ import styled from "styled-components"
 import { undoChanges } from "../../../actions/value"
 
 import ToggleButton from "../../toggleButton"
-import requirements from "./requirements"
+import Requirements from "./requirements"
 
 const StyledDropdown = styled(Dropdown)`
   margin-left: 0.5rem;
@@ -24,25 +24,22 @@ const Fieldname = styled.div`
   margin-right: auto;
 `
 
-const FieldHeader = ({ field, dispatch }) => {
-  const Requirement = requirements[field.type]
-  return (
-    <Flexbox>
-      <Fieldname > { field.name ? field.name : startCase(field.id) } </Fieldname>
-      <Requirement field={ field } />
-      <StyledDropdown id={ field.id }>
-        <Dropdown.Toggle as={ ToggleButton } />
-        <Dropdown.Menu>
-          <DropdownItem
-            key="undo"
-            disabled={ !field.hasChanged || field.isNew }
-            onSelect={ () => dispatch(undoChanges(field.path)) }>
-            Undo Changes
-          </DropdownItem>
-        </Dropdown.Menu>
-      </StyledDropdown>
-    </Flexbox>
-  )
-}
+const FieldHeader = ({ field, dispatch }) =>
+  <Flexbox>
+    <Fieldname > { field.name ? field.name : startCase(field.id) } </Fieldname>
+    <Requirements field={ field } />
+    <StyledDropdown id={ field.id }>
+      <Dropdown.Toggle as={ ToggleButton } />
+      <Dropdown.Menu>
+        <DropdownItem
+          key="undo"
+          disabled={ !field.hasChanged || field.isNew }
+          onSelect={ () => dispatch(undoChanges(field.path)) }>
+          Undo Changes
+        </DropdownItem>
+      </Dropdown.Menu>
+    </StyledDropdown>
+  </Flexbox>
+
 
 export default FieldHeader

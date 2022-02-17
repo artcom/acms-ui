@@ -1,15 +1,19 @@
+import React from "react"
 import ImageRequirements from "./imageRequirements"
 import StringRequirements from "./stringRequirements"
 import NumberRequirements from "./numberRequirements"
 
-export default {
-  image: ImageRequirements,
-  string: StringRequirements,
-  number: NumberRequirements,
-  audio: () => null,
-  boolean: () => null,
-  enum: () => null,
-  file: () => null,
-  markdown: () => null,
-  video: () => null,
+const Requirements = ({ field }) => {
+  switch (field.type) {
+    case "image":
+      return <ImageRequirements field={ field } />
+    case "string":
+      return <StringRequirements field={ field } />
+    case "number":
+      return <NumberRequirements field={ field } />
+    default:
+      return null
+  }
 }
+
+export default Requirements
