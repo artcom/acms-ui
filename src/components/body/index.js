@@ -72,18 +72,6 @@ const Body = () => {
 
   return (
     <div>
-      <div>
-        { leftSibling &&
-          <ArrowButton
-            variant="light"
-            title={ leftSibling.name }
-            href={ fromPath(leftSibling.path) }>
-            <ArrowIcon>
-              &#60;
-            </ArrowIcon>
-          </ArrowButton>
-        }
-      </div>
       <Row className="d-flex justify-content-center">
         { console.log("canHaveChildren", canHaveChildren) }
         { console.log("children", children) }
@@ -99,6 +87,18 @@ const Body = () => {
         { console.log("leftSibling", leftSibling) }
         { console.log("rightSibling", rightSibling) }
         { console.log("path", path) }
+        <Col md={ 1 }>
+          { leftSibling &&
+          <ArrowButton
+            variant="light"
+            title={ leftSibling.name }
+            href={ fromPath(leftSibling.path) }>
+            <ArrowIcon>
+              &#60;
+            </ArrowIcon>
+          </ArrowButton>
+          }
+        </Col>
         <Col md={ 3 }>
           {
             (fixedChildren.length + children.length > 0 || canHaveChildren)
@@ -119,19 +119,20 @@ const Body = () => {
           </div>
           { renderFields(fields, languages, textDirection, acmsAssets, dispatch) }
         </Col>
+        <Col md={ 1 }>
+          { rightSibling &&
+          <ArrowButton
+            style={ { float: "right" } }
+            variant="light"
+            title={ rightSibling.name }
+            href={ fromPath(rightSibling.path) }>
+            <ArrowIcon>
+              &#62;
+            </ArrowIcon>
+          </ArrowButton>
+          }
+        </Col>
       </Row>
-      <div>
-        { rightSibling &&
-        <ArrowButton
-          variant="light"
-          title={ rightSibling.name }
-          href={ fromPath(rightSibling.path) }>
-          <ArrowIcon>
-            &#62;
-          </ArrowIcon>
-        </ArrowButton>
-        }
-      </div>
     </div>
   )
 }
