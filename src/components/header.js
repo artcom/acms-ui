@@ -13,7 +13,7 @@ import { ApiContext } from "../index"
 
 import { saveData } from "../actions/data"
 import { fromPath } from "../utils/hash"
-import { getPathNames } from "../selectors"
+import { getPathNames, selectTemplateId } from "../selectors"
 
 const Logo = styled.img`
   width: auto;
@@ -57,6 +57,10 @@ const StyledBreadcrumb = styled(Breadcrumb)`
   width: 100%;
 `
 
+const Template = styled.div`
+  margin-left: 1em;
+`
+
 const Header = () => {
   const dispatch = useDispatch()
   const config = useSelector(state => state.config)
@@ -66,6 +70,7 @@ const Header = () => {
   const pathNames = useSelector(getPathNames)
   const acmsConfigPath = useSelector(state => state.acmsConfigPath)
   const context = useContext(ApiContext)
+  const templateId = useSelector(selectTemplateId)
 
 
   return (
@@ -95,6 +100,12 @@ const Header = () => {
                   { pathNames[i] }
                 </Breadcrumb.Item>
               ) }
+              <Template
+                className="text-muted"
+                data-toggle="tooltip"
+                title={ templateId }>
+                { `(${templateId.split("/").at(-1)})` }
+              </Template>
             </StyledBreadcrumb>
             <SaveButton
               disabled={ !hasChanged || isSaving }
