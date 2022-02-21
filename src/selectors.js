@@ -267,7 +267,7 @@ export const selectAllowedFixedChildren = createSelector(
   (children, permissions) => children.filter(child => isAllowed(child.path, permissions))
 )
 
-export const getSiblingsPath = createSelector(
+export const getNeighbourSiblings = createSelector(
   [
     getPath,
     getChangedContent,
@@ -276,7 +276,7 @@ export const getSiblingsPath = createSelector(
   ],
   (path, changedContent, templates) => {
     if (path.length === 0) {
-      return [{ name: "", path: [] }]
+      return [null, null]
     }
 
     const parentPath = path.slice(0, path.length - 1)
@@ -286,20 +286,34 @@ export const getSiblingsPath = createSelector(
     const fieldIds = parentTemplate.fields.map(({ id }) => id)
     const fixedChildIds = parentTemplate.fixedChildren.map(({ id }) => id)
 
-    const siblingsPath = []
-
-    for (const [key, { id, name }] of Object.entries(parentTemplate.fixedChildren)) {
-      siblingsPath.push({ name: name || startCase(id), path: [...parentPath, id] })
-    }
+    const siblingsIds = [...fixedChildIds]
 
     Object.keys(parentEntity).sort().forEach(id => {
       if (id !== TEMPLATE_KEY &&
         !fieldIds.includes(id) &&
         !fixedChildIds.includes(id)) {
-        siblingsPath.push({ name: startCase(id), path: [...parentPath, id] })
+        siblingsIds.push(id)
       }
     })
 
-    return siblingsPath
+    const ownId = path[path.length - 1]
+    const ownIndex = siblingsIds.indexOf(ownId)
+
+    return [
+      getSibling(siblingsIds[ownIndex - 1], parentPath, parentTemplate.fixedChildren),
+      getSibling(siblingsIds[ownIndex + 1], parentPath, parentTemplate.fixedChildren)
+    ]
   }
 )
+
+function getSibling(id, parentPath, fixedChildren) {
+  if (!id) {
+    return null
+  }
+
+  const fixedChild = fixedChildren.find(child => id === child.id)
+  return {
+    path: [...parentPath, id],
+    name: fixedChild && fixedChild.name ? fixedChild.name : startCase(id)
+  }
+}
