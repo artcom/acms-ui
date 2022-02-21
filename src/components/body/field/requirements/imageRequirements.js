@@ -17,7 +17,7 @@ const ImageRequirements = ({ field }) => {
         { field.height && <> Height: { field.height } <br /> </> }
         { field.minHeight && <> Min. Height: { field.minHeight } <br /> </> }
         { field.maxHeight && <> Max. Height: { field.maxHeight } <br /> </> }
-        { field.width && <> Width: ${ field.width } <br /> </> }
+        { field.width && <> Width: { field.width } <br /> </> }
         { field.minWidth && <> Min. Width: { field.minWidth } <br /> </> }
         { field.maxWidth && <> Max. Width: { field.maxWidth } <br /> </> }
         { field.aspectRatio && <> Aspect Ratio: { field.aspectRatio } <br /> </> }
