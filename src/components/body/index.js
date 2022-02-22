@@ -12,7 +12,10 @@ import Row from "react-bootstrap/Row"
 import ChildItem from "./childItem"
 import Field from "./field"
 
-import { deleteEntity, startEntityCreation, startNumberedEntityCreation, startEntityRenaming } from "../../actions/entity"
+import {
+  deleteEntity,
+  startNumberedEntityCreation,
+  startEntityRenaming } from "../../actions/entity"
 import { undoChanges } from "../../actions/value"
 
 import {
