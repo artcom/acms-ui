@@ -5,7 +5,7 @@ import Dropdown from "react-bootstrap/Dropdown"
 import DropdownItem from "react-bootstrap/DropdownItem"
 import styled from "styled-components"
 
-import { undoChanges } from "../../../actions/value"
+import { undoChanges, clearSrcTag } from "../../../actions/value"
 
 import ToggleButton from "../../toggleButton"
 import CharacterCount from "./characterCount"
@@ -40,6 +40,13 @@ const FieldHeader = ({ field, dispatch }) =>
           onSelect={ () => dispatch(undoChanges(field.path)) }>
           Undo Changes
         </DropdownItem>
+        { (field.type === "image" || field.type === "video") &&
+        <DropdownItem
+          key="clear"
+          disabled={ !field.hasChanged || field.isNew }
+          onSelect={ () => dispatch(clearSrcTag(field.path)) }>
+          Clear
+        </DropdownItem> }
       </Dropdown.Menu>
     </StyledDropdown>
   </Flexbox>
