@@ -12,7 +12,7 @@ import Row from "react-bootstrap/Row"
 import ChildItem from "./childItem"
 import Field from "./field"
 
-import { deleteEntity, startEntityCreation, startEntityRenaming } from "../../actions/entity"
+import { deleteEntity, startEntityCreation, startNumberedEntityCreation, startEntityRenaming } from "../../actions/entity"
 import { undoChanges } from "../../actions/value"
 
 import {
@@ -122,7 +122,7 @@ function renderChildren(children, dispatch, canHaveChildren) {
         <AddButton
           variant="secondary"
           action
-          onClick={ () => dispatch(startEntityCreation()) }>+
+          onClick={ () => dispatch(startNumberedEntityCreation(children.length)) }>+
         </AddButton>
       }
     </ListGroup>

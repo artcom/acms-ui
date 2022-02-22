@@ -1,5 +1,6 @@
 import startCase from "lodash/startCase"
 import camelCase from "lodash/camelCase"
+import padStart from "lodash/padStart"
 
 import {
   selectNewEntityPath,
@@ -18,6 +19,23 @@ export function startEntityCreation() {
       type: "START_ENTITY_CREATION",
       payload: {
         id: "",
+        template: templates[0],
+        templates
+      }
+    })
+  }
+}
+export function startNumberedEntityCreation(count = 0) {
+  return (dispatch, getState) => {
+    const state = getState()
+    const templates = selectTemplateChildren(state)
+    const id = `${startCase(templates[0].split("/").slice(-1))} ${padStart(count, 3, "0")}`
+    console.log("NEXT ID", id)
+
+    dispatch({
+      type: "START_ENTITY_CREATION",
+      payload: {
+        id,
         template: templates[0],
         templates
       }
