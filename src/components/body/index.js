@@ -26,7 +26,6 @@ import {
   selectAllowedFields,
   getChildrenLabel,
   getFieldsLabel,
-  selectTemplateId,
   getTextDirection,
   getNeighbourSiblings,
   getPath
@@ -57,7 +56,6 @@ const ArrowIcon = styled.div`
 const Body = () => {
   const dispatch = useDispatch()
   const canHaveChildren = useSelector(selectTemplateChildren).length > 0
-  const templateId = useSelector(selectTemplateId)
   const children = useSelector(selectAllowedChildren)
   const fixedChildren = useSelector(selectAllowedFixedChildren)
   const fields = useSelector(selectAllowedFields)
@@ -75,7 +73,6 @@ const Body = () => {
       <Row className="d-flex justify-content-center">
         { console.log("canHaveChildren", canHaveChildren) }
         { console.log("children", children) }
-        { console.log("templateId", templateId) }
         { console.log("fixedChildren", fixedChildren) }
         { console.log("acmsAssets", acmsAssets) }
         { console.log("dispatch", dispatch) }
@@ -108,15 +105,8 @@ const Body = () => {
           { (children.length > 0 || canHaveChildren) &&
           renderChildren(children, dispatch, canHaveChildren) }
         </Col>
-
         <Col md={ 7 }>
-          <div className="d-flex align-items-center">
-            { fields.length > 0 && <h4 className="pr-2">{ fieldsLabel }</h4> }
-            { templateId.split("/").length > 1 && fields.length > 0 &&
-            <small className="text-muted" data-toggle="tooltip" title={ templateId }>
-              { `(${templateId.split("/").at(-1)})` }
-            </small> }
-          </div>
+          { fields.length > 0 && <h4 className="pr-2">{ fieldsLabel }</h4> }
           { renderFields(fields, languages, textDirection, acmsAssets, dispatch) }
         </Col>
         <Col md={ 1 }>
