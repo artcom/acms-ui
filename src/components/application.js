@@ -1,7 +1,7 @@
 import React from "react"
 import { useSelector } from "react-redux"
 import Container from "react-bootstrap/Container"
-import Body from "./body/index"
+import Body from "./body"
 import Error from "./error"
 import Header from "./header"
 import EntityCreationModal from "./modals/entityCreationModal"
