@@ -40,10 +40,10 @@ const FieldHeader = ({ field, dispatch }) =>
           onSelect={ () => dispatch(undoChanges(field.path)) }>
           Undo Changes
         </DropdownItem>
-        { (field.type === "image" || field.type === "video") &&
+        { (field.type === "image" || field.type === "video" || field.type === "audio") &&
         <DropdownItem
           key="clear"
-          disabled={ !field.hasChanged || field.isNew }
+          disabled={ field.value === "" || field.isNew }
           onSelect={ () => dispatch(clearSrcTag(field.path)) }>
           Clear
         </DropdownItem> }
