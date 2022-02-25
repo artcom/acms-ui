@@ -28,9 +28,35 @@ const FieldContent = ({ acmsAssets, dispatch, field, languages, textDirection })
     return <span>Unknown field type <code>{ field.type }</code></span>
   }
 
+  if (field.type === "geolocation") {
+    return renderGeolocationEditor(field, textDirection, acmsAssets, dispatch, Editor)
+  }
+
   return field.localization
     ? renderLocalizedEditors(field, languages, textDirection, acmsAssets, dispatch, Editor)
     : renderEditor(field, textDirection, acmsAssets, dispatch, Editor)
+}
+
+function renderGeolocationEditor(field, textDirection, acmsAssets, dispatch, Editor) {
+  const items = field.coordinates.map(id => {
+    const coordinateField = {
+      ...field,
+      path: [...field.path, id],
+      value: field.value[id],
+      name: id === "lon" ? "Longitude" : "Latitude"
+    }
+
+    return (
+      <StyledListGroupItem key={ id }>
+        <StyledCardHeader className="text-muted">
+          { coordinateField.name }
+        </StyledCardHeader>
+        { renderEditor(coordinateField, textDirection, acmsAssets, dispatch, Editor) }
+      </StyledListGroupItem>
+    )
+  })
+
+  return <ListGroup variant="flush">{ items }</ListGroup>
 }
 
 function renderLocalizedEditors(field, languages, textDirection, acmsAssets, dispatch, Editor) {
