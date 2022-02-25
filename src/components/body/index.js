@@ -8,12 +8,15 @@ import DropDownItem from "react-bootstrap/DropdownItem"
 import ListGroup from "react-bootstrap/ListGroup"
 import ListGroupItem from "react-bootstrap/ListGroupItem"
 import Row from "react-bootstrap/Row"
+import { Button } from "react-bootstrap"
 
 import ChildItem from "./childItem"
 import Field from "./field"
 
 import { deleteEntity, startEntityCreation, startEntityRenaming } from "../../actions/entity"
 import { undoChanges } from "../../actions/value"
+
+import { fromPath } from "../../utils/hash"
 
 import {
   getLanguages,
@@ -23,8 +26,9 @@ import {
   selectAllowedFields,
   getChildrenLabel,
   getFieldsLabel,
-  selectTemplateId,
-  getTextDirection
+  getTextDirection,
+  getNeighbourSiblings,
+  getPath
 } from "../../selectors"
 
 import { ApiContext } from "../../index"
@@ -35,11 +39,23 @@ const AddButton = styled(ListGroupItem)`
   outline: none;
 `
 
+const ArrowButton = styled(Button)`
+  width: auto;
+  height: auto;  
+  border-radius: 50%;
+  border: none;
+`
+
+const ArrowIcon = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`
+
 
 const Body = () => {
   const dispatch = useDispatch()
   const canHaveChildren = useSelector(selectTemplateChildren).length > 0
-  const templateId = useSelector(selectTemplateId)
   const children = useSelector(selectAllowedChildren)
   const fixedChildren = useSelector(selectAllowedFixedChildren)
   const fields = useSelector(selectAllowedFields)
@@ -47,32 +63,67 @@ const Body = () => {
   const textDirection = useSelector(getTextDirection)
   const childrenLabel = useSelector(getChildrenLabel)
   const fieldsLabel = useSelector(getFieldsLabel)
+  const [leftSibling, rightSibling] = useSelector(getNeighbourSiblings)
+  const path = useSelector(getPath)
 
   const acmsAssets = useContext(ApiContext).acmsAssets
 
   return (
-    <Row>
-      <Col md={ 4 }>
-        {
-          (fixedChildren.length + children.length > 0 || canHaveChildren)
+    <div>
+      <Row className="d-flex justify-content-center">
+        { console.log("canHaveChildren", canHaveChildren) }
+        { console.log("children", children) }
+        { console.log("fixedChildren", fixedChildren) }
+        { console.log("acmsAssets", acmsAssets) }
+        { console.log("dispatch", dispatch) }
+        { console.log("fields", fields) }
+        { console.log("languages", languages) }
+        { console.log("textDirection", textDirection) }
+        { console.log("childrenLabel", childrenLabel) }
+        { console.log("fieldsLabel", fieldsLabel) }
+        { console.log("leftSibling", leftSibling) }
+        { console.log("rightSibling", rightSibling) }
+        { console.log("path", path) }
+        <Col md={ 1 }>
+          { leftSibling &&
+          <ArrowButton
+            variant="light"
+            title={ leftSibling.name }
+            href={ fromPath(leftSibling.path) }>
+            <ArrowIcon>
+              &#60;
+            </ArrowIcon>
+          </ArrowButton>
+          }
+        </Col>
+        <Col md={ 3 }>
+          {
+            (fixedChildren.length + children.length > 0 || canHaveChildren)
           && <h4>{ childrenLabel }</h4>
-        }
-        { fixedChildren.length > 0 && renderFixedChildren(fixedChildren, dispatch) }
-        { (children.length > 0 || canHaveChildren) &&
+          }
+          { fixedChildren.length > 0 && renderFixedChildren(fixedChildren, dispatch) }
+          { (children.length > 0 || canHaveChildren) &&
           renderChildren(children, dispatch, canHaveChildren) }
-      </Col>
-
-      <Col md={ 8 }>
-        <div className="d-flex align-items-center">
+        </Col>
+        <Col md={ 7 }>
           { fields.length > 0 && <h4 className="pr-2">{ fieldsLabel }</h4> }
-          { templateId.split("/").length > 1 && fields.length > 0 &&
-          <small className="text-muted" data-toggle="tooltip" title={ templateId }>
-            { `(${templateId.split("/").at(-1)})` }
-          </small> }
-        </div>
-        { renderFields(fields, languages, textDirection, acmsAssets, dispatch) }
-      </Col>
-    </Row>
+          { renderFields(fields, languages, textDirection, acmsAssets, dispatch) }
+        </Col>
+        <Col md={ 1 }>
+          { rightSibling &&
+          <ArrowButton
+            style={ { float: "right" } }
+            variant="light"
+            title={ rightSibling.name }
+            href={ fromPath(rightSibling.path) }>
+            <ArrowIcon>
+              &#62;
+            </ArrowIcon>
+          </ArrowButton>
+          }
+        </Col>
+      </Row>
+    </div>
   )
 }
 
