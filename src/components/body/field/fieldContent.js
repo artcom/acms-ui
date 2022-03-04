@@ -1,3 +1,4 @@
+import { startCase } from "lodash"
 import React from "react"
 
 import Card from "react-bootstrap/Card"
@@ -29,7 +30,7 @@ const FieldContent = ({ acmsAssets, dispatch, field, languages, textDirection })
   }
 
   if (field.type === "geolocation") {
-    return renderGeolocationEditor(field, textDirection, acmsAssets, dispatch, Editor)
+    return renderMultipleEditors(field, textDirection, acmsAssets, dispatch, Editor)
   }
 
   return field.localization
@@ -37,21 +38,21 @@ const FieldContent = ({ acmsAssets, dispatch, field, languages, textDirection })
     : renderEditor(field, textDirection, acmsAssets, dispatch, Editor)
 }
 
-function renderGeolocationEditor(field, textDirection, acmsAssets, dispatch, Editor) {
-  const items = field.coordinates.map(id => {
-    const coordinateField = {
+function renderMultipleEditors(field, textDirection, acmsAssets, dispatch, Editor) {
+  const items = field.items.map(item => {
+    const singleField = {
       ...field,
-      path: [...field.path, id],
-      value: field.value[id],
-      name: id === "lon" ? "Longitude" : "Latitude"
+      path: [...field.path, item.id],
+      value: field.value[item.id],
+      name: item.name || startCase(item.id)
     }
 
     return (
-      <StyledListGroupItem key={ id }>
+      <StyledListGroupItem key={ item.id }>
         <StyledCardHeader className="text-muted">
-          { coordinateField.name }
+          { singleField.name }
         </StyledCardHeader>
-        { renderEditor(coordinateField, textDirection, acmsAssets, dispatch, Editor) }
+        { renderEditor(singleField, textDirection, acmsAssets, dispatch, Editor) }
       </StyledListGroupItem>
     )
   })
