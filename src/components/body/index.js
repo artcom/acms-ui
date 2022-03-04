@@ -40,18 +40,10 @@ const AddButton = styled(ListGroupItem)`
 `
 
 const ArrowButton = styled(Button)`
-  width: auto;
-  height: auto;  
-  border-radius: 50%;
-  border: none;
+  text-align: center; 
+  outline: none; 
+  position: fixed;
 `
-
-const ArrowIcon = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-`
-
 
 const Body = () => {
   const dispatch = useDispatch()
@@ -69,61 +61,59 @@ const Body = () => {
   const acmsAssets = useContext(ApiContext).acmsAssets
 
   return (
-    <div>
-      <Row className="d-flex justify-content-center">
-        { console.log("canHaveChildren", canHaveChildren) }
-        { console.log("children", children) }
-        { console.log("fixedChildren", fixedChildren) }
-        { console.log("acmsAssets", acmsAssets) }
-        { console.log("dispatch", dispatch) }
-        { console.log("fields", fields) }
-        { console.log("languages", languages) }
-        { console.log("textDirection", textDirection) }
-        { console.log("childrenLabel", childrenLabel) }
-        { console.log("fieldsLabel", fieldsLabel) }
-        { console.log("leftSibling", leftSibling) }
-        { console.log("rightSibling", rightSibling) }
-        { console.log("path", path) }
-        <Col md={ 1 }>
-          { leftSibling &&
+    <Row className="mh-100">
+      <Col xs={ 2 } md={ 1 } className="vh-100 d-flex align-items-center">
+        { leftSibling &&
           <ArrowButton
             variant="light"
             title={ leftSibling.name }
             href={ fromPath(leftSibling.path) }>
-            <ArrowIcon>
-              &#60;
-            </ArrowIcon>
+            &#8592;
           </ArrowButton>
-          }
-        </Col>
-        <Col md={ 3 }>
-          {
-            (fixedChildren.length + children.length > 0 || canHaveChildren)
+        }
+      </Col>
+      <Col xs={ 8 } md={ 10 }>
+        <Row className="d-flex justify-content-start">
+          { console.log("canHaveChildren", canHaveChildren) }
+          { console.log("children", children) }
+          { console.log("fixedChildren", fixedChildren) }
+          { console.log("acmsAssets", acmsAssets) }
+          { console.log("dispatch", dispatch) }
+          { console.log("fields", fields) }
+          { console.log("languages", languages) }
+          { console.log("textDirection", textDirection) }
+          { console.log("childrenLabel", childrenLabel) }
+          { console.log("fieldsLabel", fieldsLabel) }
+          { console.log("leftSibling", leftSibling) }
+          { console.log("rightSibling", rightSibling) }
+          { console.log("path", path) }
+          <Col md={ 3 }>
+            {
+              (fixedChildren.length + children.length > 0 || canHaveChildren)
           && <h4>{ childrenLabel }</h4>
-          }
-          { fixedChildren.length > 0 && renderFixedChildren(fixedChildren, dispatch) }
-          { (children.length > 0 || canHaveChildren) &&
+            }
+            { fixedChildren.length > 0 && renderFixedChildren(fixedChildren, dispatch) }
+            { (children.length > 0 || canHaveChildren) &&
           renderChildren(children, dispatch, canHaveChildren) }
-        </Col>
-        <Col md={ 7 }>
-          { fields.length > 0 && <h4 className="pr-2">{ fieldsLabel }</h4> }
-          { renderFields(fields, languages, textDirection, acmsAssets, dispatch) }
-        </Col>
-        <Col md={ 1 }>
-          { rightSibling &&
+          </Col>
+          <Col md={ 7 }>
+            { fields.length > 0 && <h4 className="pr-2">{ fieldsLabel }</h4> }
+            { renderFields(fields, languages, textDirection, acmsAssets, dispatch) }
+          </Col>
+        </Row>
+      </Col>
+      <Col xs={ 2 } md={ 1 } className="mh-100 d-flex align-items-center justify-content-end">
+        { rightSibling &&
           <ArrowButton
             style={ { float: "right" } }
             variant="light"
             title={ rightSibling.name }
             href={ fromPath(rightSibling.path) }>
-            <ArrowIcon>
-              &#62;
-            </ArrowIcon>
+            &#8594;
           </ArrowButton>
-          }
-        </Col>
-      </Row>
-    </div>
+        }
+      </Col>
+    </Row>
   )
 }
 
