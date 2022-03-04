@@ -87,7 +87,7 @@ const Body = () => {
           { console.log("leftSibling", leftSibling) }
           { console.log("rightSibling", rightSibling) }
           { console.log("path", path) }
-          <Col md={ 3 }>
+          <Col md={ 4 }>
             {
               (fixedChildren.length + children.length > 0 || canHaveChildren)
           && <h4>{ childrenLabel }</h4>
@@ -96,7 +96,7 @@ const Body = () => {
             { (children.length > 0 || canHaveChildren) &&
           renderChildren(children, dispatch, canHaveChildren) }
           </Col>
-          <Col md={ 7 }>
+          <Col md={ 8 }>
             { fields.length > 0 && <h4 className="pr-2">{ fieldsLabel }</h4> }
             { renderFields(fields, languages, textDirection, acmsAssets, dispatch) }
           </Col>
