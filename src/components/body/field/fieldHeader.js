@@ -5,11 +5,10 @@ import Dropdown from "react-bootstrap/Dropdown"
 import DropdownItem from "react-bootstrap/DropdownItem"
 import styled from "styled-components"
 
-import { undoChanges } from "../../../actions/value"
+import { undoChanges, clearSrcTag } from "../../../actions/value"
 
 import ToggleButton from "../../toggleButton"
-import CharacterCount from "./characterCount"
-import ImageRequirements from "./imageRequirements"
+import Requirements from "./requirements"
 
 const StyledDropdown = styled(Dropdown)`
   margin-left: 0.5rem;
@@ -28,9 +27,7 @@ const Fieldname = styled.div`
 const FieldHeader = ({ field, dispatch }) =>
   <Flexbox>
     <Fieldname > { field.name ? field.name : startCase(field.id) } </Fieldname>
-    { field.maxLength && !field.localization &&
-    <CharacterCount value={ field.value } maxLength={ field.maxLength } /> }
-    { field.type === "image" && <ImageRequirements field={ field } /> }
+    <Requirements field={ field } />
     <StyledDropdown id={ field.id }>
       <Dropdown.Toggle as={ ToggleButton } />
       <Dropdown.Menu>
@@ -40,8 +37,16 @@ const FieldHeader = ({ field, dispatch }) =>
           onSelect={ () => dispatch(undoChanges(field.path)) }>
           Undo Changes
         </DropdownItem>
+        { (field.type === "image" || field.type === "video" || field.type === "audio") &&
+        <DropdownItem
+          key="clear"
+          disabled={ field.value === "" || field.isNew }
+          onSelect={ () => dispatch(clearSrcTag(field.path)) }>
+          Clear
+        </DropdownItem> }
       </Dropdown.Menu>
     </StyledDropdown>
   </Flexbox>
+
 
 export default FieldHeader

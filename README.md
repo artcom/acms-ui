@@ -83,7 +83,8 @@ Template files specify the structure of the content data while the actual values
         {
             "id": "numLoops",
             "name": "Number of Loops performed",
-            "type": "number"
+            "type": "number",
+            "integer": true
         }
   ]
   "fixedChildren": [                     // optional list of fixed/named children
@@ -111,7 +112,7 @@ Template files specify the structure of the content data while the actual values
 
 The following field types are supported:
 
-#### `audio`,`image`, `file`, `video`
+#### `audio`, `file`, `video`
 An uploadable asset which is stored on the asset server with a unique (hashed) filename
 
 Example:
@@ -122,6 +123,31 @@ Example:
     "type": "image"
 }
 ```
+
+#### `image`
+An uploadable asset which is stored on the asset server with a unique (hashed) filename
+* `width`: optional width of the image
+* `minWidth`: optional minimum width of the image
+* `maxWidth`: optional maximum width of the image
+* `height`: optional height of the image
+* `minHeight`: optional minimum height of the image
+* `maxHeight`: optional maximum height of the image
+* `aspectRatio`: optional aspect ratio of the image
+
+Example:	
+```json5
+{
+    "id": "coverImage",
+    "name": "Front Cover Image",
+    "type": "image",
+    "width": 1920,
+    "minWidth": 800,
+    "maxWidth": 2200,
+    "height": 1080,
+    "minHeight": 800,
+    "maxHeight": 1600,
+    "aspectRatio": "16:9"
+}
 
 #### `string`, `markdown`
 A string type with the following otional properties:
@@ -143,6 +169,7 @@ Example:
 A number type with the following optional properties:
 * `min`: The minimum value, default `-Infinity`
 * `max`: The maximum value, default `Infinity`
+* `integer`: Defines wether the number is an integer, default: `false`
 
 Example:
 ```json5
