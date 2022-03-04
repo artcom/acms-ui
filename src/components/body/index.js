@@ -20,6 +20,8 @@ import { fromPath } from "../../utils/hash"
 
 import {
   getLanguages,
+  selectTemplate,
+  selectAllSiblingTemplates,
   selectTemplateChildren,
   selectAllowedFixedChildren,
   selectAllowedChildren,
@@ -55,6 +57,8 @@ const ArrowIcon = styled.div`
 
 const Body = () => {
   const dispatch = useDispatch()
+  const template = useSelector(selectTemplate)
+  const allSiblingTemplates = useSelector(selectAllSiblingTemplates)
   const canHaveChildren = useSelector(selectTemplateChildren).length > 0
   const children = useSelector(selectAllowedChildren)
   const fixedChildren = useSelector(selectAllowedFixedChildren)
@@ -71,6 +75,8 @@ const Body = () => {
   return (
     <div>
       <Row className="d-flex justify-content-center">
+        { console.log("template", template) }
+        { console.log("childrenTemplates", allSiblingTemplates) }
         { console.log("canHaveChildren", canHaveChildren) }
         { console.log("children", children) }
         { console.log("fixedChildren", fixedChildren) }

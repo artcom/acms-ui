@@ -120,6 +120,27 @@ export const selectTemplate = createSelector(
   (templates, changedEntity) => utils.getTemplate(changedEntity[TEMPLATE_KEY], templates)
 )
 
+export const selectAllSiblingTemplates = createSelector(
+  [getPath, getChangedContent, selectTemplates],
+  (path, changedContent, templates) => {
+    if (path.length === 0) {
+      return null
+    }
+
+    const parentPath = path.slice(0, path.length - 1)
+    const parentEntity = getChangedEntity(changedContent, parentPath)
+    const parentTemplate = utils.getTemplate(parentEntity.template, templates)
+    const allChildrenTemplates = [...parentTemplate.children]
+
+    parentTemplate.fixedChildren.forEach(({ template }) => {
+      allChildrenTemplates.push(template)
+    })
+
+    return allChildrenTemplates.filter((item, index) =>
+      allChildrenTemplates.indexOf(item) === index)
+  }
+)
+
 export const selectTemplateChildren = createSelector(
   [selectTemplate],
   template => template.children
