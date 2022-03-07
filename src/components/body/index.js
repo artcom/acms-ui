@@ -42,7 +42,8 @@ const AddButton = styled(ListGroupItem)`
 const ArrowButton = styled(Button)`
   text-align: center; 
   outline: none; 
-  position: fixed;
+  position: sticky;
+  top: 50%;
 `
 
 const Body = () => {
@@ -61,8 +62,8 @@ const Body = () => {
   const acmsAssets = useContext(ApiContext).acmsAssets
 
   return (
-    <Row className="mh-100">
-      <Col xs={ 2 } md={ 1 } className="vh-100 d-flex align-items-center">
+    <Row className="vh-100">
+      <Col xs={ 2 } sm={ 2 } md={ 1 } className="vh-100 d-flex align-items-start">
         { leftSibling &&
           <ArrowButton
             variant="light"
@@ -72,7 +73,7 @@ const Body = () => {
           </ArrowButton>
         }
       </Col>
-      <Col xs={ 8 } md={ 10 }>
+      <Col xs={ 8 } sm={ 8 } md={ 10 }>
         <Row className="d-flex justify-content-start">
           { console.log("canHaveChildren", canHaveChildren) }
           { console.log("children", children) }
@@ -87,7 +88,7 @@ const Body = () => {
           { console.log("leftSibling", leftSibling) }
           { console.log("rightSibling", rightSibling) }
           { console.log("path", path) }
-          <Col md={ 4 }>
+          <Col xs={ 12 } sm={ 12 } md={ 4 }>
             {
               (fixedChildren.length + children.length > 0 || canHaveChildren)
           && <h4>{ childrenLabel }</h4>
@@ -96,16 +97,17 @@ const Body = () => {
             { (children.length > 0 || canHaveChildren) &&
           renderChildren(children, dispatch, canHaveChildren) }
           </Col>
-          <Col md={ 8 }>
+          <Col xs={ 12 } sm={ 12 } md={ 8 }>
             { fields.length > 0 && <h4 className="pr-2">{ fieldsLabel }</h4> }
             { renderFields(fields, languages, textDirection, acmsAssets, dispatch) }
           </Col>
         </Row>
       </Col>
-      <Col xs={ 2 } md={ 1 } className="mh-100 d-flex align-items-center justify-content-end">
+      <Col
+        xs={ 2 } sm={ 2 } md={ 1 }
+        className="vh-100 d-flex align-items-start justify-content-end">
         { rightSibling &&
           <ArrowButton
-            style={ { float: "right" } }
             variant="light"
             title={ rightSibling.name }
             href={ fromPath(rightSibling.path) }>
