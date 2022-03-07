@@ -39,7 +39,7 @@ const FieldContent = ({ acmsAssets, dispatch, field, languages, textDirection })
 }
 
 function renderMultipleEditors(field, textDirection, acmsAssets, dispatch, Editor) {
-  const items = field.editors.map(editor => {
+  const fieldEditors = field.editors.map(editor => {
     const singleField = {
       ...field,
       path: [...field.path, editor.id],
@@ -57,7 +57,7 @@ function renderMultipleEditors(field, textDirection, acmsAssets, dispatch, Edito
     )
   })
 
-  return <ListGroup variant="flush">{ items }</ListGroup>
+  return <ListGroup variant="flush">{ fieldEditors }</ListGroup>
 }
 
 function renderLocalizedEditors(field, languages, textDirection, acmsAssets, dispatch, Editor) {
