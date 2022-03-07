@@ -101,7 +101,7 @@ const Header = () => {
                   { pathNames[i] }
                 </Breadcrumb.Item>
               ) }
-              { siblingTemplates && siblingTemplates.length > 2 &&
+              { siblingTemplates && siblingTemplates.length > 1 &&
               <Template
                 className="text-muted"
                 data-toggle="tooltip"
