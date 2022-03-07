@@ -39,16 +39,16 @@ const FieldContent = ({ acmsAssets, dispatch, field, languages, textDirection })
 }
 
 function renderMultipleEditors(field, textDirection, acmsAssets, dispatch, Editor) {
-  const items = field.items.map(item => {
+  const items = field.editors.map(editor => {
     const singleField = {
       ...field,
-      path: [...field.path, item.id],
-      value: field.value[item.id],
-      name: item.name || startCase(item.id)
+      path: [...field.path, editor.id],
+      value: field.value[editor.id],
+      name: editor.name || startCase(editor.id)
     }
 
     return (
-      <StyledListGroupItem key={ item.id }>
+      <StyledListGroupItem key={ editor.id }>
         <StyledCardHeader className="text-muted">
           { singleField.name }
         </StyledCardHeader>
