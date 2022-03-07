@@ -125,7 +125,7 @@ function renderChildren(children, dispatch, canHaveChildren) {
         <AddButton
           variant="secondary"
           action
-          onClick={ () => dispatch(startNumberedEntityCreation(children.length)) }>+
+          onClick={ () => dispatch(startNumberedEntityCreation(children)) }>+
         </AddButton>
       }
     </ListGroup>

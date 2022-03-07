@@ -25,13 +25,39 @@ export function startEntityCreation() {
     })
   }
 }
-export function startNumberedEntityCreation(count = 0) {
+
+function findNextIndex(children, templateName) {
+  const nextIndexInvalid = (cs, nIndex) => cs.some(child => {
+    const templateMatch = child.name.toLowerCase().startsWith(templateName)
+    let indexEquals = false
+    const indexStringMatch = child.name.match(/(\d+)$/g)
+    if (indexStringMatch) {
+      const indexString = indexStringMatch.pop()
+      if (indexString) {
+        indexEquals = nIndex === Number.parseInt(indexString, 10)
+      }
+    }
+    return templateMatch && indexEquals
+  })
+  const startIndex = 1
+  let nextIndex = startIndex
+  while (nextIndexInvalid(children, nextIndex)) {
+    nextIndex++
+  }
+  // console.log("found next ID", nextIndex)
+  return nextIndex
+}
+
+export function startNumberedEntityCreation(children) {
   return (dispatch, getState) => {
     const state = getState()
     const templates = selectTemplateChildren(state)
-    const id = `${startCase(templates[0].split("/").slice(-1))} ${padStart(count, 3, "0")}`
-    console.log("NEXT ID", id)
-
+    let id = ""
+    if (templates.length === 1) {
+      const templateName = templates[0].split("/").slice(-1).toString().toLowerCase()
+      const nextIndex = findNextIndex(children, templateName)
+      id = `${startCase(templateName)} ${padStart(nextIndex, 3, "0")}`
+    }
     dispatch({
       type: "START_ENTITY_CREATION",
       payload: {
@@ -42,6 +68,7 @@ export function startNumberedEntityCreation(count = 0) {
     })
   }
 }
+
 
 export function updateEntityCreationId(id) {
   return {
