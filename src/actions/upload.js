@@ -1,4 +1,5 @@
 import { basename, extname } from "path-browserify"
+import { toLower } from "lodash"
 
 import { sha256 } from "../utils/sha"
 
@@ -14,8 +15,9 @@ export function uploadFile(path, file, acmsAssets) {
     try {
       dispatch(startUpload(path))
       const filename = await generateFilename(file)
+      const filenameLower = toLower(filename)
 
-      const url = await acmsAssets.uploadFile(filename, file, { onUploadProgress })
+      const url = await acmsAssets.uploadFile(filenameLower, file, { onUploadProgress })
 
       dispatch(changeValue(path, url))
     } catch (error) {
