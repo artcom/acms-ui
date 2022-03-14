@@ -28,7 +28,6 @@ import {
   getFieldsLabel,
   getTextDirection,
   getNeighbourSiblings,
-  getPath
 } from "../../selectors"
 
 import { ApiContext } from "../../index"
@@ -64,26 +63,12 @@ const Body = () => {
   const childrenLabel = useSelector(getChildrenLabel)
   const fieldsLabel = useSelector(getFieldsLabel)
   const [leftSibling, rightSibling] = useSelector(getNeighbourSiblings)
-  const path = useSelector(getPath)
 
   const acmsAssets = useContext(ApiContext).acmsAssets
 
   return (
     <div>
       <Row className="d-flex justify-content-center">
-        { console.log("canHaveChildren", canHaveChildren) }
-        { console.log("children", children) }
-        { console.log("fixedChildren", fixedChildren) }
-        { console.log("acmsAssets", acmsAssets) }
-        { console.log("dispatch", dispatch) }
-        { console.log("fields", fields) }
-        { console.log("languages", languages) }
-        { console.log("textDirection", textDirection) }
-        { console.log("childrenLabel", childrenLabel) }
-        { console.log("fieldsLabel", fieldsLabel) }
-        { console.log("leftSibling", leftSibling) }
-        { console.log("rightSibling", rightSibling) }
-        { console.log("path", path) }
         <Col md={ 1 }>
           { leftSibling &&
           <ArrowButton
