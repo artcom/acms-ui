@@ -43,6 +43,11 @@ export function createField(field) {
       localizedField[id] = createFieldValue(field) // eslint-disable-line no-param-reassign
       return localizedField
     }, {})
+  } else if (field.geolocation) {
+    return field.editors.reduce((locationField, id) => {
+      locationField[id] = createFieldValue(field) // eslint-disable-line no-param-reassign
+      return locationField
+    }, {})
   } else {
     return createFieldValue(field)
   }
@@ -94,8 +99,6 @@ export function isValidField(value, field) {
     case "string":
       return isString(value)
     case "number":
-      return isNumber(value)
-    case "integer":
       return isNumber(value)
     default:
       return true

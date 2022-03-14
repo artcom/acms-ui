@@ -3,7 +3,6 @@ import EnumEditor from "./enumEditor"
 import NumberEditor from "./numberEditor"
 import BooleanEditor from "./booleanEditor"
 import StringEditor from "./stringEditor"
-import GeolocationEditor from "./geolocationEditor"
 
 export default {
   audio: AssetEditor,
@@ -15,5 +14,4 @@ export default {
   number: NumberEditor,
   string: StringEditor,
   video: AssetEditor,
-  geolocation: GeolocationEditor,
 }
