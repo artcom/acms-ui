@@ -28,34 +28,9 @@ const FieldContent = ({ acmsAssets, dispatch, field, languages, textDirection })
     return <span>Unknown field type <code>{ field.type }</code></span>
   }
 
-  if (field.geolocation) {
-    return renderGeolocationEditors(field, textDirection, acmsAssets, dispatch, Editor)
-  }
-
   return field.localization
     ? renderLocalizedEditors(field, languages, textDirection, acmsAssets, dispatch, Editor)
     : renderEditor(field, textDirection, acmsAssets, dispatch, Editor)
-}
-
-function renderGeolocationEditors(field, textDirection, acmsAssets, dispatch, Editor) {
-  const items = field.editors.map(id => {
-    const locationField = {
-      ...field,
-      path: [...field.path, id],
-      value: field.value[id]
-    }
-
-    return (
-      <StyledListGroupItem key={ id }>
-        <StyledCardHeader className="text-muted">
-          { id === "lat" ? "Latitude" : "Longitude" }
-        </StyledCardHeader>
-        { renderEditor(locationField, textDirection, acmsAssets, dispatch, Editor) }
-      </StyledListGroupItem>
-    )
-  })
-
-  return <ListGroup variant="flush">{ items }</ListGroup>
 }
 
 function renderLocalizedEditors(field, languages, textDirection, acmsAssets, dispatch, Editor) {
@@ -88,7 +63,7 @@ function renderEditor(field, textDirection, acmsAssets, dispatch, Editor) {
     <Editor
       field={ field }
       textDirection={ textDirection }
-      onChange={ event => dispatch(changeValue(field.path, event.target.value)) }
+      onChange={ newValue => dispatch(changeValue(field.path, newValue)) }
       onFileSelect={ files => dispatch(uploadFile(field.path, files[0], acmsAssets)) } />
   )
 }

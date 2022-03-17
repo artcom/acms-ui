@@ -42,17 +42,7 @@ function fixContent(content, draft, templates) {
 
   // fix invalid fields
   fields.forEach(field => {
-    if (field.geolocation) {
-      draft[field.id] = {}
-      for (const id of field.editors) {
-        const value = content[field.id][id]
-        if (utils.isValidField(value, field)) {
-          draft[field.id][id] = value
-        } else {
-          draft[field.id][id] = utils.createFieldValue(field)
-        }
-      }
-    } else if (field.localization) {
+    if (field.localization) {
       draft[field.id] = {}
       for (const id of field.localization) {
         const value = content[field.id][id]
