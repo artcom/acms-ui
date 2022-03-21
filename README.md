@@ -184,9 +184,9 @@ Example:
 ```
 
 #### `geolocation`
-A geolocation type with values for `lat` (Latitude) and `lon` (Longitude).
-* `min`: The minimum value, default `lat: -90`, `lon: -180`
-* `max`: The maximum value, default `lat: 90`, `lon: 180`
+A geolocation type with values for `lat` (Latitude) and `long` (Longitude).
+* `min`: The minimum value, default `lat: -90`, `long: -180`
+* `max`: The maximum value, default `lat: 90`, `long: 180`
 
 Example:
 ```json5

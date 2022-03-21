@@ -21,13 +21,13 @@ export default function GeolocationEditor({ field, onChange }) {
         <StyledCardLabel className="card-text">Latitude</StyledCardLabel>
         <NumberInput
           field={ { value: field.value.lat, min: -90, max: 90 } }
-          onChange={ newLat => onChange({ lat: newLat, lon: field.value.lon }) } />
+          onChange={ newLat => onChange({ lat: newLat, long: field.value.long }) } />
       </Flexbox>
       <Flexbox>
         <StyledCardLabel className="card-text">Longitude</StyledCardLabel>
         <NumberInput
-          field={ { value: field.value.lon, min: -180, max: 180 } }
-          onChange={ newLon => onChange({ lat: field.value.lat, lon: newLon }) } />
+          field={ { value: field.value.long, min: -180, max: 180 } }
+          onChange={ newLong => onChange({ lat: field.value.lat, long: newLong }) } />
       </Flexbox>
     </Flexbox>
   )
