@@ -27,7 +27,7 @@ import {
   getChildrenLabel,
   getFieldsLabel,
   getTextDirection,
-  getNeighbourSiblings
+  getNeighbourSiblings,
 } from "../../selectors"
 
 import { ApiContext } from "../../index"
