@@ -148,6 +148,7 @@ Example:
     "maxHeight": 1600,
     "aspectRatio": "16:9"
 }
+```
 
 #### `string`, `markdown`
 A string type with the following otional properties:
@@ -179,6 +180,19 @@ Example:
     "type": "number",
     "min": 0,
     "max": 100
+}
+```
+
+#### `geolocation`
+A geolocation type with values for `lat` (Latitude) and `lon` (Longitude).
+* `min`: The minimum value, default `lat: -90`, `lon: -180`
+* `max`: The maximum value, default `lat: 90`, `lon: 180`
+
+Example:
+```json5
+{
+  "id": "location",
+  "type": "geolocation"
 }
 ```
 
