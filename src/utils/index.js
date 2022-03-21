@@ -72,7 +72,7 @@ export function createFieldValue(field) {
       return Math.max(min, Math.min(0, max))
     }
     case "geolocation":
-      return { lat: 0, lon: 0 }
+      return { lat: 0, long: 0 }
     default:
       return null
   }
@@ -100,7 +100,7 @@ export function isValidField(value, field) {
       return isPlainObject(value) &&
         Object.keys(value).length === 2 &&
         isNumber(value.lat) &&
-        isNumber(value.lon)
+        isNumber(value.long)
     default:
       return true
   }
