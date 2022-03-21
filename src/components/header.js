@@ -91,7 +91,8 @@ const Header = () => {
               </HomeIcon>
             </HomeButton>
             <StyledBreadcrumb
-              listProps={ { style: { minHeight: "3em" } } }>
+              listProps={ { style:
+              { minHeight: "3em", alignItems: "center", marginLeft: "1em" } } }>
               { path.map((item, i) =>
                 <Breadcrumb.Item
                   key={ i }
