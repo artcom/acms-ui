@@ -16,14 +16,18 @@ const Flexbox = styled.div`
 export default function GeolocationEditor({ field, onChange }) {
   return (
     <Flexbox>
-      <StyledCardLabel className="card-text">Latitude</StyledCardLabel>
-      <NumberInput
-        field={ { value: field.value.lat, min: -90, max: 90 } }
-        onChange={ newLat => onChange({ lat: newLat, lon: field.value.lon }) } />
-      <StyledCardLabel className="card-text">Longitude</StyledCardLabel>
-      <NumberInput
-        field={ { value: field.value.lon, min: -180, max: 180 } }
-        onChange={ newLon => onChange({ lat: field.value.lat, lon: newLon }) } />
+      <Flexbox>
+        <StyledCardLabel className="card-text">Latitude</StyledCardLabel>
+        <NumberInput
+          field={ { value: field.value.lat, min: -90, max: 90 } }
+          onChange={ newLat => onChange({ lat: newLat, lon: field.value.lon }) } />
+      </Flexbox>
+      <Flexbox>
+        <StyledCardLabel className="card-text">Longitude</StyledCardLabel>
+        <NumberInput
+          field={ { value: field.value.lon, min: -180, max: 180 } }
+          onChange={ newLon => onChange({ lat: field.value.lat, lon: newLon }) } />
+      </Flexbox>
     </Flexbox>
   )
 }
