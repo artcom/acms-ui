@@ -13,14 +13,6 @@ const StyledSelectControl = styled(StyledFormControl)`
 `
 
 export default function EnumEditor({ field, onChange }) {
-  function onChangeEnum(event) {
-    onChange({
-      target: {
-        value: event.target.value
-      }
-    })
-  }
-
   const values = isString(field.values[0])
     ? field.values.map(id => ({ id, name: startCase(id) }))
     : field.values
@@ -29,7 +21,7 @@ export default function EnumEditor({ field, onChange }) {
     <StyledSelectControl
       as="select"
       value={ field.value }
-      onChange={ onChangeEnum }>
+      onChange={ event => onChange(event.target.value) }>
       { values.map(({ id, name }, index) =>
         <option key={ index } value={ id }>{ name }</option>
       ) }

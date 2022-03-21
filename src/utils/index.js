@@ -71,7 +71,8 @@ export function createFieldValue(field) {
       const max = isNumber(field.max) ? field.max : Infinity
       return Math.max(min, Math.min(0, max))
     }
-
+    case "geolocation":
+      return { lat: 0, lon: 0 }
     default:
       return null
   }
@@ -95,8 +96,11 @@ export function isValidField(value, field) {
       return isString(value)
     case "number":
       return isNumber(value)
-    case "integer":
-      return isNumber(value)
+    case "geolocation":
+      return isPlainObject(value) &&
+        Object.keys(value).length === 2 &&
+        isNumber(value.lat) &&
+        isNumber(value.lon)
     default:
       return true
   }
