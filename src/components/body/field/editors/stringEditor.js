@@ -18,7 +18,7 @@ export default function StringEditor({ field, onChange, textDirection }) {
         direction={ textDirection }
         { ...(multiline ? MULTI_LINE_STYLE : SINGLE_LINE_STYLE) }
         value={ field.value }
-        onChange={ onChange } />
+        onChange={ event => onChange(event.target.value) } />
       <Form.Control.Feedback type="invalid" tooltip>
         Maximum length should be { maxLength }
       </Form.Control.Feedback>

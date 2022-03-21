@@ -63,7 +63,7 @@ function renderEditor(field, textDirection, acmsAssets, dispatch, Editor) {
     <Editor
       field={ field }
       textDirection={ textDirection }
-      onChange={ event => dispatch(changeValue(field.path, event.target.value)) }
+      onChange={ newValue => dispatch(changeValue(field.path, newValue)) }
       onFileSelect={ files => dispatch(uploadFile(field.path, files[0], acmsAssets)) } />
   )
 }
