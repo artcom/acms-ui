@@ -11,6 +11,7 @@ const StyledCardLabel = styled(Card.Header)`
 const Flexbox = styled.div`
   display: flex;
   align-items: center;
+  position: relative;
 `
 
 export default function GeolocationEditor({ field, onChange }) {
