@@ -15,9 +15,8 @@ export function uploadFile(path, file, acmsAssets) {
     try {
       dispatch(startUpload(path))
       const filename = await generateFilename(file)
-      const filenameLower = toLower(filename)
 
-      const url = await acmsAssets.uploadFile(filenameLower, file, { onUploadProgress })
+      const url = await acmsAssets.uploadFile(filename, file, { onUploadProgress })
 
       dispatch(changeValue(path, url))
     } catch (error) {
@@ -31,7 +30,8 @@ async function generateFilename(file) {
   const extension = extname(file.name)
   const name = basename(file.name, extension)
   const hash = await sha256(file)
-  return `${name}-${hash}${extension}`.replace(/([^a-z0-9\-.])/gi, "_")
+  const filename = `${name}-${hash}${extension}`.replace(/([^a-z0-9\-.])/gi, "_")
+  return toLower(filename)
 }
 
 function startUpload(path) {
