@@ -8,7 +8,7 @@
     "stats": "webpack --profile --json --env production > stats.json",
     "build": "webpack --env production",
     "start": "npm run build && http-server ./dist/ -p ${PORT:-5000} -c 0",
-    "watch": "webpack-cli serve --env development"
+    "watch": "webpack-cli serve --env development "
   },
   "dependencies": {
     "@babel/cli": "^7.14.8",

@@ -93,6 +93,7 @@ export function saveData(acmsApi, acmsConfigPath) {
       dispatch({ type: "START_SAVING" })
 
       const contentFiles = toFiles(content, templates)
+      console.log("CONTENT FILES", contentFiles)
       await acmsApi.save(contentFiles, contentPath, version)
 
       dispatch(loadData(acmsApi, acmsConfigPath))
