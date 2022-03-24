@@ -37,14 +37,13 @@ export default function EntityCreationModal() {
           newEntity.templates.length > 1 &&
           <Form.Group>
             <Form.Label>Template</Form.Label>
-            <Form.Control
-              as="select"
+            <Form.Select
               value={ newEntity.template }
               onChange={ event => dispatch(updateEntityCreationTemplate(event.target.value)) }>
               { newEntity.templates.map(template =>
                 <option key={ template } value={ template }>{ template }</option>
               ) }
-            </Form.Control>
+            </Form.Select>
           </Form.Group>
         }
       </Modal.Body>
