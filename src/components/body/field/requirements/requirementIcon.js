@@ -1,7 +1,7 @@
 import React from "react"
 
-const RequirementIcon = props =>
-  <div { ...props }>
+const RequirementIcon = React.forwardRef((props, ref) =>
+  <div { ...props } ref={ ref }>
     <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" fillOpacity="0.6"
       fill="currentColor" className="bi bi-info-lg" viewBox="0 0 16 16">
       <path d="m9.708 6.075-3.024.379-.108.502.595.108c.387.093.464.232.38.619l-.975 4.577c-.255
@@ -10,5 +10,6 @@ const RequirementIcon = props =>
 0Z" />
     </svg>
   </div>
+)
 
 export default RequirementIcon

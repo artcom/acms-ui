@@ -12,8 +12,8 @@ const ImageRequirements = ({ field }) => {
   }
   const Tooltip =
     <Popover>
-      <Popover.Title>Image Requirements</Popover.Title>
-      <Popover.Content>
+      <Popover.Header>Image Requirements</Popover.Header>
+      <Popover.Body>
         { field.height && <> Height: { field.height } <br /> </> }
         { field.minHeight && <> Min. Height: { field.minHeight } <br /> </> }
         { field.maxHeight && <> Max. Height: { field.maxHeight } <br /> </> }
@@ -21,7 +21,7 @@ const ImageRequirements = ({ field }) => {
         { field.minWidth && <> Min. Width: { field.minWidth } <br /> </> }
         { field.maxWidth && <> Max. Width: { field.maxWidth } <br /> </> }
         { field.aspectRatio && <> Aspect Ratio: { field.aspectRatio } <br /> </> }
-      </Popover.Content>
+      </Popover.Body>
     </Popover>
 
   return (
