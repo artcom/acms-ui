@@ -120,7 +120,7 @@ function renderFixedChildren(children, dispatch) {
           <Dropdown.Menu>
             <DropDownItem
               disabled={ !child.hasChanged }
-              onSelect={ () => dispatch(undoChanges(child.path)) }>
+              onClick={ () => dispatch(undoChanges(child.path)) }>
               Undo Changes
             </DropDownItem>
           </Dropdown.Menu>
@@ -138,17 +138,17 @@ function renderChildren(children, dispatch, canHaveChildren) {
           <Dropdown.Menu>
             <DropDownItem
               disabled={ child.isDeleted }
-              onSelect={ () => dispatch(startEntityRenaming(child.id)) }>
+              onClick={ () => dispatch(startEntityRenaming(child.id)) }>
               Rename...
             </DropDownItem>
             <DropDownItem
               disabled={ !child.hasChanged || child.isNew }
-              onSelect={ () => dispatch(undoChanges(child.path)) }>
+              onClick={ () => dispatch(undoChanges(child.path)) }>
               Undo Changes
             </DropDownItem>
             <DropDownItem
               disabled={ child.isDeleted }
-              onSelect={ () => dispatch(deleteEntity(child.path)) }>
+              onClick={ () => dispatch(deleteEntity(child.path)) }>
               Delete
             </DropDownItem>
           </Dropdown.Menu>
