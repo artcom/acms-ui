@@ -11,6 +11,7 @@ import styled from "styled-components"
 import { useSelector, useDispatch } from "react-redux"
 import { ApiContext } from "../index"
 
+import Search from "./search"
 import { saveData } from "../actions/data"
 import { fromPath } from "../utils/hash"
 import { getPathNames, selectTemplateId } from "../selectors"
@@ -34,6 +35,7 @@ const Title = styled(Navbar.Text)`
 const StyledButtonGroup = styled(ButtonGroup)`
   width: 100%;
   min-height: 3em;
+  background-color: #e9ecef;
 `
 
 const SaveButton = styled(Button)`
@@ -53,8 +55,8 @@ const HomeIcon = styled.div`
 `
 
 const StyledBreadcrumb = styled(Breadcrumb)`
-  margin-bottom: -16px;
   width: 100%;
+  margin-bottom: -16px;
 `
 
 const Template = styled.div`
@@ -107,6 +109,13 @@ const Header = () => {
                 { `(${templateId.split("/").at(-1)})` }
               </Template>
             </StyledBreadcrumb>
+            <Col className="d-flex justify-content-center align-items-center"
+              style={ { flexBasis: "auto" } }>
+              <Search
+                dispatch={ dispatch }
+                acmsApi={ context.acmsApi }
+                acmsConfigPath={ acmsConfigPath } />
+            </Col>
             <SaveButton
               disabled={ !hasChanged || isSaving }
               onClick={ () => dispatch(saveData(context.acmsApi, acmsConfigPath)) }>

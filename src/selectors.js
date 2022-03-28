@@ -306,6 +306,27 @@ export const getNeighbourSiblings = createSelector(
   }
 )
 
+export const getFilteredContent = (value, fullChangedContent) => {
+  const changedContent = {}
+
+  Object.keys(fullChangedContent).forEach(id => {
+    switch (typeof fullChangedContent[id]) {
+      case "string":
+        if (fullChangedContent[id].includes(value)) {
+          changedContent[id] = fullChangedContent[id]
+        }
+        break
+      case "number":
+        if (value.replace(",", ".").includes(fullChangedContent[id].toString())) {
+          changedContent[id] = fullChangedContent[id]
+        }
+    }
+  })
+
+  return changedContent
+}
+
+
 function getSibling(id, parentPath, fixedChildren) {
   if (!id) {
     return null

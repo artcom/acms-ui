@@ -2,7 +2,13 @@
 
 import { produce } from "immer"
 import isPlainObject from "lodash/isPlainObject"
-import { getChangedContent, selectTemplates, getVersion, getContentPath } from "../selectors"
+import {
+  getChangedContent,
+  selectTemplates,
+  getVersion,
+  getContentPath,
+  getFilteredContent
+} from "../selectors"
 import { showError } from "./error"
 import * as utils from "../utils"
 
@@ -21,6 +27,43 @@ export function loadData(acmsApi, acmsConfigPath) {
 
       dispatch({
         type: "UPDATE_DATA",
+        payload: {
+          config,
+          originalContent,
+          changedContent,
+          templates,
+          version
+        }
+      })
+    } catch (error) {
+      const details = error.response ? JSON.stringify(error.response, null, 2) : error.stack
+      dispatch(showError("Failed to load Data", details))
+    }
+  }
+}
+
+export function searchData(acmsApi, acmsConfigPath, value) {
+  return async dispatch => {
+    try {
+      const { data: config, version } = await acmsApi.queryJson(acmsConfigPath)
+      const [{ data: templates }, { data: originalContent }] = await Promise.all([
+        acmsApi.queryFiles(config.templatesPath, version),
+        acmsApi.queryJson(config.contentPath, version)
+      ])
+
+      const fullChangedContent = produce(originalContent,
+        draft => fixContent(originalContent, draft, templates)
+      )
+
+      const changedContent = getFilteredContent(value, fullChangedContent)
+
+      console.log("changedContent: ", changedContent)
+
+      console.log("value: ", value)
+      console.log("fullChangedContent: ", fullChangedContent)
+
+      dispatch({
+        type: "SEARCH_DATA",
         payload: {
           config,
           originalContent,
