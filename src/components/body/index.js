@@ -38,11 +38,52 @@ const AddButton = styled(ListGroupItem)`
   outline: none;
 `
 
-const ArrowButton = styled(Button)`
+const ArrowButton = styled(Button).attrs(() => ({
+  variant: "light"
+}))`
   text-align: center; 
   outline: none; 
   position: sticky;
   top: 50%;
+`
+
+const LeftArrowCol = styled(Col).attrs(() => ({
+  xs: 2,
+  md: 1
+}))`
+  display: flex;
+  height: 100vh;
+  align-items: start;
+`
+
+const ContentCol = styled(Col).attrs(() => ({
+  xs: 8,
+  md: 10
+}))``
+
+const ContentContainer = styled(Row)`
+  display: flex;
+  justify-content: start;
+`
+
+const ChildrenCol = styled(Col).attrs(() => ({
+  xs: 12,
+  md: 4
+}))``
+
+const FieldsCol = styled(Col).attrs(() => ({
+  xs: 12,
+  md: 8
+}))``
+
+const RightArrowCol = styled(Col).attrs(() => ({
+  xs: 2,
+  md: 1
+}))`
+  display: flex;
+  height: 100vh;
+  align-items: start;
+  justify-content: end;
 `
 
 const Body = () => {
@@ -60,46 +101,44 @@ const Body = () => {
   const acmsAssets = useContext(ApiContext).acmsAssets
 
   return (
-    <Row className="vh-100">
-      <Col xs={ 2 } sm={ 2 } md={ 1 } className="vh-100 d-flex align-items-start">
+    <Row>
+      <LeftArrowCol>
         { leftSibling &&
           <ArrowButton
-            variant="light"
             title={ leftSibling.name }
             href={ fromPath(leftSibling.path) }>
             &#8592;
           </ArrowButton>
         }
-      </Col>
-      <Col xs={ 8 } sm={ 8 } md={ 10 }>
-        <Row className="d-flex justify-content-start">
-          <Col xs={ 12 } sm={ 12 } md={ 4 }>
+      </LeftArrowCol>
+      <ContentCol>
+        <ContentContainer>
+          <ChildrenCol>
             {
-              (fixedChildren.length + children.length > 0 || canHaveChildren)
-          && <h4>{ childrenLabel }</h4>
+              (fixedChildren.length + children.length > 0 || canHaveChildren) &&
+              <h4>{ childrenLabel }</h4>
             }
             { fixedChildren.length > 0 && renderFixedChildren(fixedChildren, dispatch) }
-            { (children.length > 0 || canHaveChildren) &&
-          renderChildren(children, dispatch, canHaveChildren) }
-          </Col>
-          <Col xs={ 12 } sm={ 12 } md={ 8 }>
+            {
+              (children.length > 0 || canHaveChildren) &&
+              renderChildren(children, dispatch, canHaveChildren)
+            }
+          </ChildrenCol>
+          <FieldsCol>
             { fields.length > 0 && <h4 className="pr-2">{ fieldsLabel }</h4> }
             { renderFields(fields, languages, textDirection, acmsAssets, dispatch) }
-          </Col>
-        </Row>
-      </Col>
-      <Col
-        xs={ 2 } sm={ 2 } md={ 1 }
-        className="vh-100 d-flex align-items-start justify-content-end">
+          </FieldsCol>
+        </ContentContainer>
+      </ContentCol>
+      <RightArrowCol>
         { rightSibling &&
           <ArrowButton
-            variant="light"
             title={ rightSibling.name }
             href={ fromPath(rightSibling.path) }>
             &#8594;
           </ArrowButton>
         }
-      </Col>
+      </RightArrowCol>
     </Row>
   )
 }
