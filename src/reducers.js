@@ -34,6 +34,7 @@ export const originalContent = createReducer(null, {
 
 export const changedContent = createReducer(null, {
   UPDATE_DATA: (draft, { payload }) => payload.changedContent,
+  SEARCH_DATA: (draft, { payload }) => payload.changedContent,
   SET_VALUE: (draft, { payload }) => { set(draft, payload.path, payload.value) },
   UNDO_CHANGES: (draft, { payload }) => { set(draft, payload.path, payload.originalValue) },
   FINISH_ENTITY_CREATION: (draft, { payload }) => { set(draft, payload.path, payload.values) },

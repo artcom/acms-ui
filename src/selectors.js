@@ -1,13 +1,14 @@
 import { createSelector } from "reselect"
 
 import camelCase from "lodash/camelCase"
-import get from "lodash/get"
 import isUndefined from "lodash/isUndefined"
 import mapValues from "lodash/mapValues"
 import startCase from "lodash/startCase"
+import get from "lodash/get"
 import { evaluate } from "./utils/condition"
 import { isAllowed } from "./utils/permission"
 import * as utils from "./utils"
+
 
 const TEMPLATE_KEY = "template"
 
@@ -306,24 +307,72 @@ export const getNeighbourSiblings = createSelector(
   }
 )
 
-export const getFilteredContent = (value, fullChangedContent) => {
-  const changedContent = {}
+export const getFilteredContent = (filterValue, originalContent) => {
+  console.log("test")
 
-  Object.keys(fullChangedContent).forEach(id => {
-    switch (typeof fullChangedContent[id]) {
-      case "string":
-        if (fullChangedContent[id].includes(value)) {
-          changedContent[id] = fullChangedContent[id]
-        }
-        break
-      case "number":
-        if (value.replace(",", ".").includes(fullChangedContent[id].toString())) {
-          changedContent[id] = fullChangedContent[id]
-        }
+  const filteredContent = { ...originalContent }
+
+  const entries = Object.entries(filteredContent)
+
+  console.log("entries: ", entries)
+
+  entries.forEach(([key, value]) => {
+    console.log("key: ", key)
+    console.log("value: ", value)
+    if (key !== "template") {
+      switch (typeof value) {
+        case "object":
+          Object.entries(value).forEach(
+            ([secondKey, secondValue]) => {
+              if (key !== "template") {
+                switch (typeof secondValue) {
+                  case "object":
+                    Object.entries(secondValue).forEach(
+                      ([thirdKey, thirdValue]) => {
+                        console.log("thirdKey: ", thirdKey)
+                        console.log("thirdValue: ", thirdValue)
+                        return null
+                      })
+                    break
+                  case "number":
+                    if (!secondValue.toString().includes(filterValue.replace(",", "."))) {
+                      delete filteredContent[key][secondKey]
+                    }
+                    break
+                  case "string":
+                    if (!secondValue.includes(filterValue)) {
+                      delete filteredContent[key][secondKey]
+                    }
+                    break
+                  case "boolean":
+                    if (!secondValue.toString().includes(filterValue)) {
+                      delete filteredContent[key][secondKey]
+                    }
+                    break
+                }
+              }
+            })
+          break
+        case "number":
+          if (!value.toString().includes(filterValue.replace(",", "."))) {
+            delete filteredContent[key]
+          }
+          break
+        case "string":
+          if (!value.includes(filterValue)) {
+            delete filteredContent[key]
+          }
+          break
+        case "boolean":
+          if (!value.toString().includes(filterValue)) {
+            delete filteredContent[key]
+          }
+          break
+      }
     }
   })
 
-  return changedContent
+  return Object.fromEntries(entries)
 }
 
 

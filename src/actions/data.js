@@ -51,19 +51,20 @@ export function searchData(acmsApi, acmsConfigPath, value) {
         acmsApi.queryJson(config.contentPath, version)
       ])
 
-      const fullChangedContent = produce(originalContent,
-        draft => fixContent(originalContent, draft, templates)
-      )
+      console.log("originalContent: ", originalContent)
 
-      const changedContent = getFilteredContent(value, fullChangedContent)
+      const filteredOriginalContent = getFilteredContent(value, originalContent)
+
+      console.log("after")
+
+      const changedContent = produce(filteredOriginalContent,
+        draft => fixContent(filteredOriginalContent, draft, templates)
+      )
 
       console.log("changedContent: ", changedContent)
 
-      console.log("value: ", value)
-      console.log("fullChangedContent: ", fullChangedContent)
-
       dispatch({
-        type: "SEARCH_DATA",
+        type: "UPDATE_DATA",
         payload: {
           config,
           originalContent,
