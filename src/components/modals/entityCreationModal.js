@@ -1,4 +1,4 @@
-import React from "react"
+import React, { useRef } from "react"
 import { useDispatch, useSelector } from "react-redux"
 
 import Button from "react-bootstrap/Button"
@@ -17,9 +17,11 @@ import { selectNewEntity } from "../../selectors"
 export default function EntityCreationModal() {
   const dispatch = useDispatch()
   const newEntity = useSelector(selectNewEntity)
+  const inputField = useRef()
 
   return (
     <Modal
+      onShow={ () => inputField.current.focus() }
       show={ newEntity.isVisible }
       onHide={ () => dispatch(cancelEntityCreation()) }>
       <Modal.Header closeButton>
@@ -31,6 +33,7 @@ export default function EntityCreationModal() {
             <Form.Label>Name</Form.Label>
             <div style={ { position: "relative" } }>
               <StyledFormControl
+                ref={ inputField }
                 type="text"
                 value={ newEntity.id }
                 isInvalid={ newEntity.isVisible && !newEntity.isValidId }
