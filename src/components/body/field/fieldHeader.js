@@ -37,13 +37,17 @@ const FieldHeader = ({ field, dispatch }) =>
           onSelect={ () => dispatch(undoChanges(field.path)) }>
           Undo Changes
         </DropdownItem>
-        { (field.type === "image" || field.type === "video" || field.type === "audio") &&
-        <DropdownItem
-          key="clear"
-          disabled={ field.value === "" || field.isNew }
-          onSelect={ () => dispatch(clearSrcTag(field.path)) }>
-          Clear
-        </DropdownItem> }
+        { (
+          field.type === "image" ||
+          field.type === "video" ||
+          field.type === "audio" ||
+          field.type === "file") &&
+          <DropdownItem
+            key="clear"
+            disabled={ field.value === "" }
+            onSelect={ () => dispatch(clearSrcTag(field.path)) }>
+            Clear
+          </DropdownItem> }
       </Dropdown.Menu>
     </StyledDropdown>
   </Flexbox>
