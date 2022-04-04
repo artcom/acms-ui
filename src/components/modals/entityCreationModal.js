@@ -34,7 +34,6 @@ export default function EntityCreationModal() {
                 type="text"
                 value={ newEntity.id }
                 isInvalid={ newEntity.isVisible && !newEntity.isValidId }
-                autoFocus
                 onChange={ event => dispatch(updateEntityCreationId(event.target.value)) } />
             </div>
           </Form.Group>
