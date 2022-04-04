@@ -8,7 +8,7 @@ import DropDownItem from "react-bootstrap/DropdownItem"
 import ListGroup from "react-bootstrap/ListGroup"
 import ListGroupItem from "react-bootstrap/ListGroupItem"
 import Row from "react-bootstrap/Row"
-import { Button } from "react-bootstrap"
+import { Button, Container } from "react-bootstrap"
 
 import ChildItem from "./childItem"
 import Field from "./field"
@@ -27,7 +27,7 @@ import {
   getChildrenLabel,
   getFieldsLabel,
   getTextDirection,
-  getNeighbourSiblings,
+  getNeighbourSiblings
 } from "../../selectors"
 
 import { ApiContext } from "../../index"
@@ -38,18 +38,38 @@ const AddButton = styled(ListGroupItem)`
   outline: none;
 `
 
-const ArrowButton = styled(Button)`
-  width: auto;
-  height: auto;  
-  border-radius: 50%;
-  border: none;
+const ArrowButton = styled(Button).attrs(() => ({
+  variant: "light"
+}))`
+  text-align: center; 
+  outline: none; 
+  position: sticky;
+  top: 50%;
 `
 
-const ArrowIcon = styled.div`
+const LeftArrowCol = styled(Col).attrs(() => ({
+  xs: 2,
+  md: 1
+}))`
   display: flex;
-  justify-content: center;
-  align-items: center;
+  height: 100vh;
+  align-items: start;
+  padding: 0;
 `
+
+const RightArrowCol = styled(LeftArrowCol)`
+  justify-content: end;
+`
+
+const ContentContainer = styled(Row)`
+  display: flex;
+  justify-content: start;
+`
+
+const ChildrenCol = styled(Col).attrs(() => ({
+  xs: 12,
+  md: 4
+}))``
 
 
 const Body = () => {
@@ -67,48 +87,47 @@ const Body = () => {
   const acmsAssets = useContext(ApiContext).acmsAssets
 
   return (
-    <div>
-      <Row className="d-flex justify-content-center">
-        <Col md={ 1 }>
+    <Container fluid>
+      <Row>
+        <LeftArrowCol>
           { leftSibling &&
           <ArrowButton
-            variant="light"
             title={ leftSibling.name }
             href={ fromPath(leftSibling.path) }>
-            <ArrowIcon>
-              &#60;
-            </ArrowIcon>
+            &#8592;
           </ArrowButton>
           }
+        </LeftArrowCol>
+        <Col>
+          <ContentContainer>
+            <ChildrenCol>
+              {
+                (fixedChildren.length + children.length > 0 || canHaveChildren) &&
+                <h4>{ childrenLabel }</h4>
+              }
+              { fixedChildren.length > 0 && renderFixedChildren(fixedChildren, dispatch) }
+              {
+                (children.length > 0 || canHaveChildren) &&
+              renderChildren(children, dispatch, canHaveChildren)
+              }
+            </ChildrenCol>
+            <Col>
+              { fields.length > 0 && <h4 className="pr-2">{ fieldsLabel }</h4> }
+              { renderFields(fields, languages, textDirection, acmsAssets, dispatch) }
+            </Col>
+          </ContentContainer>
         </Col>
-        <Col md={ 3 }>
-          {
-            (fixedChildren.length + children.length > 0 || canHaveChildren)
-          && <h4>{ childrenLabel }</h4>
-          }
-          { fixedChildren.length > 0 && renderFixedChildren(fixedChildren, dispatch) }
-          { (children.length > 0 || canHaveChildren) &&
-          renderChildren(children, dispatch, canHaveChildren) }
-        </Col>
-        <Col md={ 7 }>
-          { fields.length > 0 && <h4 className="pr-2">{ fieldsLabel }</h4> }
-          { renderFields(fields, languages, textDirection, acmsAssets, dispatch) }
-        </Col>
-        <Col md={ 1 }>
+        <RightArrowCol>
           { rightSibling &&
           <ArrowButton
-            style={ { float: "right" } }
-            variant="light"
             title={ rightSibling.name }
             href={ fromPath(rightSibling.path) }>
-            <ArrowIcon>
-              &#62;
-            </ArrowIcon>
+            &#8594;
           </ArrowButton>
           }
-        </Col>
+        </RightArrowCol>
       </Row>
-    </div>
+    </Container>
   )
 }
 
