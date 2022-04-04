@@ -30,8 +30,7 @@ async function generateFilename(file) {
   const extension = extname(file.name)
   const name = basename(file.name, extension)
   const hash = await sha256(file)
-  const filename = `${name}-${hash}${extension}`.replace(/([^a-z0-9\-.])/gi, "_")
-  return toLower(filename)
+  return toLower(`${name}-${hash}${extension}`.replace(/([^a-z0-9\-.])/gi, "_"))
 }
 
 function startUpload(path) {
