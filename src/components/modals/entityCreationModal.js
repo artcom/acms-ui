@@ -25,45 +25,47 @@ export default function EntityCreationModal() {
       <Modal.Header closeButton>
         <Modal.Title>New Item</Modal.Title>
       </Modal.Header>
-      <Modal.Body>
-        <Form.Group>
-          <Form.Label>Name</Form.Label>
-          <div style={ { position: "relative" } }>
-            <StyledFormControl
-              type="text"
-              value={ newEntity.id }
-              isInvalid={ newEntity.isVisible && !newEntity.isValidId }
-              autoFocus
-              onChange={ event => dispatch(updateEntityCreationId(event.target.value)) } />
-          </div>
-        </Form.Group>
-        <Form.Group>
-          <Form.Label>Template</Form.Label>
-          { newEntity.templates.length === 1 ?
-            <Form.Control
-              readOnly
-              value={ newEntity.templates[0] } />
-            :
-            <Form.Control
-              as="select"
-              value={ newEntity.template }
-              onChange={ event => dispatch(updateEntityCreationTemplate(event.target.value)) }>
-              { newEntity.templates.map(template =>
-                <option key={ template } value={ template }>{ template }</option>
-              ) }
-            </Form.Control>
-          }
-        </Form.Group>
-      </Modal.Body>
-      <Modal.Footer>
-        <Button
-          type="submit"
-          variant="info"
-          disabled={ !newEntity.isValidId }
-          onClick={ event => { event.preventDefault(); dispatch(finishEntityCreation()) } }>
-          Create
-        </Button>
-      </Modal.Footer>
+      <Form>
+        <Modal.Body>
+          <Form.Group>
+            <Form.Label>Name</Form.Label>
+            <div style={ { position: "relative" } }>
+              <StyledFormControl
+                type="text"
+                value={ newEntity.id }
+                isInvalid={ newEntity.isVisible && !newEntity.isValidId }
+                autoFocus
+                onChange={ event => dispatch(updateEntityCreationId(event.target.value)) } />
+            </div>
+          </Form.Group>
+          <Form.Group>
+            <Form.Label>Template</Form.Label>
+            { newEntity.templates.length === 1 ?
+              <Form.Control
+                readOnly
+                value={ newEntity.templates[0] } />
+              :
+              <Form.Control
+                as="select"
+                value={ newEntity.template }
+                onChange={ event => dispatch(updateEntityCreationTemplate(event.target.value)) }>
+                { newEntity.templates.map(template =>
+                  <option key={ template } value={ template }>{ template }</option>
+                ) }
+              </Form.Control>
+            }
+          </Form.Group>
+        </Modal.Body>
+        <Modal.Footer>
+          <Button
+            type="submit"
+            variant="info"
+            disabled={ !newEntity.isValidId }
+            onClick={ event => { event.preventDefault(); dispatch(finishEntityCreation()) } }>
+            Create
+          </Button>
+        </Modal.Footer>
+      </Form>
     </Modal>
   )
 }
