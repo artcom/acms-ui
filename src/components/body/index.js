@@ -8,7 +8,7 @@ import DropDownItem from "react-bootstrap/DropdownItem"
 import ListGroup from "react-bootstrap/ListGroup"
 import ListGroupItem from "react-bootstrap/ListGroupItem"
 import Row from "react-bootstrap/Row"
-import { Button } from "react-bootstrap"
+import { Button, Container } from "react-bootstrap"
 
 import ChildItem from "./childItem"
 import Field from "./field"
@@ -54,12 +54,12 @@ const LeftArrowCol = styled(Col).attrs(() => ({
   display: flex;
   height: 100vh;
   align-items: start;
+  padding: 0;
 `
 
-const ContentCol = styled(Col).attrs(() => ({
-  xs: 8,
-  md: 10
-}))``
+const RightArrowCol = styled(LeftArrowCol)`
+  justify-content: end;
+`
 
 const ContentContainer = styled(Row)`
   display: flex;
@@ -71,20 +71,6 @@ const ChildrenCol = styled(Col).attrs(() => ({
   md: 4
 }))``
 
-const FieldsCol = styled(Col).attrs(() => ({
-  xs: 12,
-  md: 8
-}))``
-
-const RightArrowCol = styled(Col).attrs(() => ({
-  xs: 2,
-  md: 1
-}))`
-  display: flex;
-  height: 100vh;
-  align-items: start;
-  justify-content: end;
-`
 
 const Body = () => {
   const dispatch = useDispatch()
@@ -101,45 +87,47 @@ const Body = () => {
   const acmsAssets = useContext(ApiContext).acmsAssets
 
   return (
-    <Row>
-      <LeftArrowCol>
-        { leftSibling &&
+    <Container fluid>
+      <Row>
+        <LeftArrowCol>
+          { leftSibling &&
           <ArrowButton
             title={ leftSibling.name }
             href={ fromPath(leftSibling.path) }>
             &#8592;
           </ArrowButton>
-        }
-      </LeftArrowCol>
-      <ContentCol>
-        <ContentContainer>
-          <ChildrenCol>
-            {
-              (fixedChildren.length + children.length > 0 || canHaveChildren) &&
-              <h4>{ childrenLabel }</h4>
-            }
-            { fixedChildren.length > 0 && renderFixedChildren(fixedChildren, dispatch) }
-            {
-              (children.length > 0 || canHaveChildren) &&
+          }
+        </LeftArrowCol>
+        <Col>
+          <ContentContainer>
+            <ChildrenCol>
+              {
+                (fixedChildren.length + children.length > 0 || canHaveChildren) &&
+                <h4>{ childrenLabel }</h4>
+              }
+              { fixedChildren.length > 0 && renderFixedChildren(fixedChildren, dispatch) }
+              {
+                (children.length > 0 || canHaveChildren) &&
               renderChildren(children, dispatch, canHaveChildren)
-            }
-          </ChildrenCol>
-          <FieldsCol>
-            { fields.length > 0 && <h4 className="pr-2">{ fieldsLabel }</h4> }
-            { renderFields(fields, languages, textDirection, acmsAssets, dispatch) }
-          </FieldsCol>
-        </ContentContainer>
-      </ContentCol>
-      <RightArrowCol>
-        { rightSibling &&
+              }
+            </ChildrenCol>
+            <Col>
+              { fields.length > 0 && <h4 className="pr-2">{ fieldsLabel }</h4> }
+              { renderFields(fields, languages, textDirection, acmsAssets, dispatch) }
+            </Col>
+          </ContentContainer>
+        </Col>
+        <RightArrowCol>
+          { rightSibling &&
           <ArrowButton
             title={ rightSibling.name }
             href={ fromPath(rightSibling.path) }>
             &#8594;
           </ArrowButton>
-        }
-      </RightArrowCol>
-    </Row>
+          }
+        </RightArrowCol>
+      </Row>
+    </Container>
   )
 }
 
