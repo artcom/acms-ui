@@ -6,6 +6,7 @@ import Form from "react-bootstrap/Form"
 import Modal from "react-bootstrap/Modal"
 import StyledFormControl from "./styledFormControl"
 
+
 import { cancelEntityCreation,
   finishEntityCreation,
   updateEntityCreationId,
@@ -16,27 +17,33 @@ import { selectNewEntity } from "../../selectors"
 export default function EntityCreationModal() {
   const dispatch = useDispatch()
   const newEntity = useSelector(selectNewEntity)
+
   return (
-    <Modal show={ newEntity.isVisible } onHide={ () => dispatch(cancelEntityCreation()) }>
+    <Modal
+      show={ newEntity.isVisible }
+      onHide={ () => dispatch(cancelEntityCreation()) }>
       <Modal.Header closeButton>
         <Modal.Title>New Item</Modal.Title>
       </Modal.Header>
       <Modal.Body>
-        <Form.Label>Name</Form.Label>
-        <div style={ { position: "relative" } }>
-          <StyledFormControl
-            type="text"
-            value={ newEntity.id }
-            isInvalid={ newEntity.isVisible && !newEntity.isValidId }
-            autoFocus
-            onChange={
-              event => dispatch(updateEntityCreationId(event.target.value))
-            } />
-        </div>
-        {
-          newEntity.templates.length > 1 &&
-          <Form.Group>
-            <Form.Label>Template</Form.Label>
+        <Form.Group>
+          <Form.Label>Name</Form.Label>
+          <div style={ { position: "relative" } }>
+            <StyledFormControl
+              type="text"
+              value={ newEntity.id }
+              isInvalid={ newEntity.isVisible && !newEntity.isValidId }
+              autoFocus
+              onChange={ event => dispatch(updateEntityCreationId(event.target.value)) } />
+          </div>
+        </Form.Group>
+        <Form.Group>
+          <Form.Label>Template</Form.Label>
+          { newEntity.templates.length === 1 ?
+            <Form.Control
+              readOnly
+              value={ newEntity.templates[0] } />
+            :
             <Form.Control
               as="select"
               value={ newEntity.template }
@@ -45,8 +52,8 @@ export default function EntityCreationModal() {
                 <option key={ template } value={ template }>{ template }</option>
               ) }
             </Form.Control>
-          </Form.Group>
-        }
+          }
+        </Form.Group>
       </Modal.Body>
       <Modal.Footer>
         <Button
