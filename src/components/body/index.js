@@ -87,15 +87,9 @@ const Body = () => {
   const acmsAssets = useContext(ApiContext).acmsAssets
 
   return (
-<<<<<<< HEAD
-    <div>
-      <Row className="d-flex justify-content-center">
-        <Col md={ 1 }>
-=======
     <Container fluid>
       <Row>
         <LeftArrowCol>
->>>>>>> master
           { leftSibling &&
           <ArrowButton
             title={ leftSibling.name }
