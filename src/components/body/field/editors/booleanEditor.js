@@ -13,20 +13,12 @@ const StyledFormCheckInput = styled(FormCheck.Input)`
 `
 
 export default function BooleanEditor({ field, onChange }) {
-  function onChangeBoolean(event) {
-    onChange({
-      target: {
-        value: event.target.checked
-      }
-    })
-  }
-
   return (
     <StyledFormCheck>
       <StyledFormCheckInput
         type="checkbox"
         checked={ field.value }
-        onChange={ onChangeBoolean } />
+        onChange={ event => onChange(event.target.checked) } />
     </StyledFormCheck>
   )
 }
