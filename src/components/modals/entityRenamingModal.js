@@ -18,26 +18,28 @@ export default function EntityRenamingModal() {
       <Modal.Header closeButton>
         <Modal.Title>Rename Child</Modal.Title>
       </Modal.Header>
-      <Modal.Body>
-        <Form.Label>Name</Form.Label>
-        <div style={ { position: "relative" } }>
-          <StyledFormControl
-            type="text"
-            value={ renamedEntity.newId }
-            isInvalid={ renamedEntity.isVisible && !renamedEntity.isValidId }
-            autoFocus
-            onChange={ event => dispatch(updateEntityRenaming(event.target.value)) } />
-        </div>
-      </Modal.Body>
-      <Modal.Footer>
-        <Button
-          type="submit"
-          variant="info"
-          disabled={ !renamedEntity.isValidId }
-          onClick={ event => { event.preventDefault(); dispatch(finishEntityRenaming()) } }>
-          Rename
-        </Button>
-      </Modal.Footer>
+      <Form>
+        <Modal.Body>
+          <Form.Label>Name</Form.Label>
+          <div style={ { position: "relative" } }>
+            <StyledFormControl
+              type="text"
+              value={ renamedEntity.newId }
+              isInvalid={ renamedEntity.isVisible && !renamedEntity.isValidId }
+              autoFocus
+              onChange={ event => dispatch(updateEntityRenaming(event.target.value)) } />
+          </div>
+        </Modal.Body>
+        <Modal.Footer>
+          <Button
+            type="submit"
+            variant="info"
+            disabled={ !renamedEntity.isValidId }
+            onClick={ event => { event.preventDefault(); dispatch(finishEntityRenaming()) } }>
+            Rename
+          </Button>
+        </Modal.Footer>
+      </Form>
     </Modal>
   )
 }
