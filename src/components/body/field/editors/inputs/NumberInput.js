@@ -1,5 +1,5 @@
 import get from "lodash/get"
-import React, { useState } from "react"
+import React, { useState, useEffect } from "react"
 import { Form } from "react-bootstrap"
 import StyledFormControl from "../styledFormControl"
 
@@ -8,6 +8,11 @@ const NumberInput = ({ field, onChange }) => {
   const max = get(field, "max", Infinity)
 
   const [stringValue, setStringValue] = useState(field.value.toString())
+
+  useEffect(() => {
+    setStringValue(field.value.toString())
+  }, [field.value])
+
   const regex = /^-?((\d*([.,]\d*)?))?$/
   const valid = field.value >= min && field.value <= max &&
         !(field.integer && (stringValue.includes(",") || stringValue && stringValue.includes(".")))

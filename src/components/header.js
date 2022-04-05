@@ -13,7 +13,7 @@ import { ApiContext } from "../index"
 
 import { saveData } from "../actions/data"
 import { fromPath } from "../utils/hash"
-import { getPathNames, selectTemplateId } from "../selectors"
+import { getPathNames, selectTemplateId, selectAllSiblingTemplates } from "../selectors"
 
 const Logo = styled.img`
   width: auto;
@@ -70,6 +70,7 @@ const Header = () => {
   const acmsConfigPath = useSelector(state => state.acmsConfigPath)
   const context = useContext(ApiContext)
   const templateId = useSelector(selectTemplateId)
+  const siblingTemplates = useSelector(selectAllSiblingTemplates)
 
 
   return (
@@ -104,12 +105,14 @@ const Header = () => {
                   { pathNames[i] }
                 </Breadcrumb.Item>
               ) }
+              { siblingTemplates && siblingTemplates.length > 1 &&
               <Template
                 className="text-muted"
                 data-toggle="tooltip"
                 title={ templateId }>
                 { `(${templateId.split("/").at(-1)})` }
               </Template>
+              }
             </StyledBreadcrumb>
             <SaveButton
               disabled={ !hasChanged || isSaving }
