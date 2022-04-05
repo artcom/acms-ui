@@ -22,7 +22,6 @@ const Logo = styled.img`
   padding-bottom: 0.5rem;
 `
 const LogoContainer = styled(Row)`
-    margin: 0px;
     align-items: center;
 `
 
@@ -92,7 +91,12 @@ const Header = () => {
               </HomeIcon>
             </HomeButton>
             <StyledBreadcrumb
-              listProps={ { style: { minHeight: "3em" } } }>
+              listProps={ { style: {
+                minHeight: "3em",
+                alignItems: "center",
+                backgroundColor: "#e9ecef",
+                paddingLeft: "1rem"
+              } } }>
               { path.map((item, i) =>
                 <Breadcrumb.Item
                   key={ i }

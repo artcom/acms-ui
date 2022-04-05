@@ -4,7 +4,6 @@ import { useDispatch, useSelector } from "react-redux"
 import Button from "react-bootstrap/Button"
 import Form from "react-bootstrap/Form"
 import Modal from "react-bootstrap/Modal"
-import StyledFormControl from "./styledFormControl"
 
 
 import { cancelEntityCreation,
@@ -27,18 +26,16 @@ export default function EntityCreationModal() {
       <Modal.Header closeButton>
         <Modal.Title>New Item</Modal.Title>
       </Modal.Header>
-      <Form>
-        <Modal.Body>
+      <Modal.Body>
+        <Form>
           <Form.Group>
             <Form.Label>Name</Form.Label>
-            <div style={ { position: "relative" } }>
-              <StyledFormControl
-                ref={ inputField }
-                type="text"
-                value={ newEntity.id }
-                isInvalid={ newEntity.isVisible && !newEntity.isValidId }
-                onChange={ event => dispatch(updateEntityCreationId(event.target.value)) } />
-            </div>
+            <Form.Control
+              ref={ inputField }
+              type="text"
+              value={ newEntity.id }
+              isInvalid={ newEntity.isVisible && !newEntity.isValidId }
+              onChange={ event => dispatch(updateEntityCreationId(event.target.value)) } />
           </Form.Group>
           <Form.Group>
             <Form.Label>Template</Form.Label>
@@ -47,27 +44,26 @@ export default function EntityCreationModal() {
                 readOnly
                 value={ newEntity.templates[0] } />
               :
-              <Form.Control
-                as="select"
+              <Form.Select
                 value={ newEntity.template }
                 onChange={ event => dispatch(updateEntityCreationTemplate(event.target.value)) }>
                 { newEntity.templates.map(template =>
                   <option key={ template } value={ template }>{ template }</option>
                 ) }
-              </Form.Control>
+              </Form.Select>
             }
           </Form.Group>
-        </Modal.Body>
-        <Modal.Footer>
-          <Button
-            type="submit"
-            variant="info"
-            disabled={ !newEntity.isValidId }
-            onClick={ event => { event.preventDefault(); dispatch(finishEntityCreation()) } }>
-            Create
-          </Button>
-        </Modal.Footer>
-      </Form>
+        </Form>
+      </Modal.Body>
+      <Modal.Footer>
+        <Button
+          type="submit"
+          variant="info"
+          disabled={ !newEntity.isValidId }
+          onClick={ event => { event.preventDefault(); dispatch(finishEntityCreation()) } }>
+          Create
+        </Button>
+      </Modal.Footer>
     </Modal>
   )
 }

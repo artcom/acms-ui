@@ -34,7 +34,7 @@ const FieldHeader = ({ field, dispatch }) =>
         <DropdownItem
           key="undo"
           disabled={ !field.hasChanged || field.isNew }
-          onSelect={ () => dispatch(undoChanges(field.path)) }>
+          onClick={ () => dispatch(undoChanges(field.path)) }>
           Undo Changes
         </DropdownItem>
         { (
@@ -45,7 +45,7 @@ const FieldHeader = ({ field, dispatch }) =>
           <DropdownItem
             key="clear"
             disabled={ field.value === "" }
-            onSelect={ () => dispatch(clearSrcTag(field.path)) }>
+            onClick={ () => dispatch(clearSrcTag(field.path)) }>
             Clear
           </DropdownItem> }
       </Dropdown.Menu>
