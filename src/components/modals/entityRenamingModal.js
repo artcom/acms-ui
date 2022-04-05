@@ -4,7 +4,6 @@ import { useDispatch, useSelector } from "react-redux"
 import Button from "react-bootstrap/Button"
 import Form from "react-bootstrap/Form"
 import Modal from "react-bootstrap/Modal"
-import StyledFormControl from "./styledFormControl"
 
 import { cancelEntityRenaming, finishEntityRenaming,
   updateEntityRenaming } from "../../actions/entity"
@@ -25,7 +24,7 @@ export default function EntityRenamingModal() {
         <Modal.Body>
           <Form.Label>Name</Form.Label>
           <div style={ { position: "relative" } }>
-            <StyledFormControl
+            <Form.Control
               ref={ inputField }
               type="text"
               value={ renamedEntity.newId }
