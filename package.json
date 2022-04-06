@@ -47,7 +47,8 @@
     "styled-components": "^5.3.0",
     "url-join": "^4.0.1",
     "webpack": "^5.50.0",
-    "webpack-cli": "^4.7.2"
+    "webpack-cli": "^4.7.2",
+    "xml-js": "^1.6.11"
   },
   "devDependencies": {
     "eslint": "^7.32.0",

@@ -15,6 +15,8 @@ export function loadData(acmsApi, acmsConfigPath) {
         acmsApi.queryJson(config.contentPath, version)
       ])
 
+      console.log("ORIGINAL CONTENT", originalContent)
+
       const changedContent = produce(originalContent,
         draft => fixContent(originalContent, draft, templates)
       )
@@ -93,7 +95,11 @@ export function saveData(acmsApi, acmsConfigPath) {
       dispatch({ type: "START_SAVING" })
 
       const contentFiles = toFiles(content, templates)
+      const mediaFields = getTemplateMediaFields(templates)
+
       console.log("CONTENT FILES", contentFiles)
+      console.log("TEMPLATES", templates)
+      console.log("MEDIA FIELDS", getTemplateMediaFields(templates))
       await acmsApi.save(contentFiles, contentPath, version)
 
       dispatch(loadData(acmsApi, acmsConfigPath))
@@ -119,4 +125,17 @@ function toFiles({ template, ...content }, templates, path = []) {
   childIds.forEach(id => Object.assign(files, toFiles(content[id], templates, [...path, id])))
 
   return files
+}
+
+function getTemplateMediaFields(templates) {
+  return Object.keys(templates).reduce((a, key) => {
+    const template = templates[key]
+    const mediaFields = template.fields.filter(field =>
+      field.type === "image") // TODO other types!!!
+    if (mediaFields.length > 0) {
+      return { ...a, ...{ id: key, mediaFields } }
+    } else {
+      return a
+    }
+  }, {})
 }

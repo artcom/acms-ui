@@ -13,12 +13,15 @@ import store from "./store"
 import Application from "./components/application"
 
 import "bootstrap/dist/css/bootstrap.min.css"
+import { listAllFiles } from "./actions/listAllFiles"
 
 export const ApiContext = React.createContext()
 
 bootstrap().then(async ({ acmsApi, acmsAssets, acmsConfigPath }) => {
+  console.log(acmsApi, acmsAssets, acmsConfigPath)
   await store.dispatch(loadData(acmsApi, acmsConfigPath))
   await store.dispatch(configPath(acmsConfigPath))
+  await store.dispatch(listAllFiles(acmsAssets))
 
   store.dispatch(updateUser())
 
