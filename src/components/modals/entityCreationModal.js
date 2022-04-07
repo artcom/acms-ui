@@ -5,6 +5,7 @@ import Button from "react-bootstrap/Button"
 import Form from "react-bootstrap/Form"
 import Modal from "react-bootstrap/Modal"
 
+import styled from "styled-components"
 
 import { cancelEntityCreation,
   finishEntityCreation,
@@ -12,6 +13,10 @@ import { cancelEntityCreation,
   updateEntityCreationTemplate
 } from "../../actions/entity"
 import { selectNewEntity } from "../../selectors"
+
+const StyledFormGroup = styled(Form.Group)`
+  margin-top: 1rem;
+`
 
 export default function EntityCreationModal() {
   const dispatch = useDispatch()
@@ -37,7 +42,7 @@ export default function EntityCreationModal() {
               isInvalid={ newEntity.isVisible && !newEntity.isValidId }
               onChange={ event => dispatch(updateEntityCreationId(event.target.value)) } />
           </Form.Group>
-          <Form.Group>
+          <StyledFormGroup>
             <Form.Label>Template</Form.Label>
             { newEntity.templates.length === 1 ?
               <Form.Control
@@ -52,7 +57,7 @@ export default function EntityCreationModal() {
                 ) }
               </Form.Select>
             }
-          </Form.Group>
+          </StyledFormGroup>
         </Form>
       </Modal.Body>
       <Modal.Footer>
