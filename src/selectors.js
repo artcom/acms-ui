@@ -329,30 +329,40 @@ export const getNeighbourSiblings = createSelector(
 )
 
 export const getFilteredContent = (filterValue, originalContent) => {
-  console.log("test")
-
   const filteredContent = { ...originalContent }
 
   const entries = Object.entries(filteredContent)
 
-  console.log("entries: ", entries)
-
   entries.forEach(([key, value]) => {
-    console.log("key: ", key)
-    console.log("value: ", value)
     if (key !== "template") {
       switch (typeof value) {
         case "object":
           Object.entries(value).forEach(
             ([secondKey, secondValue]) => {
-              if (key !== "template") {
+              if (secondKey !== "template") {
                 switch (typeof secondValue) {
                   case "object":
                     Object.entries(secondValue).forEach(
                       ([thirdKey, thirdValue]) => {
-                        console.log("thirdKey: ", thirdKey)
-                        console.log("thirdValue: ", thirdValue)
-                        return null
+                        if (thirdKey !== "template") {
+                          switch (typeof secondValue) {
+                            case "number":
+                              if (!thirdValue.toString().includes(filterValue.replace(",", "."))) {
+                                delete filteredContent[key][secondKey][thirdKey]
+                              }
+                              break
+                            case "string":
+                              if (!thirdValue.includes(filterValue)) {
+                                delete filteredContent[key][secondKey][thirdKey]
+                              }
+                              break
+                            case "boolean":
+                              if (!thirdValue.toString().includes(filterValue)) {
+                                delete filteredContent[key][secondKey][thirdKey]
+                              }
+                              break
+                          }
+                        }
                       })
                     break
                   case "number":
@@ -393,7 +403,15 @@ export const getFilteredContent = (filterValue, originalContent) => {
     }
   })
 
-  return Object.fromEntries(entries)
+  entries.forEach(([key, value]) => {
+    if (typeof value === "object") {
+      if (Object.keys(value).length === 0) {
+        delete filteredContent[key]
+      }
+    }
+  })
+
+  return filteredContent
 }
 
 

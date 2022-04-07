@@ -53,15 +53,15 @@ export function searchData(acmsApi, acmsConfigPath, value) {
 
       console.log("originalContent: ", originalContent)
 
-      const filteredOriginalContent = getFilteredContent(value, originalContent)
+      const filteredContent = getFilteredContent(value, originalContent)
 
-      console.log("after")
+      console.log("filtered: ", filteredContent)
 
-      const changedContent = produce(filteredOriginalContent,
-        draft => fixContent(filteredOriginalContent, draft, templates)
+      // templates["book/index"].fields.splice(4, 2)
+
+      const changedContent = produce(originalContent,
+        draft => fixContent(filteredContent, draft, templates)
       )
-
-      console.log("changedContent: ", changedContent)
 
       dispatch({
         type: "UPDATE_DATA",
@@ -81,8 +81,15 @@ export function searchData(acmsApi, acmsConfigPath, value) {
 }
 
 function fixContent(content, draft, templates) {
+  console.log("templates: ", templates)
   const { template, ...allEntries } = content
   const { fields = [], fixedChildren = [], children = [] } = utils.getTemplate(template, templates)
+
+  console.log("template: ", template)
+  console.log("allEntries: ", allEntries)
+  console.log("fields: ", fields)
+  console.log("fixedChildren: ", fixedChildren)
+  console.log("children: ", children)
 
   // fix invalid fields
   fields.forEach(field => {
