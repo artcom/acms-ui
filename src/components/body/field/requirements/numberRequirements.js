@@ -12,12 +12,12 @@ const NumberRequirements = ({ field }) => {
 
   const Tooltip =
     <Popover>
-      <Popover.Title> Number Requirements</Popover.Title>
-      <Popover.Content>
+      <Popover.Header> Number Requirements</Popover.Header>
+      <Popover.Body>
         { field.integer && <> Integer <br /> </> }
         { field.min && <> Minimum: { field.min } <br /> </> }
         { field.max && <> Maximum: { field.max } <br /> </> }
-      </Popover.Content>
+      </Popover.Body>
     </Popover>
 
   return (

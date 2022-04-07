@@ -14,7 +14,7 @@ import { ApiContext } from "../index"
 import Search from "./search"
 import { saveData } from "../actions/data"
 import { fromPath } from "../utils/hash"
-import { getPathNames, selectTemplateId } from "../selectors"
+import { getPathNames, selectTemplateId, selectAllSiblingTemplates } from "../selectors"
 
 const Logo = styled.img`
   width: auto;
@@ -23,7 +23,6 @@ const Logo = styled.img`
   padding-bottom: 0.5rem;
 `
 const LogoContainer = styled(Row)`
-    margin: 0px;
     align-items: center;
 `
 
@@ -73,6 +72,7 @@ const Header = () => {
   const acmsConfigPath = useSelector(state => state.acmsConfigPath)
   const context = useContext(ApiContext)
   const templateId = useSelector(selectTemplateId)
+  const siblingTemplates = useSelector(selectAllSiblingTemplates)
 
 
   return (
@@ -93,7 +93,12 @@ const Header = () => {
               </HomeIcon>
             </HomeButton>
             <StyledBreadcrumb
-              listProps={ { style: { minHeight: "3em" } } }>
+              listProps={ { style: {
+                minHeight: "3em",
+                alignItems: "center",
+                backgroundColor: "#e9ecef",
+                paddingLeft: "1rem"
+              } } }>
               { path.map((item, i) =>
                 <Breadcrumb.Item
                   key={ i }
@@ -102,12 +107,14 @@ const Header = () => {
                   { pathNames[i] }
                 </Breadcrumb.Item>
               ) }
+              { siblingTemplates && siblingTemplates.length > 1 &&
               <Template
                 className="text-muted"
                 data-toggle="tooltip"
                 title={ templateId }>
                 { `(${templateId.split("/").at(-1)})` }
               </Template>
+              }
             </StyledBreadcrumb>
             <Col className="d-flex justify-content-center align-items-center"
               style={ { flexBasis: "auto" } }>
