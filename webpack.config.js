@@ -30,6 +30,7 @@ module.exports = (env = {}) => ({
   resolve: {
     fallback: {
       path: false, // do not include a polyfill for path
+      stream: require.resolve("stream-browserify")
     }
   },
   plugins: [

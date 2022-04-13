@@ -43,11 +43,13 @@
     "redux-logger": "^3.0.6",
     "reselect": "^4.0.0",
     "sha.js": "^2.4.11",
+    "stream-browserify": "^3.0.0",
     "style-loader": "^3.2.1",
     "styled-components": "^5.3.0",
     "url-join": "^4.0.1",
     "webpack": "^5.50.0",
-    "webpack-cli": "^4.7.2"
+    "webpack-cli": "^4.7.2",
+    "xml-js": "^1.6.11"
   },
   "devDependencies": {
     "eslint": "^7.32.0",
