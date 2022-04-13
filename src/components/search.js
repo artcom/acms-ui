@@ -1,8 +1,11 @@
 import React, { useState } from "react"
 import Button from "react-bootstrap/Button"
-import { Form, FormControl } from "react-bootstrap"
+import { InputGroup } from "react-bootstrap"
+
+import StyledFormControl from "./body/field/editors/styledFormControl"
 
 import { searchData } from "../actions/data"
+import SearchIcon from "./searchIcon"
 
 const Search = ({ dispatch, acmsApi, acmsConfigPath }) => {
   const [value, setValue] = useState("")
@@ -12,8 +15,8 @@ const Search = ({ dispatch, acmsApi, acmsConfigPath }) => {
   }
 
   return (
-    <Form className="d-flex justify-content-center align-items-center">
-      <FormControl
+    <InputGroup>
+      <StyledFormControl
         type="search"
         placeholder="Search"
         aria-label="Search"
@@ -22,9 +25,9 @@ const Search = ({ dispatch, acmsApi, acmsConfigPath }) => {
       <Button
         variant="secondary"
         onClick={ () => dispatch(searchData(acmsApi, acmsConfigPath, value)) }>
-        &#xF52A;
+        <SearchIcon />
       </Button>
-    </Form>
+    </InputGroup>
   )
 }
 
