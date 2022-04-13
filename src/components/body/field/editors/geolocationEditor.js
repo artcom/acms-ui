@@ -1,34 +1,44 @@
 import React from "react"
 import styled from "styled-components"
-import Card from "react-bootstrap/Card"
+import { FloatingLabel } from "react-bootstrap"
 import NumberInput from "./inputs/NumberInput"
 
-const StyledCardLabel = styled(Card.Header)`
-  display: flex;
-  border: 0px;
-`
 
 const Flexbox = styled.div`
+  display: flex;  
+  align-items: center;
+  position: relative;
+  justify-content: space-between;
+`
+
+const InnerFlexbox = styled.div`
   display: flex;
   align-items: center;
   position: relative;
+  width: 49.8%;
+`
+
+const StyledFloatingLabel = styled(FloatingLabel)`
+  width: 100%;
 `
 
 export default function GeolocationEditor({ field, onChange }) {
   return (
     <Flexbox>
-      <Flexbox>
-        <StyledCardLabel className="card-text">Latitude</StyledCardLabel>
-        <NumberInput
-          field={ { value: field.value.lat, min: -90, max: 90 } }
-          onChange={ newLat => onChange({ lat: newLat, long: field.value.long }) } />
-      </Flexbox>
-      <Flexbox>
-        <StyledCardLabel className="card-text">Longitude</StyledCardLabel>
-        <NumberInput
-          field={ { value: field.value.long, min: -180, max: 180 } }
-          onChange={ newLong => onChange({ lat: field.value.lat, long: newLong }) } />
-      </Flexbox>
+      <InnerFlexbox>
+        <StyledFloatingLabel label="Latitude">
+          <NumberInput
+            field={ { value: field.value.lat, min: -90, max: 90 } }
+            onChange={ newLat => onChange({ lat: newLat, long: field.value.long }) } />
+        </StyledFloatingLabel>
+      </InnerFlexbox>
+      <InnerFlexbox>
+        <StyledFloatingLabel label="Longitude" style={ { borderLeft: "solid lightgray 1px" } }>
+          <NumberInput
+            field={ { value: field.value.long, min: -180, max: 180 } }
+            onChange={ newLong => onChange({ lat: field.value.lat, long: newLong }) } />
+        </StyledFloatingLabel>
+      </InnerFlexbox>
     </Flexbox>
   )
 }
