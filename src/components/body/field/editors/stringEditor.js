@@ -1,7 +1,7 @@
 import get from "lodash/get"
 import React from "react"
 import Form from "react-bootstrap/Form"
-import StyledFormControl from "./styledFormControl"
+import { StyledFormControl } from "./styledForms"
 
 const MULTI_LINE_STYLE = { as: "textarea", rows: "3" }
 const SINGLE_LINE_STYLE = { type: "text" }
