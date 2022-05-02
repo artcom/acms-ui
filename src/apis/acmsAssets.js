@@ -45,21 +45,33 @@ export default class AcmsAssets {
           headers: { Depth: 1 },
           url: path })
       // const res = await this.api.request({ method: "PROPFIND", headers: {}, url: path })
+
+      /* const resJson = convert.xml2json(res.data, { compact: true, spaces: 2, textKey: "text",
+        elementNameFn: val => val.replace("D:", "")
+      }) */
       const resJson = convert.xml2json(res.data, { compact: true, spaces: 2, textKey: "text",
         elementNameFn: val => val.replace("D:", "")
       })
       // const { multistatus: { response: files } } = resJson
+      // console.log("LIST ALL FILES resjson", resJson)
+
       const { multistatus: { response: rawFiles } } = JSON.parse(resJson)
+      // console.log("LIST ALL FILES RAW", rawFiles)
+
       const files = rawFiles.filter(f => f.href.text !== "/").map(f => {
-        const { name, ext } = getHrefComponents(f.href.text)
+        const { name, ext, hash } = getHrefComponents(f.href.text)
         return {
           path: f.href.text,
-          originalName: `${name}.${ext}`
+          originalName: `${name}.${ext}`,
+          hash,
+          name,
+          ext
         }
       })
       return files
     } catch (error) {
-      return false
+      console.log(error)
+      return []
     }
   }
 }
