@@ -8,8 +8,9 @@ import get from "lodash/get"
 import { evaluate } from "./utils/condition"
 import { isAllowed } from "./utils/permission"
 import * as utils from "./utils"
+import { isInSearch } from "./utils/search"
 
-
+const SEARCH_PLUGIN = true
 const TEMPLATE_KEY = "template"
 
 export const getVersion = state => state.version
@@ -28,6 +29,7 @@ export const getPath = state => state.path
 export const getNewEntity = state => state.newEntity
 export const getRenamedEntity = state => state.renamedEntity
 export const getTemplates = state => state.templates
+export const getSearch = state => state.search
 
 export const selectPermissions = createSelector(
   [getUser, getUsers],
@@ -178,9 +180,11 @@ const selectFields = createSelector(
     })
 )
 
-export const selectAllowedFields = createSelector(
-  [selectFields, selectPermissions],
-  (fields, permissions) => fields.filter(field => isAllowed(field.path, permissions))
+export const selectVisibleFields = createSelector(
+  [selectFields, selectPermissions, getSearch],
+  (fields, permissions, search) => fields
+    .filter(field => isAllowed(field.path, permissions))
+    .filter(field => isInSearch(search, field)) // SEARCH_PLUGIN
 )
 
 const selectChildren = createSelector(
@@ -216,15 +220,18 @@ const selectChildren = createSelector(
           isDeleted: isUndefined(changedChildContent),
           isEnabled: isEnabled(referenceContent, childTemplate),
           subtitle: subtitle(referenceContent, childTemplate),
-          path: [...path, id]
+          path: [...path, id],
+          changedChildContent
         }
       })
   }
 )
 
-export const selectAllowedChildren = createSelector(
-  [selectChildren, selectPermissions],
-  (children, permissions) => children.filter(child => isAllowed(child.path, permissions))
+export const selectVisibleChildren = createSelector(
+  [selectChildren, selectPermissions, getSearch],
+  (children, permissions, search) => children
+    .filter(child => isAllowed(child.path, permissions))
+    .filter(child => isInSearch(search, child)) // SEARCH_PLUGIN
 )
 
 const selectFixedChildren = createSelector(
@@ -249,7 +256,8 @@ const selectFixedChildren = createSelector(
           isNew: isUndefined(originalChildContent),
           isEnabled: isEnabled(changedChildContent, childTemplate),
           subtitle: subtitle(changedChildContent, childTemplate),
-          path: [...path, id]
+          path: [...path, id],
+          changedChildContent
         }
       })
 )
@@ -284,19 +292,22 @@ function subtitle(content, { subtitleField, fields }) {
   return null
 }
 
-export const selectAllowedFixedChildren = createSelector(
-  [selectFixedChildren, selectPermissions],
-  (children, permissions) => children.filter(child => isAllowed(child.path, permissions))
+export const selectVisibleFixedChildren = createSelector(
+  [selectFixedChildren, selectPermissions, getSearch],
+  (children, permissions, search) => children
+    .filter(child => isAllowed(child.path, permissions))
+    .filter(child => isInSearch(search, child)) // SEARCH_PLUGIN
 )
 
 export const getNeighbourSiblings = createSelector(
   [
     getPath,
     getChangedContent,
+    getSearch,
     selectTemplates,
     selectTemplate,
   ],
-  (path, changedContent, templates) => {
+  (path, changedContent, search, templates) => {
     if (path.length === 0) {
       return [null, null]
     }
@@ -308,7 +319,7 @@ export const getNeighbourSiblings = createSelector(
     const fieldIds = parentTemplate.fields.map(({ id }) => id)
     const fixedChildIds = parentTemplate.fixedChildren.map(({ id }) => id)
 
-    const siblingsIds = [...fixedChildIds]
+    let siblingsIds = [...fixedChildIds]
 
     Object.keys(parentEntity).sort().forEach(id => {
       if (id !== TEMPLATE_KEY &&
@@ -319,6 +330,12 @@ export const getNeighbourSiblings = createSelector(
     })
 
     const ownId = path[path.length - 1]
+
+    if (SEARCH_PLUGIN) {
+      siblingsIds = siblingsIds.filter(id =>
+        isSiblingInSearch(changedContent, path, id, search))
+    }
+
     const ownIndex = siblingsIds.indexOf(ownId)
 
     return [
@@ -328,92 +345,12 @@ export const getNeighbourSiblings = createSelector(
   }
 )
 
-export const getFilteredContent = (filterValue, originalContent) => {
-  const filteredContent = { ...originalContent }
-
-  const entries = Object.entries(filteredContent)
-
-  entries.forEach(([key, value]) => {
-    if (key !== "template") {
-      switch (typeof value) {
-        case "object":
-          Object.entries(value).forEach(
-            ([secondKey, secondValue]) => {
-              if (secondKey !== "template") {
-                switch (typeof secondValue) {
-                  case "object":
-                    Object.entries(secondValue).forEach(
-                      ([thirdKey, thirdValue]) => {
-                        if (thirdKey !== "template") {
-                          switch (typeof secondValue) {
-                            case "number":
-                              if (!thirdValue.toString().includes(filterValue.replace(",", "."))) {
-                                delete filteredContent[key][secondKey][thirdKey]
-                              }
-                              break
-                            case "string":
-                              if (!thirdValue.includes(filterValue)) {
-                                delete filteredContent[key][secondKey][thirdKey]
-                              }
-                              break
-                            case "boolean":
-                              if (!thirdValue.toString().includes(filterValue)) {
-                                delete filteredContent[key][secondKey][thirdKey]
-                              }
-                              break
-                          }
-                        }
-                      })
-                    break
-                  case "number":
-                    if (!secondValue.toString().includes(filterValue.replace(",", "."))) {
-                      delete filteredContent[key][secondKey]
-                    }
-                    break
-                  case "string":
-                    if (!secondValue.includes(filterValue)) {
-                      delete filteredContent[key][secondKey]
-                    }
-                    break
-                  case "boolean":
-                    if (!secondValue.toString().includes(filterValue)) {
-                      delete filteredContent[key][secondKey]
-                    }
-                    break
-                }
-              }
-            })
-          break
-        case "number":
-          if (!value.toString().includes(filterValue.replace(",", "."))) {
-            delete filteredContent[key]
-          }
-          break
-        case "string":
-          if (!value.includes(filterValue)) {
-            delete filteredContent[key]
-          }
-          break
-        case "boolean":
-          if (!value.toString().includes(filterValue)) {
-            delete filteredContent[key]
-          }
-          break
-      }
-    }
-  })
-
-  entries.forEach(([key, value]) => {
-    if (typeof value === "object") {
-      if (Object.keys(value).length === 0) {
-        delete filteredContent[key]
-      }
-    }
-  })
-
-  return filteredContent
+function isSiblingInSearch(changedContent, path, id, search) {
+  const siblingPath = [...path]
+  siblingPath[siblingPath.length - 1] = id
+  const siblingEntity = getChangedEntity(changedContent, siblingPath)
+  return isInSearch(search, siblingEntity)
 }
-
 
 function getSibling(id, parentPath, fixedChildren) {
   if (!id) {

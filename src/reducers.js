@@ -34,7 +34,6 @@ export const originalContent = createReducer(null, {
 
 export const changedContent = createReducer(null, {
   UPDATE_DATA: (draft, { payload }) => payload.changedContent,
-  SEARCH_DATA: (draft, { payload }) => payload.changedContent,
   SET_VALUE: (draft, { payload }) => { set(draft, payload.path, payload.value) },
   UNDO_CHANGES: (draft, { payload }) => { set(draft, payload.path, payload.originalValue) },
   FINISH_ENTITY_CREATION: (draft, { payload }) => { set(draft, payload.path, payload.values) },
@@ -81,4 +80,8 @@ export const progress = createReducer({}, {
 
 export const user = createReducer(null, {
   UPDATE_USER: (draft, { payload }) => payload.user
+})
+
+export const search = createReducer("", {
+  SET_SEARCH: (draft, { payload }) => payload.search
 })

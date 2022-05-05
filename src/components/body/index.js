@@ -21,9 +21,9 @@ import { fromPath } from "../../utils/hash"
 import {
   getLanguages,
   selectTemplateChildren,
-  selectAllowedFixedChildren,
-  selectAllowedChildren,
-  selectAllowedFields,
+  selectVisibleFixedChildren,
+  selectVisibleChildren,
+  selectVisibleFields,
   getChildrenLabel,
   getFieldsLabel,
   getTextDirection,
@@ -75,9 +75,9 @@ const ChildrenCol = styled(Col).attrs(() => ({
 const Body = () => {
   const dispatch = useDispatch()
   const canHaveChildren = useSelector(selectTemplateChildren).length > 0
-  const children = useSelector(selectAllowedChildren)
-  const fixedChildren = useSelector(selectAllowedFixedChildren)
-  const fields = useSelector(selectAllowedFields)
+  const children = useSelector(selectVisibleChildren)
+  const fixedChildren = useSelector(selectVisibleFixedChildren)
+  const fields = useSelector(selectVisibleFields)
   const languages = useSelector(getLanguages)
   const textDirection = useSelector(getTextDirection)
   const childrenLabel = useSelector(getChildrenLabel)

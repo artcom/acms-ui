@@ -11,7 +11,7 @@ import styled from "styled-components"
 import { useSelector, useDispatch } from "react-redux"
 import { ApiContext } from "../index"
 
-import Search from "./search"
+import SearchForm from "./searchForm"
 import { saveData } from "../actions/data"
 import { fromPath } from "../utils/hash"
 import { getPathNames, selectTemplateId, selectAllSiblingTemplates } from "../selectors"
@@ -23,7 +23,8 @@ const Logo = styled.img`
   padding-bottom: 0.5rem;
 `
 const LogoContainer = styled(Row)`
-    align-items: center;
+  justify-content: center;
+  align-items: center;
 `
 
 const Title = styled(Navbar.Text)`
@@ -38,8 +39,8 @@ const StyledButtonGroup = styled(ButtonGroup)`
 `
 
 const SaveButton = styled(Button)`
-  float: right;
   width: 100px;
+  flex: 1 0 auto;
 `
 
 const HomeButton = styled(Button)`
@@ -116,18 +117,15 @@ const Header = () => {
               </Template>
               }
             </StyledBreadcrumb>
-            <Col className="d-flex justify-content-center align-items-center"
-              style={ { flexBasis: "auto" } }>
-              <Search
-                dispatch={ dispatch }
-                acmsApi={ context.acmsApi }
-                acmsConfigPath={ acmsConfigPath } />
-            </Col>
             <SaveButton
               disabled={ !hasChanged || isSaving }
               onClick={ () => dispatch(saveData(context.acmsApi, acmsConfigPath)) }>
               { config.saveLabel }
             </SaveButton>
+            <SearchForm
+              dispatch={ dispatch }
+              acmsApi={ context.acmsApi }
+              acmsConfigPath={ acmsConfigPath } />
           </StyledButtonGroup>
         </Col>
       </Container>

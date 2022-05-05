@@ -6,8 +6,7 @@ import {
   getChangedContent,
   selectTemplates,
   getVersion,
-  getContentPath,
-  getFilteredContent
+  getContentPath
 } from "../selectors"
 import { showError } from "./error"
 import * as utils from "../utils"
@@ -42,54 +41,18 @@ export function loadData(acmsApi, acmsConfigPath) {
   }
 }
 
-export function searchData(acmsApi, acmsConfigPath, value) {
-  return async dispatch => {
-    try {
-      const { data: config, version } = await acmsApi.queryJson(acmsConfigPath)
-      const [{ data: templates }, { data: originalContent }] = await Promise.all([
-        acmsApi.queryFiles(config.templatesPath, version),
-        acmsApi.queryJson(config.contentPath, version)
-      ])
-
-      console.log("originalContent: ", originalContent)
-
-      const filteredContent = getFilteredContent(value, originalContent)
-
-      console.log("filtered: ", filteredContent)
-
-      // templates["book/index"].fields.splice(4, 2)
-
-      const changedContent = produce(originalContent,
-        draft => fixContent(filteredContent, draft, templates)
-      )
-
-      dispatch({
-        type: "UPDATE_DATA",
-        payload: {
-          config,
-          originalContent,
-          changedContent,
-          templates,
-          version
-        }
-      })
-    } catch (error) {
-      const details = error.response ? JSON.stringify(error.response, null, 2) : error.stack
-      dispatch(showError("Failed to load Data", details))
+export function searchData(search) {
+  return {
+    type: "SET_SEARCH",
+    payload: {
+      search
     }
   }
 }
 
 function fixContent(content, draft, templates) {
-  console.log("templates: ", templates)
   const { template, ...allEntries } = content
   const { fields = [], fixedChildren = [], children = [] } = utils.getTemplate(template, templates)
-
-  console.log("template: ", template)
-  console.log("allEntries: ", allEntries)
-  console.log("fields: ", fields)
-  console.log("fixedChildren: ", fixedChildren)
-  console.log("children: ", children)
 
   // fix invalid fields
   fields.forEach(field => {
