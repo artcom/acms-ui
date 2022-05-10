@@ -5,6 +5,7 @@
   "license": "MIT",
   "scripts": {
     "lint": "eslint src --fix",
+    "format": "prettier --write src",
     "stats": "webpack --profile --json --env production > stats.json",
     "build": "webpack --env production",
     "start": "npm run build && http-server ./dist/ -p ${PORT:-5000} -c 0",
@@ -47,10 +48,11 @@
     "@babel/preset-react": "^7.16.7",
     "babel-loader": "^8.2.5",
     "eslint": "^8.15.0",
-    "eslint-config-artcom": "^0.12.2",
-    "eslint-config-artcom-react": "^0.6.1",
+    "eslint-config-prettier": "^8.5.0",
     "eslint-plugin-import": "^2.26.0",
     "eslint-plugin-react": "^7.29.4",
+    "eslint-plugin-react-hooks": "^4.4.0",
+    "prettier": "^2.6.2",
     "webpack": "^5.72.1",
     "webpack-cli": "^4.9.2",
     "webpack-dev-server": "^4.9.0"

@@ -1,4 +1,3 @@
-import React from "react"
 import NumberInput from "./inputs/NumberInput"
 
 export default function NumberEditor({ field, onChange }) {

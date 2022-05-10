@@ -1,4 +1,3 @@
-import React from "react"
 import isString from "lodash/isString"
 import startCase from "lodash/startCase"
 

@@ -1,6 +1,6 @@
-import React from "react"
+import { forwardRef } from "react";
 
-const RequirementIcon = React.forwardRef((props, ref) =>
+const RequirementIcon = forwardRef((props, ref) =>
   <div { ...props } ref={ ref }>
     <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" fillOpacity="0.6"
       fill="currentColor" className="bi bi-info-lg" viewBox="0 0 16 16">
@@ -11,5 +11,7 @@ const RequirementIcon = React.forwardRef((props, ref) =>
     </svg>
   </div>
 )
+
+RequirementIcon.displayName = "RequirementIcon"
 
 export default RequirementIcon

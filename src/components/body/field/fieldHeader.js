@@ -1,5 +1,4 @@
 import startCase from "lodash/startCase"
-import React from "react"
 
 import Dropdown from "react-bootstrap/Dropdown"
 import DropdownItem from "react-bootstrap/DropdownItem"

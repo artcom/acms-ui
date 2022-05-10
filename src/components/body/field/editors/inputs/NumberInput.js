@@ -1,5 +1,5 @@
 import get from "lodash/get"
-import React, { useState, useEffect } from "react"
+import { useState, useEffect } from "react";
 import { Form } from "react-bootstrap"
 import StyledFormControl from "../styledFormControl"
 

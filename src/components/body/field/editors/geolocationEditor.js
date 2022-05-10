@@ -1,4 +1,3 @@
-import React from "react"
 import styled from "styled-components"
 import { FloatingLabel } from "react-bootstrap"
 import NumberInput from "./inputs/NumberInput"

@@ -1,4 +1,4 @@
-import React from "react"
+import { createContext } from "react";
 import { createRoot } from "react-dom/client"
 import { Provider } from "react-redux"
 
@@ -14,7 +14,7 @@ import Application from "./components/application"
 
 import "bootstrap/dist/css/bootstrap.min.css"
 
-export const ApiContext = React.createContext()
+export const ApiContext = createContext()
 
 bootstrap().then(async ({ acmsApi, acmsAssets, acmsConfigPath }) => {
   await store.dispatch(loadData(acmsApi, acmsConfigPath))

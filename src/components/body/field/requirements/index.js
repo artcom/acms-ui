@@ -1,4 +1,3 @@
-import React from "react"
 import ImageRequirements from "./imageRequirements"
 import StringRequirements from "./stringRequirements"
 import NumberRequirements from "./numberRequirements"

@@ -1,4 +1,3 @@
-import React from "react"
 import styled from "styled-components"
 import path from "path-browserify"
 import ProgressBar from "react-bootstrap/ProgressBar"

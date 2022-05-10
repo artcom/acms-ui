@@ -1,4 +1,3 @@
-import React from "react"
 import FormCheck from "react-bootstrap/FormCheck"
 import styled from "styled-components"
 

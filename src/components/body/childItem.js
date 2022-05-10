@@ -1,7 +1,6 @@
 import Dropdown from "react-bootstrap/Dropdown"
 import Form from "react-bootstrap/Form"
 import ListGroupItem from "react-bootstrap/ListGroupItem"
-import React from "react"
 import styled from "styled-components"
 
 import ToggleButton from "../toggleButton"
@@ -40,7 +39,7 @@ const Subtitle = styled(Form.Text)`
   overflow-x: hidden;
 `
 
-export default ({ child, children }) =>
+const ChildItem = ({ child, children }) =>
   <StyledListGroupItem
     key={ child.id }
     variant={ childStyle(child) }>
@@ -62,7 +61,6 @@ export default ({ child, children }) =>
     </Dropdown>
   </StyledListGroupItem>
 
-
 function childStyle(child) {
   if (child.isNew) {
     return "success"
@@ -78,3 +76,5 @@ function childStyle(child) {
 
   return ""
 }
+
+export default ChildItem

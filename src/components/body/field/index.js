@@ -1,5 +1,3 @@
-import React from "react"
-
 import Card from "react-bootstrap/Card"
 import FieldHeader from "./fieldHeader"
 import FieldContent from "./fieldContent"
