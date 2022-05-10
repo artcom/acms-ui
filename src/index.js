@@ -1,5 +1,5 @@
 import React from "react"
-import { render } from "react-dom"
+import { createRoot } from "react-dom/client"
 import { Provider } from "react-redux"
 
 import { loadData } from "./actions/data"
@@ -29,12 +29,14 @@ bootstrap().then(async ({ acmsApi, acmsAssets, acmsConfigPath }) => {
     store.dispatch(updatePath(window.location.hash))
   }
 
-  render(
+  const container = document.getElementById("app")
+  const root = createRoot(container)
+
+  root.render(
     <Provider store={ store } >
       <ApiContext.Provider
         value={ { acmsApi, acmsAssets } }>
         <Application />
       </ApiContext.Provider>
-    </Provider>
-    , document.getElementById("app"))
+    </Provider>)
 })
