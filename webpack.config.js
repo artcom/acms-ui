@@ -40,7 +40,4 @@ module.exports = (env = {}) => ({
       process: "process/browser",
     })
   ],
-  devServer: {
-    port: 5000
-  }
 })
