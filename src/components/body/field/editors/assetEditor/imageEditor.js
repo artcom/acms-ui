@@ -42,7 +42,8 @@ export default function ImageEditor({ field }) {
       <Invalid>
         Warning - image does not meet requirements
       </Invalid> }
-    </Container>)
+    </Container>
+  )
 }
 
 function isValid({ naturalWidth, naturalHeight },
