@@ -1,6 +1,6 @@
 /* eslint-disable no-param-reassign */
 
-import { produce } from "immer"
+import { createNextState } from "@reduxjs/toolkit"
 import isPlainObject from "lodash/isPlainObject"
 import { getChangedContent, selectTemplates, getVersion, getContentPath } from "../selectors"
 import { showError } from "./error"
@@ -15,7 +15,7 @@ export function loadData(acmsApi, acmsConfigPath) {
         acmsApi.queryJson(config.contentPath, version)
       ])
 
-      const changedContent = produce(originalContent,
+      const changedContent = createNextState(originalContent,
         draft => fixContent(originalContent, draft, templates)
       )
 
