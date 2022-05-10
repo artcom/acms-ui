@@ -23,7 +23,11 @@ const FieldContent = ({ acmsAssets, dispatch, field, languages, textDirection })
   const Editor = editors[field.type]
 
   if (!Editor) {
-    return <span>Unknown field type <code>{ field.type }</code></span>
+    return (
+      <span>
+        Unknown field type <code>{field.type}</code>
+      </span>
+    )
   }
 
   return field.localization
@@ -32,37 +36,40 @@ const FieldContent = ({ acmsAssets, dispatch, field, languages, textDirection })
 }
 
 function renderLocalizedEditors(field, languages, textDirection, acmsAssets, dispatch, Editor) {
-  const items = field.localization.map(id => {
+  const items = field.localization.map((id) => {
     const languageField = {
       ...field,
       path: [...field.path, id],
-      value: field.value[id]
+      value: field.value[id],
     }
-    const language = languages.find(lang => lang.id === id) || { name: id, textDirection }
+    const language = languages.find((lang) => lang.id === id) || { name: id, textDirection }
 
     return (
-      <StyledListGroupItem key={ id }>
+      <StyledListGroupItem key={id}>
         <StyledCardHeader className="text-muted">
-          { language.name }
-          { field.maxLength &&
-          <StringRequirements
-            field={ { value: languageField.value, maxLength: field.maxLength } } /> }
+          {language.name}
+          {field.maxLength && (
+            <StringRequirements
+              field={{ value: languageField.value, maxLength: field.maxLength }}
+            />
+          )}
         </StyledCardHeader>
-        { renderEditor(languageField, language.textDirection, acmsAssets, dispatch, Editor) }
+        {renderEditor(languageField, language.textDirection, acmsAssets, dispatch, Editor)}
       </StyledListGroupItem>
     )
   })
 
-  return <ListGroup variant="flush">{ items }</ListGroup>
+  return <ListGroup variant="flush">{items}</ListGroup>
 }
 
 function renderEditor(field, textDirection, acmsAssets, dispatch, Editor) {
   return (
     <Editor
-      field={ field }
-      textDirection={ textDirection }
-      onChange={ newValue => dispatch(changeValue(field.path, newValue)) }
-      onFileSelect={ files => dispatch(uploadFile(field.path, files[0], acmsAssets)) } />
+      field={field}
+      textDirection={textDirection}
+      onChange={(newValue) => dispatch(changeValue(field.path, newValue))}
+      onFileSelect={(files) => dispatch(uploadFile(field.path, files[0], acmsAssets))}
+    />
   )
 }
 

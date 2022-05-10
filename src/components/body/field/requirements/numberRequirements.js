@@ -9,21 +9,34 @@ const NumberRequirements = ({ field }) => {
     return null
   }
 
-  const Tooltip =
+  const Tooltip = (
     <Popover>
       <Popover.Header> Number Requirements</Popover.Header>
       <Popover.Body>
-        { field.integer && <> Integer <br /> </> }
-        { field.min && <> Minimum: { field.min } <br /> </> }
-        { field.max && <> Maximum: { field.max } <br /> </> }
+        {field.integer && (
+          <>
+            {" "}
+            Integer <br />{" "}
+          </>
+        )}
+        {field.min && (
+          <>
+            {" "}
+            Minimum: {field.min} <br />{" "}
+          </>
+        )}
+        {field.max && (
+          <>
+            {" "}
+            Maximum: {field.max} <br />{" "}
+          </>
+        )}
       </Popover.Body>
     </Popover>
+  )
 
   return (
-    <OverlayTrigger
-      placement="bottom"
-      delay={ { show: 250, hide: 400 } }
-      overlay={ Tooltip }>
+    <OverlayTrigger placement="bottom" delay={{ show: 250, hide: 400 }} overlay={Tooltip}>
       <RequirementIcon />
     </OverlayTrigger>
   )

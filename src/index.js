@@ -1,4 +1,4 @@
-import { createContext } from "react";
+import { createContext } from "react"
 import { createRoot } from "react-dom/client"
 import { Provider } from "react-redux"
 
@@ -33,10 +33,10 @@ bootstrap().then(async ({ acmsApi, acmsAssets, acmsConfigPath }) => {
   const root = createRoot(container)
 
   root.render(
-    <Provider store={ store } >
-      <ApiContext.Provider
-        value={ { acmsApi, acmsAssets } }>
+    <Provider store={store}>
+      <ApiContext.Provider value={{ acmsApi, acmsAssets }}>
         <Application />
       </ApiContext.Provider>
-    </Provider>)
+    </Provider>
+  )
 })

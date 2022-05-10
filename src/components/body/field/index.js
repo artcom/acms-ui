@@ -8,11 +8,11 @@ export default function Field(props) {
   const style = fieldStyle(props.field)
 
   return (
-    <Card border={ style } className="mb-3">
-      <Card.Header className={ style ? `list-group-item-${style}` : "" }>
-        <FieldHeader { ...props } />
+    <Card border={style} className="mb-3">
+      <Card.Header className={style ? `list-group-item-${style}` : ""}>
+        <FieldHeader {...props} />
       </Card.Header>
-      <FieldContent { ...props } />
+      <FieldContent {...props} />
     </Card>
   )
 }

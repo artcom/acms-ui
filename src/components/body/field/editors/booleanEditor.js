@@ -16,8 +16,9 @@ export default function BooleanEditor({ field, onChange }) {
     <StyledFormCheck>
       <StyledFormCheckInput
         type="checkbox"
-        checked={ field.value }
-        onChange={ event => onChange(event.target.checked) } />
+        checked={field.value}
+        onChange={(event) => onChange(event.target.checked)}
+      />
     </StyledFormCheck>
   )
 }

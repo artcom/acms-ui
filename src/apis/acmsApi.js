@@ -12,7 +12,7 @@ export default class AcmsApi {
 
     return {
       data: response.data,
-      version: response.headers["git-commit-hash"]
+      version: response.headers["git-commit-hash"],
     }
   }
 
@@ -21,7 +21,7 @@ export default class AcmsApi {
 
     return {
       data: response.data,
-      version: response.headers["git-commit-hash"]
+      version: response.headers["git-commit-hash"],
     }
   }
 

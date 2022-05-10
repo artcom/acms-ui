@@ -1,29 +1,28 @@
-import { useRef, useState } from "react";
+import { useRef, useState } from "react"
 import styled from "styled-components"
 import Form from "react-bootstrap/Form"
 
 const Image = styled.img`
-    max-width: 100%;
-    background-image: 
-      linear-gradient(to right, rgba(150, 150, 150, 0.75), rgba(150, 150, 150, 0.75)),
-      linear-gradient(to right, black 50%, white 50%),
-      linear-gradient(to bottom, black 50%, white 50%);
-    background-blend-mode: normal, difference, normal;
-    background-size: 2em 2em;
+  max-width: 100%;
+  background-image: linear-gradient(to right, rgba(150, 150, 150, 0.75), rgba(150, 150, 150, 0.75)),
+    linear-gradient(to right, black 50%, white 50%),
+    linear-gradient(to bottom, black 50%, white 50%);
+  background-blend-mode: normal, difference, normal;
+  background-size: 2em 2em;
 `
 
 // extracted style from bootstrap with additional
 // attributes to make it work outside of FormGroup
 const Invalid = styled(Form.Control.Feedback).attrs({
   type: "invalid",
-  tooltip: true
+  tooltip: true,
 })`
-    top: 0;
-    display: block;
+  top: 0;
+  display: block;
 `
 
 const Container = styled.div`
-    position: relative;
+  position: relative;
 `
 
 export default function ImageEditor({ field }) {
@@ -34,26 +33,20 @@ export default function ImageEditor({ field }) {
   return (
     <Container>
       <Image
-        key={ src }
-        src={ src }
-        ref={ imageRef }
-        onLoad={ () => setValid(isValid(imageRef.current, field)) } />
-      { !valid &&
-      <Invalid>
-        Warning - image does not meet requirements
-      </Invalid> }
+        key={src}
+        src={src}
+        ref={imageRef}
+        onLoad={() => setValid(isValid(imageRef.current, field))}
+      />
+      {!valid && <Invalid>Warning - image does not meet requirements</Invalid>}
     </Container>
   )
 }
 
-function isValid({ naturalWidth, naturalHeight },
-  { width,
-    height,
-    maxWidth,
-    minWidth,
-    maxHeight,
-    minHeight,
-    aspectRatio }) {
+function isValid(
+  { naturalWidth, naturalHeight },
+  { width, height, maxWidth, minWidth, maxHeight, minHeight, aspectRatio }
+) {
   if (width && width !== naturalWidth) {
     return false
   }
@@ -72,8 +65,14 @@ function isValid({ naturalWidth, naturalHeight },
   if (maxHeight && naturalHeight > maxHeight) {
     return false
   }
-  if (aspectRatio && aspectRatio.split(":").map(Number)
-    .reduce((a, b) => a / b) !== naturalWidth / naturalHeight) {
+  if (
+    aspectRatio &&
+    aspectRatio
+      .split(":")
+      .map(Number)
+      .reduce((a, b) => a / b) !==
+      naturalWidth / naturalHeight
+  ) {
     return false
   }
   return true

@@ -39,27 +39,30 @@ const Subtitle = styled(Form.Text)`
   overflow-x: hidden;
 `
 
-const ChildItem = ({ child, children }) =>
-  <StyledListGroupItem
-    key={ child.id }
-    variant={ childStyle(child) }>
+const ChildItem = ({ child, children }) => (
+  <StyledListGroupItem key={child.id} variant={childStyle(child)}>
     <TextContainer>
-      { child.isDeleted ?
-        <ItemName>{ child.name }</ItemName> :
+      {child.isDeleted ? (
+        <ItemName>{child.name}</ItemName>
+      ) : (
         <ItemLink
-          href={ fromPath(child.path) }
-          title={ child.name }
-          className={ child.isEnabled ? "" : "text-muted" }>
-          { child.name }
+          href={fromPath(child.path)}
+          title={child.name}
+          className={child.isEnabled ? "" : "text-muted"}
+        >
+          {child.name}
         </ItemLink>
-      }
-      <Subtitle title={ child.subtitle } muted>{ child.subtitle }</Subtitle>
+      )}
+      <Subtitle title={child.subtitle} muted>
+        {child.subtitle}
+      </Subtitle>
     </TextContainer>
-    <Dropdown className="float-right btn-sm" id={ child.id } drop="right">
-      <Dropdown.Toggle as={ ToggleButton } />
-      { children }
+    <Dropdown className="float-right btn-sm" id={child.id} drop="right">
+      <Dropdown.Toggle as={ToggleButton} />
+      {children}
     </Dropdown>
   </StyledListGroupItem>
+)
 
 function childStyle(child) {
   if (child.isNew) {

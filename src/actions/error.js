@@ -5,13 +5,13 @@ export function showError(title, details) {
     type: "SHOW_ERROR",
     payload: {
       title,
-      details
-    }
+      details,
+    },
   }
 }
 
 export function hideError() {
   return {
-    type: "HIDE_ERROR"
+    type: "HIDE_ERROR",
   }
 }

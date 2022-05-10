@@ -23,33 +23,35 @@ const Fieldname = styled.div`
   margin-right: auto;
 `
 
-const FieldHeader = ({ field, dispatch }) =>
+const FieldHeader = ({ field, dispatch }) => (
   <Flexbox>
-    <Fieldname > { field.name ? field.name : startCase(field.id) } </Fieldname>
-    <Requirements field={ field } />
-    <StyledDropdown id={ field.id }>
-      <Dropdown.Toggle as={ ToggleButton } />
+    <Fieldname> {field.name ? field.name : startCase(field.id)} </Fieldname>
+    <Requirements field={field} />
+    <StyledDropdown id={field.id}>
+      <Dropdown.Toggle as={ToggleButton} />
       <Dropdown.Menu>
         <DropdownItem
           key="undo"
-          disabled={ !field.hasChanged || field.isNew }
-          onClick={ () => dispatch(undoChanges(field.path)) }>
+          disabled={!field.hasChanged || field.isNew}
+          onClick={() => dispatch(undoChanges(field.path))}
+        >
           Undo Changes
         </DropdownItem>
-        { (
-          field.type === "image" ||
+        {(field.type === "image" ||
           field.type === "video" ||
           field.type === "audio" ||
-          field.type === "file") &&
+          field.type === "file") && (
           <DropdownItem
             key="clear"
-            disabled={ field.value === "" }
-            onClick={ () => dispatch(clearSrcTag(field.path)) }>
+            disabled={field.value === ""}
+            onClick={() => dispatch(clearSrcTag(field.path))}
+          >
             Clear
-          </DropdownItem> }
+          </DropdownItem>
+        )}
       </Dropdown.Menu>
     </StyledDropdown>
   </Flexbox>
-
+)
 
 export default FieldHeader
