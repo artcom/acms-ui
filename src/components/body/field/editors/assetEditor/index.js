@@ -47,10 +47,8 @@ export function renderUpload(field, onFileSelect) {
   if (field.progress !== undefined) {
     return <ProgressBar min={ 0 } max={ 1 } now={ field.progress } />
   } else {
-    const accept = field.type === "file" ? "" : `${field.type}/*`
-
     return (
-      <FileSelector accept={ accept } onSelect={ onFileSelect }>
+      <FileSelector onSelect={ onFileSelect }>
         <div>Drop { field.type } here, or click to open file dialog.</div>
       </FileSelector>
     )
