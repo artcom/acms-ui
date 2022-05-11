@@ -1,8 +1,7 @@
-import React from "react"
 import Dropzone from "react-dropzone"
 import styled, { css } from "styled-components"
 
-const getColorCss = props => {
+const getColorCss = (props) => {
   if (props.isDragAccept) {
     return css`
       background-color: #dff0d8;
@@ -24,25 +23,21 @@ const Container = styled.div`
   border-color: #555;
   border-style: dashed;
   border-radius: 0.3rem;
-  ${props => getColorCss(props)}
+  ${(props) => getColorCss(props)}
   padding: 1rem;
   text-align: center;
   width: 100%;
 `
 
-export default function FileSelector({ accept, children, onSelect }) {
+export default function FileSelector({ children, onSelect }) {
   return (
-    <Dropzone
-      accept={ accept }
-      onDropAccepted={ acceptedFiles => onSelect(acceptedFiles) }
-      multiple={ false }>
-      {
-        ({ getRootProps, getInputProps, isDragAccept, isDragReject }) =>
-          <Container { ...getRootProps({ isDragAccept, isDragReject }) }>
-            <input { ...getInputProps() } />
-            { children }
-          </Container>
-      }
+    <Dropzone onDropAccepted={(acceptedFiles) => onSelect(acceptedFiles)} multiple={false}>
+      {({ getRootProps, getInputProps, isDragAccept, isDragReject }) => (
+        <Container {...getRootProps({ isDragAccept, isDragReject })}>
+          <input {...getInputProps()} />
+          {children}
+        </Container>
+      )}
     </Dropzone>
   )
 }

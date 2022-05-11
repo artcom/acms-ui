@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react"
+import { useEffect, useState } from "react"
 import Button from "react-bootstrap/Button"
 import { InputGroup, Form } from "react-bootstrap"
 
@@ -6,7 +6,7 @@ import { useSelector } from "react-redux"
 
 import styled from "styled-components"
 import { debounce } from "lodash"
-import StyledFormControl from "./body/field/editors/styledFormControl"
+import { StyledFormControl } from "./body/field/editors/styledForms"
 
 import { searchData } from "../actions/data"
 import SearchIcon from "./searchIcon"
@@ -36,9 +36,9 @@ const Search = ({ dispatch }) => {
 
   const debouncedSearch = debounce(() => dispatch(searchData(value)), 300)
 
-  useEffect(() => debouncedSearch(), [value])
+  useEffect(() => debouncedSearch(), [debouncedSearch, value])
 
-  const handleOnChange = event => {
+  const handleOnChange = (event) => {
     setValue(event.target.value)
   }
 
@@ -47,42 +47,48 @@ const Search = ({ dispatch }) => {
   }
 
   const toggleShow = () => {
-    if (show) {setShow(false)} else {setShow(true)}
+    if (show) {
+      setShow(false)
+    } else {
+      setShow(true)
+    }
   }
 
   return (
     <StyledForm>
       <InputGroup>
-        { show &&
+        {show && (
           <>
             <StyledFormControl
               type="search"
               placeholder="Search..."
               aria-label="Search"
-              value={ value }
-              onChange={ handleOnChange } />
+              value={value}
+              onChange={handleOnChange}
+            />
             <ClearButton
               variant="light"
               title="Clear"
-              onClick={ () => {
+              onClick={() => {
                 resetValue()
                 dispatch(searchData(""))
-              } } >
+              }}
+            >
               X
             </ClearButton>
           </>
-        }
+        )}
         <SearchButton
           variant="secondary"
           type="submit"
-          title={ !show ? "Open Search" : "Close Search" }
-          onClick={ () => toggleShow() }>
+          title={!show ? "Open Search" : "Close Search"}
+          onClick={() => toggleShow()}
+        >
           <SearchIcon />
         </SearchButton>
       </InputGroup>
     </StyledForm>
   )
 }
-
 
 export default Search

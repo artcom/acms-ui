@@ -8,7 +8,7 @@ export default class AcmsAssets {
   }
 
   async uploadFile(path, file, options) {
-    if (!await this.exists(path)) {
+    if (!(await this.exists(path))) {
       await this.api.put(path, file, options)
     }
 

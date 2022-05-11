@@ -5,7 +5,7 @@ export function updateUser() {
   return {
     type: "UPDATE_USER",
     payload: {
-      user
-    }
+      user,
+    },
   }
 }

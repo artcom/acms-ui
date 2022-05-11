@@ -1,5 +1,5 @@
-import React from "react"
-import { render } from "react-dom"
+import { createContext } from "react"
+import { createRoot } from "react-dom/client"
 import { Provider } from "react-redux"
 
 import { loadData } from "./actions/data"
@@ -14,7 +14,7 @@ import Application from "./components/application"
 
 import "bootstrap/dist/css/bootstrap.min.css"
 
-export const ApiContext = React.createContext()
+export const ApiContext = createContext()
 
 bootstrap().then(async ({ acmsApi, acmsAssets, acmsConfigPath }) => {
   await store.dispatch(loadData(acmsApi, acmsConfigPath))
@@ -29,12 +29,14 @@ bootstrap().then(async ({ acmsApi, acmsAssets, acmsConfigPath }) => {
     store.dispatch(updatePath(window.location.hash))
   }
 
-  render(
-    <Provider store={ store } >
-      <ApiContext.Provider
-        value={ { acmsApi, acmsAssets } }>
+  const container = document.getElementById("app")
+  const root = createRoot(container)
+
+  root.render(
+    <Provider store={store}>
+      <ApiContext.Provider value={{ acmsApi, acmsAssets }}>
         <Application />
       </ApiContext.Provider>
     </Provider>
-    , document.getElementById("app"))
+  )
 })
