@@ -1,4 +1,4 @@
-import React, { useRef } from "react"
+import { useRef } from "react"
 import { useDispatch, useSelector } from "react-redux"
 
 import Button from "react-bootstrap/Button"
@@ -7,10 +7,11 @@ import Modal from "react-bootstrap/Modal"
 
 import styled from "styled-components"
 
-import { cancelEntityCreation,
+import {
+  cancelEntityCreation,
   finishEntityCreation,
   updateEntityCreationId,
-  updateEntityCreationTemplate
+  updateEntityCreationTemplate,
 } from "../../actions/entity"
 import { selectNewEntity } from "../../selectors"
 
@@ -25,9 +26,10 @@ export default function EntityCreationModal() {
 
   return (
     <Modal
-      onShow={ () => inputField.current.focus() }
-      show={ newEntity.isVisible }
-      onHide={ () => dispatch(cancelEntityCreation()) }>
+      onShow={() => inputField.current.focus()}
+      show={newEntity.isVisible}
+      onHide={() => dispatch(cancelEntityCreation())}
+    >
       <Modal.Header closeButton>
         <Modal.Title>New Item</Modal.Title>
       </Modal.Header>
@@ -36,27 +38,29 @@ export default function EntityCreationModal() {
           <Form.Group>
             <Form.Label>Name</Form.Label>
             <Form.Control
-              ref={ inputField }
+              ref={inputField}
               type="text"
-              value={ newEntity.id }
-              isInvalid={ newEntity.isVisible && !newEntity.isValidId }
-              onChange={ event => dispatch(updateEntityCreationId(event.target.value)) } />
+              value={newEntity.id}
+              isInvalid={newEntity.isVisible && !newEntity.isValidId}
+              onChange={(event) => dispatch(updateEntityCreationId(event.target.value))}
+            />
           </Form.Group>
           <StyledFormGroup>
             <Form.Label>Template</Form.Label>
-            { newEntity.templates.length === 1 ?
-              <Form.Control
-                readOnly
-                value={ newEntity.templates[0] } />
-              :
+            {newEntity.templates.length === 1 ? (
+              <Form.Control readOnly value={newEntity.templates[0]} />
+            ) : (
               <Form.Select
-                value={ newEntity.template }
-                onChange={ event => dispatch(updateEntityCreationTemplate(event.target.value)) }>
-                { newEntity.templates.map(template =>
-                  <option key={ template } value={ template }>{ template }</option>
-                ) }
+                value={newEntity.template}
+                onChange={(event) => dispatch(updateEntityCreationTemplate(event.target.value))}
+              >
+                {newEntity.templates.map((template) => (
+                  <option key={template} value={template}>
+                    {template}
+                  </option>
+                ))}
               </Form.Select>
-            }
+            )}
           </StyledFormGroup>
         </Form>
       </Modal.Body>
@@ -64,8 +68,12 @@ export default function EntityCreationModal() {
         <Button
           type="submit"
           variant="info"
-          disabled={ !newEntity.isValidId }
-          onClick={ event => { event.preventDefault(); dispatch(finishEntityCreation()) } }>
+          disabled={!newEntity.isValidId}
+          onClick={(event) => {
+            event.preventDefault()
+            dispatch(finishEntityCreation())
+          }}
+        >
           Create
         </Button>
       </Modal.Footer>

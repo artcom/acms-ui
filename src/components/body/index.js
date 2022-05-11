@@ -1,4 +1,4 @@
-import React, { useContext } from "react"
+import { useContext } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import styled from "styled-components"
 
@@ -27,29 +27,29 @@ import {
   getChildrenLabel,
   getFieldsLabel,
   getTextDirection,
-  getNeighbourSiblings
+  getNeighbourSiblings,
 } from "../../selectors"
 
 import { ApiContext } from "../../index"
 
 const AddButton = styled(ListGroupItem)`
   padding: 0px;
-  text-align: center; 
+  text-align: center;
   outline: none;
 `
 
 const ArrowButton = styled(Button).attrs(() => ({
-  variant: "light"
+  variant: "light",
 }))`
-  text-align: center; 
-  outline: none; 
+  text-align: center;
+  outline: none;
   position: sticky;
   top: 50%;
 `
 
 const LeftArrowCol = styled(Col).attrs(() => ({
   xs: 2,
-  md: 1
+  md: 1,
 }))`
   display: flex;
   height: 100vh;
@@ -68,9 +68,8 @@ const ContentContainer = styled(Row)`
 
 const ChildrenCol = styled(Col).attrs(() => ({
   xs: 12,
-  md: 4
+  md: 4,
 }))``
-
 
 const Body = () => {
   const dispatch = useDispatch()
@@ -90,41 +89,34 @@ const Body = () => {
     <Container fluid>
       <Row>
         <LeftArrowCol>
-          { leftSibling &&
-          <ArrowButton
-            title={ leftSibling.name }
-            href={ fromPath(leftSibling.path) }>
-            &#8592;
-          </ArrowButton>
-          }
+          {leftSibling && (
+            <ArrowButton title={leftSibling.name} href={fromPath(leftSibling.path)}>
+              &#8592;
+            </ArrowButton>
+          )}
         </LeftArrowCol>
         <Col>
           <ContentContainer>
             <ChildrenCol>
-              {
-                (fixedChildren.length + children.length > 0 || canHaveChildren) &&
-                <h4>{ childrenLabel }</h4>
-              }
-              { fixedChildren.length > 0 && renderFixedChildren(fixedChildren, dispatch) }
-              {
-                (children.length > 0 || canHaveChildren) &&
-              renderChildren(children, dispatch, canHaveChildren)
-              }
+              {(fixedChildren.length + children.length > 0 || canHaveChildren) && (
+                <h4>{childrenLabel}</h4>
+              )}
+              {fixedChildren.length > 0 && renderFixedChildren(fixedChildren, dispatch)}
+              {(children.length > 0 || canHaveChildren) &&
+                renderChildren(children, dispatch, canHaveChildren)}
             </ChildrenCol>
             <Col>
-              { fields.length > 0 && <h4 className="pr-2">{ fieldsLabel }</h4> }
-              { renderFields(fields, languages, textDirection, acmsAssets, dispatch) }
+              {fields.length > 0 && <h4 className="pr-2">{fieldsLabel}</h4>}
+              {renderFields(fields, languages, textDirection, acmsAssets, dispatch)}
             </Col>
           </ContentContainer>
         </Col>
         <RightArrowCol>
-          { rightSibling &&
-          <ArrowButton
-            title={ rightSibling.name }
-            href={ fromPath(rightSibling.path) }>
-            &#8594;
-          </ArrowButton>
-          }
+          {rightSibling && (
+            <ArrowButton title={rightSibling.name} href={fromPath(rightSibling.path)}>
+              &#8594;
+            </ArrowButton>
+          )}
         </RightArrowCol>
       </Row>
     </Container>
@@ -134,17 +126,18 @@ const Body = () => {
 function renderFixedChildren(children, dispatch) {
   return (
     <ListGroup className="mb-3">
-      { children.map(child =>
-        <ChildItem key={ child.id } child={ child } dispatch={ dispatch }>
+      {children.map((child) => (
+        <ChildItem key={child.id} child={child} dispatch={dispatch}>
           <Dropdown.Menu>
             <DropDownItem
-              disabled={ !child.hasChanged }
-              onClick={ () => dispatch(undoChanges(child.path)) }>
+              disabled={!child.hasChanged}
+              onClick={() => dispatch(undoChanges(child.path))}
+            >
               Undo Changes
             </DropDownItem>
           </Dropdown.Menu>
         </ChildItem>
-      ) }
+      ))}
     </ListGroup>
   )
 }
@@ -152,48 +145,50 @@ function renderFixedChildren(children, dispatch) {
 function renderChildren(children, dispatch, canHaveChildren) {
   return (
     <ListGroup className="mb-3">
-      { children.map(child =>
-        <ChildItem key={ child.id } child={ child } dispatch={ dispatch }>
+      {children.map((child) => (
+        <ChildItem key={child.id} child={child} dispatch={dispatch}>
           <Dropdown.Menu>
             <DropDownItem
-              disabled={ child.isDeleted }
-              onClick={ () => dispatch(startEntityRenaming(child.id)) }>
+              disabled={child.isDeleted}
+              onClick={() => dispatch(startEntityRenaming(child.id))}
+            >
               Rename...
             </DropDownItem>
             <DropDownItem
-              disabled={ !child.hasChanged || child.isNew }
-              onClick={ () => dispatch(undoChanges(child.path)) }>
+              disabled={!child.hasChanged || child.isNew}
+              onClick={() => dispatch(undoChanges(child.path))}
+            >
               Undo Changes
             </DropDownItem>
             <DropDownItem
-              disabled={ child.isDeleted }
-              onClick={ () => dispatch(deleteEntity(child.path)) }>
+              disabled={child.isDeleted}
+              onClick={() => dispatch(deleteEntity(child.path))}
+            >
               Delete
             </DropDownItem>
           </Dropdown.Menu>
         </ChildItem>
-      ) }
-      { canHaveChildren &&
-        <AddButton
-          variant="secondary"
-          action
-          onClick={ () => dispatch(startEntityCreation()) }>+
+      ))}
+      {canHaveChildren && (
+        <AddButton variant="secondary" action onClick={() => dispatch(startEntityCreation())}>
+          +
         </AddButton>
-      }
+      )}
     </ListGroup>
   )
 }
 
 function renderFields(fields, languages, textDirection, acmsAssets, dispatch) {
-  return fields.map(field =>
+  return fields.map((field) => (
     <Field
-      key={ field.id }
-      field={ field }
-      languages={ languages }
-      textDirection={ textDirection }
-      acmsAssets={ acmsAssets }
-      dispatch={ dispatch } />
-  )
+      key={field.id}
+      field={field}
+      languages={languages}
+      textDirection={textDirection}
+      acmsAssets={acmsAssets}
+      dispatch={dispatch}
+    />
+  ))
 }
 
 export default Body

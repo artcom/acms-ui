@@ -1,22 +1,22 @@
 /* eslint-disable no-param-reassign */
 
-import { produce } from "immer"
+import { createNextState } from "@reduxjs/toolkit"
 import isPlainObject from "lodash/isPlainObject"
 import { getChangedContent, selectTemplates, getVersion, getContentPath } from "../selectors"
 import { showError } from "./error"
 import * as utils from "../utils"
 
 export function loadData(acmsApi, acmsConfigPath) {
-  return async dispatch => {
+  return async (dispatch) => {
     try {
       const { data: config, version } = await acmsApi.queryJson(acmsConfigPath)
       const [{ data: templates }, { data: originalContent }] = await Promise.all([
         acmsApi.queryFiles(config.templatesPath, version),
-        acmsApi.queryJson(config.contentPath, version)
+        acmsApi.queryJson(config.contentPath, version),
       ])
 
-      const changedContent = produce(originalContent,
-        draft => fixContent(originalContent, draft, templates)
+      const changedContent = createNextState(originalContent, (draft) =>
+        fixContent(originalContent, draft, templates)
       )
 
       dispatch({
@@ -26,8 +26,8 @@ export function loadData(acmsApi, acmsConfigPath) {
           originalContent,
           changedContent,
           templates,
-          version
-        }
+          version,
+        },
       })
     } catch (error) {
       const details = error.response ? JSON.stringify(error.response, null, 2) : error.stack
@@ -41,7 +41,7 @@ function fixContent(content, draft, templates) {
   const { fields = [], fixedChildren = [], children = [] } = utils.getTemplate(template, templates)
 
   // fix invalid fields
-  fields.forEach(field => {
+  fields.forEach((field) => {
     if (field.localization) {
       draft[field.id] = {}
       for (const id of field.localization) {
@@ -60,7 +60,7 @@ function fixContent(content, draft, templates) {
   })
 
   // fix fixedChildren
-  fixedChildren.forEach(child => {
+  fixedChildren.forEach((child) => {
     if (!isPlainObject(content[child.id])) {
       draft[child.id] = utils.createChildValue(child.template, templates)
     } else {
@@ -70,8 +70,8 @@ function fixContent(content, draft, templates) {
 
   // fix additional children
   const namedEntries = [...fields, ...fixedChildren].map(({ id }) => id)
-  const additionalChildIds = Object.keys(allEntries).filter(id => !namedEntries.includes(id))
-  additionalChildIds.forEach(id => {
+  const additionalChildIds = Object.keys(allEntries).filter((id) => !namedEntries.includes(id))
+  additionalChildIds.forEach((id) => {
     if (!children.includes(content[id].template)) {
       // delete children with invalid template
       delete draft[id]
@@ -114,8 +114,8 @@ function toFiles({ template, ...content }, templates, path = []) {
   )
 
   // add all fixed children files
-  const childIds = Object.keys(content).filter(id => !fieldIds.includes(id))
-  childIds.forEach(id => Object.assign(files, toFiles(content[id], templates, [...path, id])))
+  const childIds = Object.keys(content).filter((id) => !fieldIds.includes(id))
+  childIds.forEach((id) => Object.assign(files, toFiles(content[id], templates, [...path, id])))
 
   return files
 }

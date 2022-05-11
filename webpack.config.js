@@ -1,5 +1,4 @@
-/* eslint-disable import/no-commonjs */
-
+/* eslint-disable no-undef */
 const webpack = require("webpack")
 const HtmlWebpackPlugin = require("html-webpack-plugin")
 
@@ -9,9 +8,9 @@ module.exports = (env = {}) => ({
   module: {
     rules: [
       {
-        test: /\.js$/,
+        test: /\.(js|jsx)$/,
         exclude: /node_modules/,
-        use: "babel-loader"
+        loader: "babel-loader"
       },
       {
         test: /\.css$/,
@@ -30,7 +29,8 @@ module.exports = (env = {}) => ({
   resolve: {
     fallback: {
       path: false, // do not include a polyfill for path
-    }
+    },
+    extensions: [".js", ".jsx"],
   },
   plugins: [
     new HtmlWebpackPlugin({
@@ -40,7 +40,4 @@ module.exports = (env = {}) => ({
       process: "process/browser",
     })
   ],
-  devServer: {
-    port: 5000
-  }
 })

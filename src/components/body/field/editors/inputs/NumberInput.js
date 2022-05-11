@@ -1,5 +1,5 @@
 import get from "lodash/get"
-import React, { useState, useEffect } from "react"
+import { useState, useEffect } from "react"
 import { Form } from "react-bootstrap"
 import StyledFormControl from "../styledFormControl"
 
@@ -14,10 +14,12 @@ const NumberInput = ({ field, onChange }) => {
   }, [field.value])
 
   const regex = /^-?((\d*([.,]\d*)?))?$/
-  const valid = field.value >= min && field.value <= max &&
-        !(field.integer && (stringValue.includes(",") || stringValue && stringValue.includes(".")))
+  const valid =
+    field.value >= min &&
+    field.value <= max &&
+    !(field.integer && (stringValue.includes(",") || (stringValue && stringValue.includes("."))))
 
-  const onChangeString = event => {
+  const onChangeString = (event) => {
     if (regex.test(event.target.value) || event.target.value === "") {
       setStringValue(event.target.value)
       let numberValue = parseFloat(event.target.value.replace(",", "."))
@@ -36,13 +38,14 @@ const NumberInput = ({ field, onChange }) => {
   return (
     <>
       <StyledFormControl
-        isInvalid={ !valid }
+        isInvalid={!valid}
         type="text"
-        value={ stringValue }
-        onChange={ onChangeString }
-        onBlur={ onBlurString } />
+        value={stringValue}
+        onChange={onChangeString}
+        onBlur={onBlurString}
+      />
       <Form.Control.Feedback type="invalid" tooltip>
-        { `This ${field.integer ? "integer" : "number"} should be between ${min} and ${max}` }
+        {`This ${field.integer ? "integer" : "number"} should be between ${min} and ${max}`}
       </Form.Control.Feedback>
     </>
   )

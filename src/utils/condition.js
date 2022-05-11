@@ -4,7 +4,7 @@ const handlers = {
   EQUALS: ([value1, value2]) => value1 === value2,
   GET: ([key], values) => get(values, key),
   IN: ([item, list]) => list.includes(item),
-  LIST: args => args
+  LIST: (args) => args,
 }
 
 export function evaluate(expression, values) {
@@ -18,5 +18,8 @@ export function evaluate(expression, values) {
 function evaluateCommand(expression, values) {
   const [command, ...args] = expression
   const handler = handlers[command]
-  return handler(args.map(arg => evaluate(arg, values)), values)
+  return handler(
+    args.map((arg) => evaluate(arg, values)),
+    values
+  )
 }
