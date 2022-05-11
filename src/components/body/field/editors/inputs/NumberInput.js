@@ -1,7 +1,7 @@
 import get from "lodash/get"
 import { useState, useEffect } from "react"
 import { Form } from "react-bootstrap"
-import StyledFormControl from "../styledFormControl"
+import { StyledFormControl } from "../styledForms"
 
 const NumberInput = ({ field, onChange }) => {
   const min = get(field, "min", -Infinity)

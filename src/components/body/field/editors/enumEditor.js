@@ -1,7 +1,7 @@
 import isString from "lodash/isString"
 import startCase from "lodash/startCase"
 
-import StyledFormSelect from "./styledFormSelect"
+import { StyledFormSelect } from "./styledForms"
 
 export default function EnumEditor({ field, onChange }) {
   const values = isString(field.values[0])

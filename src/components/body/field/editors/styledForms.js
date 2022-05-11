@@ -1,7 +1,7 @@
+import styled, { css } from "styled-components"
 import Form from "react-bootstrap/Form"
-import styled from "styled-components"
 
-export default styled(Form.Select)`
+const formStyle = css`
   border: 0px;
   box-shadow: none;
   outline: none;
@@ -14,4 +14,12 @@ export default styled(Form.Select)`
     box-shadow: none;
     outline: none;
   }
+`
+
+export const StyledFormControl = styled(Form.Control)`
+  ${formStyle}
+`
+
+export const StyledFormSelect = styled(Form.Select)`
+  ${formStyle}
 `
