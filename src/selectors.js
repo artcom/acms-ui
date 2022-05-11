@@ -177,7 +177,7 @@ export const selectVisibleFields = createSelector(
   (fields, permissions, search) =>
     fields
       .filter((field) => isAllowed(field.path, permissions))
-      .filter((field) => isInSearch(search, field)) // SEARCH_PLUGIN
+      .filter((field) => isInSearch(search.toLowerCase(), field.value))
 )
 
 const selectChildren = createSelector(
@@ -216,7 +216,7 @@ export const selectVisibleChildren = createSelector(
   (children, permissions, search) =>
     children
       .filter((child) => isAllowed(child.path, permissions))
-      .filter((child) => isInSearch(search, child)) // SEARCH_PLUGIN
+      .filter((child) => isInSearch(search.toLowerCase(), child.changedChildContent))
 )
 
 const selectFixedChildren = createSelector(
@@ -275,7 +275,7 @@ export const selectVisibleFixedChildren = createSelector(
   (children, permissions, search) =>
     children
       .filter((child) => isAllowed(child.path, permissions))
-      .filter((child) => isInSearch(search, child)) // SEARCH_PLUGIN
+      .filter((child) => isInSearch(search.toLowerCase(), child.changedChildContent))
 )
 
 export const getNeighbourSiblings = createSelector(

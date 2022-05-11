@@ -118,11 +118,7 @@ const Header = () => {
             >
               {config.saveLabel}
             </SaveButton>
-            <SearchForm
-              dispatch={dispatch}
-              acmsApi={context.acmsApi}
-              acmsConfigPath={acmsConfigPath}
-            />
+            <SearchForm acmsApi={context.acmsApi} acmsConfigPath={acmsConfigPath} />
           </StyledButtonGroup>
         </Col>
       </Container>

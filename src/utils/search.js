@@ -3,58 +3,20 @@ export function isInSearch(searchValue, content) {
     return true
   }
 
-  if (content.changedChildContent) {
-    for (const [key, value] of Object.entries(content.changedChildContent)) {
-      if (key !== "template") {
-        if (isInSearch(searchValue, value)) {
-          return true
-        }
-      }
-    }
+  if (!content) {
     return false
-  } else if (content) {
-    const contentValue = content.value ? content.value : content
-    switch (typeof contentValue) {
-      case "object":
-        for (const [key, value] of Object.entries(contentValue)) {
-          if (key !== "template") {
-            if (isInSearch(searchValue, value)) {
-              return true
-            }
-          }
-        }
-        return false
-      case "number":
-        if (
-          contentValue
-            .toString()
-            .toLowerCase()
-            .includes(searchValue.replace(",", ".").toLowerCase())
-        ) {
-          return true
-        }
-        break
-      case "string":
-        if (contentValue.match(/^\/?(\S+)-(\S+)\.(\w+)$/)) {
-          const components = contentValue.match(/^\/?(\S+)-(\S+)\.(\w+)$/)
-          if (
-            components[1]
-              .substring(components[1].lastIndexOf("/") + 1)
-              .toLowerCase()
-              .includes(searchValue.toLowerCase())
-          ) {
-            return true
-          }
-        } else if (contentValue.toLowerCase().includes(searchValue.toLowerCase())) {
-          return true
-        }
-        break
-      case "boolean":
-        if (contentValue.toString().toLowerCase().includes(searchValue.toLowerCase())) {
-          return true
-        }
-        break
-    }
   }
-  return false
+
+  switch (typeof content) {
+    case "object":
+      return Object.entries(content).some(
+        ([key, value]) => key !== "template" && isInSearch(searchValue, value)
+      )
+    case "number":
+      return content.toString().includes(searchValue.replace(",", "."))
+    case "string":
+      return content.toLowerCase().includes(searchValue)
+    default:
+      return false
+  }
 }
