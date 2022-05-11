@@ -7,7 +7,7 @@ import { showError } from "./error"
 import { changeValue } from "./value"
 
 export function uploadFile(path, file, acmsAssets) {
-  return async dispatch => {
+  return async (dispatch) => {
     function onUploadProgress(event) {
       dispatch(progressUpload(path, event.loaded / event.total))
     }

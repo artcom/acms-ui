@@ -6,29 +6,25 @@ const defaultProperties = {
   childrenLabel: "Children",
   fieldsLabel: "Fields",
   saveLabel: "Save",
-  textDirection: "ltr"
+  textDirection: "ltr",
 }
 
-const defaultInclude = [
-  "**"
-]
+const defaultInclude = ["**"]
 
 const defaultExclude = []
 
 const defaultPermissions = {
   include: defaultInclude,
-  exclude: defaultExclude
+  exclude: defaultExclude,
 }
 
 const defaultUser = {
   id: "admin",
   name: "Admin",
-  permissions: defaultPermissions
+  permissions: defaultPermissions,
 }
 
-const defaultUsers = [
-  defaultUser
-]
+const defaultUsers = [defaultUser]
 
 const defaultLanguages = []
 
@@ -37,15 +33,17 @@ export default function resolveConfig({ users, languages, ...properties }) {
   return {
     ...resolvedProperties,
     languages: resolveLanguages(languages, resolvedProperties.textDirection),
-    users: resolveUsers(users)
+    users: resolveUsers(users),
   }
 }
 
 function resolveLanguages(languages, defaultTextDirection) {
   return Array.isArray(languages)
-    ? languages.map(
-      ({ id, name = id, textDirection = defaultTextDirection }) => ({ id, name, textDirection })
-    )
+    ? languages.map(({ id, name = id, textDirection = defaultTextDirection }) => ({
+        id,
+        name,
+        textDirection,
+      }))
     : defaultLanguages
 }
 
@@ -54,7 +52,7 @@ function resolveUsers(users) {
     return defaultUsers
   }
 
-  return users.map(user => resolveUser(user))
+  return users.map((user) => resolveUser(user))
 }
 
 function resolveUser({ id, name = id, permissions = defaultPermissions }) {

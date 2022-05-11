@@ -5,8 +5,8 @@ export function changeValue(path, value) {
     type: "SET_VALUE",
     payload: {
       path,
-      value
-    }
+      value,
+    },
   }
 }
 
@@ -18,8 +18,8 @@ export function undoChanges(path) {
       type: "UNDO_CHANGES",
       payload: {
         path,
-        originalValue
-      }
+        originalValue,
+      },
     })
   }
 }

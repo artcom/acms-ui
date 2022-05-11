@@ -1,11 +1,9 @@
-import React from "react"
 import styled from "styled-components"
 import { FloatingLabel } from "react-bootstrap"
 import NumberInput from "./inputs/NumberInput"
 
-
 const Flexbox = styled.div`
-  display: flex;  
+  display: flex;
   align-items: center;
   position: relative;
   justify-content: space-between;
@@ -28,15 +26,17 @@ export default function GeolocationEditor({ field, onChange }) {
       <InnerFlexbox>
         <StyledFloatingLabel label="Latitude">
           <NumberInput
-            field={ { value: field.value.lat, min: -90, max: 90 } }
-            onChange={ newLat => onChange({ lat: newLat, long: field.value.long }) } />
+            field={{ value: field.value.lat, min: -90, max: 90 }}
+            onChange={(newLat) => onChange({ lat: newLat, long: field.value.long })}
+          />
         </StyledFloatingLabel>
       </InnerFlexbox>
       <InnerFlexbox>
-        <StyledFloatingLabel label="Longitude" style={ { borderLeft: "solid lightgray 1px" } }>
+        <StyledFloatingLabel label="Longitude" style={{ borderLeft: "solid lightgray 1px" }}>
           <NumberInput
-            field={ { value: field.value.long, min: -180, max: 180 } }
-            onChange={ newLong => onChange({ lat: field.value.lat, long: newLong }) } />
+            field={{ value: field.value.long, min: -180, max: 180 }}
+            onChange={(newLong) => onChange({ lat: field.value.lat, long: newLong })}
+          />
         </StyledFloatingLabel>
       </InnerFlexbox>
     </Flexbox>
