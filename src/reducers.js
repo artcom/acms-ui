@@ -43,10 +43,12 @@ export const changedContent = createReducer(null, {
     set(draft, payload.path, payload.values)
   },
   FINISH_ENTITY_RENAMING: (draft, { payload }) => {
-    const oldPath = [...payload.path, payload.oldId]
-    const newPath = [...payload.path, payload.newId]
-    set(draft, newPath, get(original(draft), oldPath))
-    unset(draft, oldPath)
+    if (payload.oldId !== payload.newId) {
+      const oldPath = [...payload.path, payload.oldId]
+      const newPath = [...payload.path, payload.newId]
+      set(draft, newPath, get(original(draft), oldPath))
+      unset(draft, oldPath)
+    }
   },
   DELETE_ENTITY: (draft, { payload }) => {
     unset(draft, payload.path)
