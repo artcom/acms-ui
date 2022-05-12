@@ -33,8 +33,8 @@ export default function EntityCreationModal() {
       <Modal.Header closeButton>
         <Modal.Title>New Item</Modal.Title>
       </Modal.Header>
-      <Modal.Body>
-        <Form>
+      <Form>
+        <Modal.Body>
           <Form.Group>
             <Form.Label>Name</Form.Label>
             <Form.Control
@@ -62,21 +62,21 @@ export default function EntityCreationModal() {
               </Form.Select>
             )}
           </StyledFormGroup>
-        </Form>
-      </Modal.Body>
-      <Modal.Footer>
-        <Button
-          type="submit"
-          variant="info"
-          disabled={!newEntity.isValidId}
-          onClick={(event) => {
-            event.preventDefault()
-            dispatch(finishEntityCreation())
-          }}
-        >
-          Create
-        </Button>
-      </Modal.Footer>
+        </Modal.Body>
+        <Modal.Footer>
+          <Button
+            type="submit"
+            variant="info"
+            disabled={!newEntity.isValidId}
+            onClick={(event) => {
+              event.preventDefault()
+              dispatch(finishEntityCreation())
+            }}
+          >
+            Create
+          </Button>
+        </Modal.Footer>
+      </Form>
     </Modal>
   )
 }
