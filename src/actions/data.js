@@ -36,6 +36,15 @@ export function loadData(acmsApi, acmsConfigPath) {
   }
 }
 
+export function searchData(search) {
+  return {
+    type: "SET_SEARCH",
+    payload: {
+      search,
+    },
+  }
+}
+
 function fixContent(content, draft, templates) {
   const { template, ...allEntries } = content
   const { fields = [], fixedChildren = [], children = [] } = utils.getTemplate(template, templates)

@@ -11,6 +11,7 @@ import styled from "styled-components"
 import { useSelector, useDispatch } from "react-redux"
 import { ApiContext } from "../index"
 
+import SearchForm from "./searchForm"
 import { saveData } from "../actions/data"
 import { fromPath } from "../utils/hash"
 import { getPathNames, selectTemplateId, selectAllSiblingTemplates } from "../selectors"
@@ -22,6 +23,7 @@ const Logo = styled.img`
   padding-bottom: 0.5rem;
 `
 const LogoContainer = styled(Row)`
+  justify-content: center;
   align-items: center;
 `
 
@@ -33,11 +35,12 @@ const Title = styled(Navbar.Text)`
 const StyledButtonGroup = styled(ButtonGroup)`
   width: 100%;
   min-height: 3em;
+  background-color: #e9ecef;
 `
 
 const SaveButton = styled(Button)`
-  float: right;
   width: 100px;
+  flex: 1 0 auto;
 `
 
 const HomeButton = styled(Button)`
@@ -52,8 +55,8 @@ const HomeIcon = styled.div`
 `
 
 const StyledBreadcrumb = styled(Breadcrumb)`
-  margin-bottom: -16px;
   width: 100%;
+  margin-bottom: -16px;
 `
 
 const Template = styled.div`
@@ -115,6 +118,7 @@ const Header = () => {
             >
               {config.saveLabel}
             </SaveButton>
+            <SearchForm acmsApi={context.acmsApi} acmsConfigPath={acmsConfigPath} />
           </StyledButtonGroup>
         </Col>
       </Container>

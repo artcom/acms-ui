@@ -1,14 +1,16 @@
 import { createSelector } from "reselect"
 
 import camelCase from "lodash/camelCase"
-import get from "lodash/get"
 import isUndefined from "lodash/isUndefined"
 import mapValues from "lodash/mapValues"
 import startCase from "lodash/startCase"
+import get from "lodash/get"
 import { evaluate } from "./utils/condition"
 import { isAllowed } from "./utils/permission"
 import * as utils from "./utils"
+import { isInSearch } from "./utils/search"
 
+const SEARCH_PLUGIN = true
 const TEMPLATE_KEY = "template"
 
 export const getVersion = (state) => state.version
@@ -27,6 +29,7 @@ export const getPath = (state) => state.path
 export const getNewEntity = (state) => state.newEntity
 export const getRenamedEntity = (state) => state.renamedEntity
 export const getTemplates = (state) => state.templates
+export const getSearch = (state) => state.search
 
 export const selectPermissions = createSelector([getUser, getUsers], (user, users) => {
   const userConfig = users.find(({ id }) => id === user)
@@ -169,9 +172,12 @@ const selectFields = createSelector(
       })
 )
 
-export const selectAllowedFields = createSelector(
-  [selectFields, selectPermissions],
-  (fields, permissions) => fields.filter((field) => isAllowed(field.path, permissions))
+export const selectVisibleFields = createSelector(
+  [selectFields, selectPermissions, getSearch],
+  (fields, permissions, search) =>
+    fields
+      .filter((field) => isAllowed(field.path, permissions))
+      .filter((field) => isInSearch(search.toLowerCase(), field.value))
 )
 
 const selectChildren = createSelector(
@@ -199,14 +205,18 @@ const selectChildren = createSelector(
           isEnabled: isEnabled(referenceContent, childTemplate),
           subtitle: subtitle(referenceContent, childTemplate),
           path: [...path, id],
+          changedChildContent,
         }
       })
   }
 )
 
-export const selectAllowedChildren = createSelector(
-  [selectChildren, selectPermissions],
-  (children, permissions) => children.filter((child) => isAllowed(child.path, permissions))
+export const selectVisibleChildren = createSelector(
+  [selectChildren, selectPermissions, getSearch],
+  (children, permissions, search) =>
+    children
+      .filter((child) => isAllowed(child.path, permissions))
+      .filter((child) => isInSearch(search.toLowerCase(), child.changedChildContent))
 )
 
 const selectFixedChildren = createSelector(
@@ -225,6 +235,7 @@ const selectFixedChildren = createSelector(
         isEnabled: isEnabled(changedChildContent, childTemplate),
         subtitle: subtitle(changedChildContent, childTemplate),
         path: [...path, id],
+        changedChildContent,
       }
     })
 )
@@ -259,14 +270,17 @@ function subtitle(content, { subtitleField, fields }) {
   return null
 }
 
-export const selectAllowedFixedChildren = createSelector(
-  [selectFixedChildren, selectPermissions],
-  (children, permissions) => children.filter((child) => isAllowed(child.path, permissions))
+export const selectVisibleFixedChildren = createSelector(
+  [selectFixedChildren, selectPermissions, getSearch],
+  (children, permissions, search) =>
+    children
+      .filter((child) => isAllowed(child.path, permissions))
+      .filter((child) => isInSearch(search.toLowerCase(), child.changedChildContent))
 )
 
 export const getNeighbourSiblings = createSelector(
-  [getPath, getChangedContent, selectTemplates, selectTemplate],
-  (path, changedContent, templates) => {
+  [getPath, getChangedContent, getSearch, selectTemplates, selectTemplate],
+  (path, changedContent, search, templates) => {
     if (path.length === 0) {
       return [null, null]
     }
@@ -278,7 +292,7 @@ export const getNeighbourSiblings = createSelector(
     const fieldIds = parentTemplate.fields.map(({ id }) => id)
     const fixedChildIds = parentTemplate.fixedChildren.map(({ id }) => id)
 
-    const siblingsIds = [...fixedChildIds]
+    let siblingsIds = [...fixedChildIds]
 
     Object.keys(parentEntity)
       .sort()
@@ -289,6 +303,11 @@ export const getNeighbourSiblings = createSelector(
       })
 
     const ownId = path[path.length - 1]
+
+    if (SEARCH_PLUGIN) {
+      siblingsIds = siblingsIds.filter((id) => isSiblingInSearch(changedContent, path, id, search))
+    }
+
     const ownIndex = siblingsIds.indexOf(ownId)
 
     return [
@@ -297,6 +316,13 @@ export const getNeighbourSiblings = createSelector(
     ]
   }
 )
+
+function isSiblingInSearch(changedContent, path, id, search) {
+  const siblingPath = [...path]
+  siblingPath[siblingPath.length - 1] = id
+  const siblingEntity = getChangedEntity(changedContent, siblingPath)
+  return isInSearch(search, siblingEntity)
+}
 
 function getSibling(id, parentPath, fixedChildren) {
   if (!id) {
