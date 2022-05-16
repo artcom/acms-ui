@@ -9,8 +9,9 @@ import { debounce } from "lodash"
 import { StyledFormControl } from "./body/field/editors/styledForms"
 
 import { searchData } from "../actions/data"
-import { SearchIcon, ClearIcon } from "./searchIcons"
 import { getSearch } from "../selectors"
+
+import { SearchIcon, ClearIcon } from "./body/field/icons/searchIcons"
 
 const SearchButton = styled(Button)`
   padding: 10px 15px;

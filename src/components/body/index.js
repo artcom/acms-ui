@@ -18,6 +18,8 @@ import { undoChanges } from "../../actions/value"
 
 import { fromPath } from "../../utils/hash"
 
+import { LeftArrowIcon, RightArrowIcon } from "./field/icons/arrowIcons"
+
 import {
   getLanguages,
   selectTemplateChildren,
@@ -91,7 +93,7 @@ const Body = () => {
         <LeftArrowCol>
           {leftSibling && (
             <ArrowButton title={leftSibling.name} href={fromPath(leftSibling.path)}>
-              &#8592;
+              <LeftArrowIcon />
             </ArrowButton>
           )}
         </LeftArrowCol>
@@ -114,7 +116,7 @@ const Body = () => {
         <RightArrowCol>
           {rightSibling && (
             <ArrowButton title={rightSibling.name} href={fromPath(rightSibling.path)}>
-              &#8594;
+              <RightArrowIcon />
             </ArrowButton>
           )}
         </RightArrowCol>

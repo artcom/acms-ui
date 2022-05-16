@@ -1,6 +1,7 @@
 import OverlayTrigger from "react-bootstrap/OverlayTrigger"
 import Popover from "react-bootstrap/Popover"
-import RequirementIcon from "./requirementIcon"
+
+import RequirementIcon from "../icons/requirementIcon"
 
 const NumberRequirements = ({ field }) => {
   const hasRequirements = field.min || field.max || field.integer

@@ -15,6 +15,7 @@ import SearchForm from "./searchForm"
 import { saveData } from "../actions/data"
 import { fromPath } from "../utils/hash"
 import { getPathNames, selectTemplateId, selectAllSiblingTemplates } from "../selectors"
+import HomeIcon from "./body/field/icons/homeIcon"
 
 const Logo = styled.img`
   width: auto;
@@ -48,12 +49,6 @@ const HomeButton = styled(Button)`
   align-items: center;
 `
 
-const HomeIcon = styled.div`
-  margin-top: -10px;
-  font-size: 2.5em;
-  line-height: 1em;
-`
-
 const StyledBreadcrumb = styled(Breadcrumb)`
   width: 100%;
   margin-bottom: -16px;
@@ -85,7 +80,7 @@ const Header = () => {
           </LogoContainer>
           <StyledButtonGroup aria-label="First group">
             <HomeButton variant="secondary" href={fromPath([])} disabled={path.length === 0}>
-              <HomeIcon>&#8962;</HomeIcon>
+              <HomeIcon />
             </HomeButton>
             <StyledBreadcrumb
               listProps={{
