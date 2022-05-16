@@ -54,7 +54,7 @@ const LeftArrowCol = styled(Col).attrs(() => ({
   md: 1,
 }))`
   display: flex;
-  height: 100vh;
+  height: auto;
   align-items: start;
   padding: 0;
 `
