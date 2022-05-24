@@ -1,7 +1,10 @@
 /* eslint-disable no-param-reassign */
 
 import { produce } from "immer"
+import normalizeUrl from "normalize-url"
 import isPlainObject from "lodash/isPlainObject"
+import { useSelector } from "react-redux"
+import path from "path-browserify"
 import { getChangedContent, selectTemplates, getVersion, getContentPath } from "../selectors"
 import { showError } from "./error"
 import * as utils from "../utils"
@@ -96,10 +99,11 @@ export function saveData(acmsApi, acmsConfigPath) {
 
       const contentFiles = toFiles(content, templates)
       const mediaFields = getTemplateMediaFields(templates)
+      getAssetsInUse(contentFiles, templates)
 
       console.log("CONTENT FILES", contentFiles)
       console.log("TEMPLATES", templates)
-      console.log("MEDIA FIELDS", getTemplateMediaFields(templates))
+      console.log("MEDIA FIELDS", mediaFields)
       await acmsApi.save(contentFiles, contentPath, version)
 
       dispatch(loadData(acmsApi, acmsConfigPath))
@@ -128,14 +132,79 @@ function toFiles({ template, ...content }, templates, path = []) {
 }
 
 function getTemplateMediaFields(templates) {
-  return Object.keys(templates).reduce((a, key) => {
+  console.log("TEMPLATES", templates)
+  const result = []
+  Object.keys(templates).forEach(key => {
     const template = templates[key]
+
     const mediaFields = template.fields.filter(field =>
-      field.type === "image") // TODO other types!!!
-    if (mediaFields.length > 0) {
-      return { ...a, ...{ id: key, mediaFields } }
-    } else {
-      return a
+      field.type === "image" ||
+      field.type === "video" ||
+      field.type === "audio" ||
+      field.type === "file"
+    ).map(field => {
+      const id = key.endsWith("/index") ? key.substring(0, key.length - 6) : key
+      return {
+        templateIdOriginal: key,
+        templateIdActual: id,
+        fieldId: field.id,
+        fieltType: field.type
+      }
+    })
+    result.push(...mediaFields)
+  })
+  return result
+}
+
+function simpleNormalizeURL(p0, p1) {
+  const p0s = p0.toString()
+  const p1s = p1.toString()
+  const q0 = p0s.endsWith("/") ? p0s.substring(0, p0s.length - 1) : p0s
+  const q1 = p1s.beginsWith("/") ? p1s.substring(1, p1s.length) : p1s
+  return `${q0}/${q1}`
+}
+
+
+export function getAssetsInUse(acmsAssets) {
+  return async (dispatch, getState) => {
+    const state = getState()
+    const content = getChangedContent(state)
+    const templates = selectTemplates(state)
+    const mediaFields = getTemplateMediaFields(templates)
+    const allAssets = await acmsAssets.listAllFiles("")
+    console.log("ALL ASSETS inside", allAssets)
+    try {
+      const contentFiles = toFiles(content, templates)
+      const contentFileArray = Object.keys(contentFiles).map(key => contentFiles[key])
+
+      const result = allAssets.map(entry => {
+        // const uri = simpleNormalizeURL(acmsAssets.url, entry.path)
+        const base = acmsAssets.url
+        // const uri = base.substring(0, base.length - 1) + entry.path
+        const uriOld = `${base}/${entry.path}`
+
+        const uri = normalizeUrl(uriOld)
+        return {
+          ...entry,
+          useCount: 0,
+          uri
+        }
+      })
+      contentFileArray.forEach(contentFile => {
+        const contentMediaFields = mediaFields.filter(mediaField =>
+          contentFile.template === mediaField.templateIdActual)
+        contentMediaFields.forEach(mediaField => {
+          const uri = contentFile[mediaField.fieldId]
+          const existingEntry = result.find(item => item.uri === uri)
+          if (existingEntry) {
+            existingEntry.useCount = existingEntry.useCount + 1
+          }
+        })
+      })
+      console.log("ASSETS IN USE", result)
+      return result
+    } catch (error) {
+      dispatch(showError("Failed to get Assets in Use", error.stack))
     }
-  }, {})
+  }
 }

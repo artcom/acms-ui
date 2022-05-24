@@ -1,19 +1,28 @@
 import React, { useState, useEffect, useContext } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import styled from "styled-components"
+import { differenceWith, isEqual } from "lodash"
 
 import Button from "react-bootstrap/Button"
-import Form from "react-bootstrap/Form"
+import Form, { FormSelect } from "react-bootstrap/Form"
 import Modal from "react-bootstrap/Modal"
-import { ListGroup, ListGroupItem } from "react-bootstrap"
+import { ListGroup, ListGroupItem, Badge } from "react-bootstrap"
 import store from "../../store"
 import StyledFormControl from "./styledFormControl"
 import { ApiContext } from "../../index"
 
-import { cancelEntityRenaming, finishEntityRenaming,
-  updateEntityRenaming } from "../../actions/entity"
-import { selectRenamedEntity } from "../../selectors"
+import {
+  cancelEntityRenaming,
+  finishEntityRenaming,
+  updateEntityRenaming,
+} from "../../actions/entity"
+import {
+  selectRenamedEntity,
+  getChangedContent,
+  getOriginalContent,
+} from "../../selectors"
 import { listAllFiles } from "../../actions/listAllFiles"
+import { getAssetsInUse } from "../../actions/data"
 
 const StyledAssetBrowserModal = styled(Modal)`
   & img {
@@ -34,39 +43,64 @@ const StyledAssetBrowserModal = styled(Modal)`
   div.list-group-item:hover {
     background-color: rgba(49, 108, 255, 0.5);
   }
-`
 
+  .badge {
+    display: inline-block;
+    position: absolute;
+    right: 0.5rem;
+    top: 1.4rem;
+  }
+`
 
 export default function AssetBrowserModal() {
   // const dispatch = useDispatch()
   // const renamedEntity = useSelector(selectRenamedEntity)
   const [modalOpen, setModalOpen] = useState(true)
   const [selectedAssets, setSelectedAssets] = useState([])
-  const [allFiles, setAllFiles] = useState([])
+  const [filteredAssets, setFilteredAssets] = useState([])
+  const [allAssets, setAllAssets] = useState([])
   const context = useContext(ApiContext)
   const acmsAssets = useContext(ApiContext).acmsAssets
   const acmsApi = useContext(ApiContext).acmsApi
 
   const acmsConfigPath = useSelector(state => state.acmsConfigPath)
+  const changedContent = useSelector(getChangedContent)
+  const originalContent = useSelector(getOriginalContent)
+  console.log("CHANGED CONTENT", changedContent, changedContent)
 
   const toggleAssetSelection = path => {
     if (selectedAssets.includes(path)) {
-      setSelectedAssets(selectedAssets.filter(assetPath => assetPath !== path))
+      setSelectedAssets(
+        selectedAssets.filter(assetPath => assetPath !== path)
+      )
     } else {
       setSelectedAssets([...selectedAssets, path])
     }
   }
 
-  console.log("ASSETS", acmsAssets)
   useEffect(() => {
-    const updateFiles = async () => {
-      const fileList = await store.dispatch(listAllFiles(acmsAssets))
-      console.log("FILELIST", fileList)
-      setAllFiles(fileList)
+    const updateAssetsInUse = async () => {
+      const assetList = await store.dispatch(getAssetsInUse(acmsAssets))
+      console.log("ASSET LIST", assetList)
+      setAllAssets(assetList)
+      setFilteredAssets(assetList)
     }
-    updateFiles()
+    updateAssetsInUse()
   }, [])
 
+  const filterAssets = filterString => {
+    if (filterString !== "") {
+      setFilteredAssets(
+        allAssets.filter(assets =>
+          assets.originalName
+            .toLocaleLowerCase()
+            .includes(filterString.toLocaleLowerCase())
+        )
+      )
+    } else {
+      setFilteredAssets(allAssets)
+    }
+  }
 
   return (
     // <Modal show={ renamedEntity.isVisible } onHide={ () => dispatch(cancelEntityRenaming()) }>
@@ -77,21 +111,48 @@ export default function AssetBrowserModal() {
         <Modal.Title>Asset Browser</Modal.Title>
       </Modal.Header>
       <Modal.Body>
-        <Form.Label>Name</Form.Label>
+        { /* <Form.Label>Name</Form.Label> */ }
+        <Form.Group
+          controlId="assetBrowser.ControlSearch"
+          onChange={ e => {
+            e.preventDefault()
+            filterAssets(e.target.value)
+          } }>
+          <Form.Label>Filter</Form.Label>
+          <Form.Control type="filter" placeholder="filter string" />
+        </Form.Group>
+        <Form>
+          <Form.Group controlId="assetBrowser.ControlOrder">
+            <Form.Label>Order</Form.Label>
+            <Form.Control as="select" custom>
+              <option>alphabetically</option>
+              <option>by creation date</option>
+              <option>by usage</option>
+            </Form.Control>
+          </Form.Group>
+        </Form>
         <ListGroup>
-          { allFiles.map(file =>
-            <ListGroupItem
+          { filteredAssets.map(file =>
+            <ListGroup.Item
               key={ file.hash }
               active={ selectedAssets.includes(file.path) }
               onClick={ e => {
                 // e.preventDefault()
                 toggleAssetSelection(file.path)
-              } } >
+              } }>
               <a target="_blank" href={ `${acmsAssets.url}/${file.path}` }>
                 <img src={ `${acmsAssets.url}/${file.path}` } />
               </a>
               { file.originalName }
-            </ListGroupItem>
+              { file.useCount > 0 &&
+                <>
+                  { " " }
+                  <Badge variant="primary" pill>
+                    { file.useCount }
+                  </Badge>
+                </>
+              }
+            </ListGroup.Item>
           ) }
         </ListGroup>
       </Modal.Body>
@@ -99,10 +160,28 @@ export default function AssetBrowserModal() {
         <Button
           type="submit"
           variant="info"
-          disabled={ selectedAssets.length === allFiles.length }
+          disabled={
+            differenceWith(
+              selectedAssets,
+              allAssets.filter(f => f.useCount > 0),
+              isEqual
+            ).length !== 0
+          } // TODO!!!
           onClick={ e => {
             e.preventDefault()
-            setSelectedAssets(allFiles.map(f => f.path))
+            const inUse = allAssets.filter(f => f.useCount > 0)
+            console.log("SELECT IN USE", inUse)
+            setSelectedAssets(inUse.map(f => f.path))
+          } }>
+          Select in use
+        </Button>
+        <Button
+          type="submit"
+          variant="info"
+          disabled={ selectedAssets.length === allAssets.length }
+          onClick={ e => {
+            e.preventDefault()
+            setSelectedAssets(allAssets.map(f => f.path))
           } }>
           Select all
         </Button>
@@ -116,7 +195,6 @@ export default function AssetBrowserModal() {
           } }>
           Deselect all
         </Button>
-
         <Button
           type="submit"
           variant="info"
@@ -128,4 +206,3 @@ export default function AssetBrowserModal() {
     </StyledAssetBrowserModal>
   )
 }
-
