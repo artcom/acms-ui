@@ -1,4 +1,3 @@
-import React from "react"
 import { useSelector } from "react-redux"
 import Container from "react-bootstrap/Container"
 import Body from "./body"
@@ -9,21 +8,21 @@ import EntityRenamingModal from "./modals/entityRenamingModal"
 import AssetBrowserModal from "./modals/assetBrowserModal"
 
 const Application = () => {
-  const flash = useSelector(state => state.flash)
-  const isLoading = useSelector(state => state.originalContent === null)
+  const flash = useSelector((state) => state.flash)
+  const isLoading = useSelector((state) => state.originalContent === null)
   return (
     <>
-      { !isLoading && <Header /> }
+      {!isLoading && <Header />}
       <Container>
-        { flash && <Error /> }
-        { !isLoading &&
-        <>
-          <Body />
-          <EntityCreationModal />
-          <EntityRenamingModal />
-          <AssetBrowserModal />
-        </>
-        }
+        {flash && <Error />}
+        {!isLoading && (
+          <>
+            <Body />
+            <EntityCreationModal />
+            <EntityRenamingModal />
+            <AssetBrowserModal />
+          </>
+        )}
       </Container>
     </>
   )

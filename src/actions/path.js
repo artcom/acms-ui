@@ -6,8 +6,8 @@ export function updatePath(hash) {
   return {
     type: "UPDATE_PATH",
     payload: {
-      path: toPath(hash)
-    }
+      path: toPath(hash),
+    },
   }
 }
 
@@ -15,7 +15,7 @@ export function configPath(path) {
   return {
     type: "CONFIG_PATH",
     payload: {
-      path
-    }
+      path,
+    },
   }
 }

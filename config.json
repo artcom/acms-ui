@@ -1,0 +1,5 @@
+{
+  "acmsAssetsUri": "http://localhost/services/acms-assets/",
+  "acmsApiUri": "http://localhost/services/acms-api",
+  "acmsConfigPath": "acmsConfig"
+}

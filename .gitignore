@@ -1,4 +1,4 @@
 /node_modules
 /dist
 /stats.json
-/config.json
+/public/config.json

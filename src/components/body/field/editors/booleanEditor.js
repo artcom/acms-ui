@@ -1,4 +1,3 @@
-import React from "react"
 import FormCheck from "react-bootstrap/FormCheck"
 import styled from "styled-components"
 
@@ -17,8 +16,9 @@ export default function BooleanEditor({ field, onChange }) {
     <StyledFormCheck>
       <StyledFormCheckInput
         type="checkbox"
-        checked={ field.value }
-        onChange={ event => onChange(event.target.checked) } />
+        checked={field.value}
+        onChange={(event) => onChange(event.target.checked)}
+      />
     </StyledFormCheck>
   )
 }

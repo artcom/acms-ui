@@ -6,7 +6,7 @@ A webapp UI which allows browsing/editing the json content served by the [`acms-
 
 ### Config file
 
-Copy `config.json.template` into `config.json` and change values accordingly. `config.json`is served by webpack dev server or provided in a production environment.
+Copy `config.json.template` into `/public/config.json` and change values accordingly. `config.json`is served by webpack dev server or provided in a production environment.
 
 `acmsAssetsUri`: Fully qualified URI to a WebDav enabled server, [`acms-assets`](https://github.com/artcom/acms-assets).  
 `acmsApiUri`: Fully qualified URI to the [`acms-api`](https://github.com/artcom/acms-api) service.  

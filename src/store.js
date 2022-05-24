@@ -6,7 +6,7 @@ const loggerMiddleware = createLogger()
 
 const store = configureStore({
   reducer,
-  middleware: getDefaultMiddleware => getDefaultMiddleware().concat(loggerMiddleware)
+  middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(loggerMiddleware),
 })
 
 export default store

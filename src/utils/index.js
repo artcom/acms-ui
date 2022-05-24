@@ -29,8 +29,8 @@ export function createEntry(entry, templates) {
 export function createChildValue(template, templates) {
   const { fields = [], fixedChildren = [] } = getTemplate(template, templates)
 
-  const child = { template };
-  [...fields, ...fixedChildren].forEach(entry => {
+  const child = { template }
+  ;[...fields, ...fixedChildren].forEach((entry) => {
     child[entry.id] = createEntry(entry, templates)
   })
 
@@ -65,8 +65,7 @@ export function createFieldValue(field) {
     case "markdown":
     case "string":
       return ""
-    case "number":
-    {
+    case "number": {
       const min = isNumber(field.min) ? field.min : -Infinity
       const max = isNumber(field.max) ? field.max : Infinity
       return Math.max(min, Math.min(0, max))
@@ -83,7 +82,7 @@ export function isValidField(value, field) {
     case "enum":
       return isString(field.values[0])
         ? field.values.includes(value)
-        : field.values.map(val => val.id).includes(value)
+        : field.values.map((val) => val.id).includes(value)
     case "boolean":
       return value === true || value === false
     case "audio":
@@ -97,19 +96,19 @@ export function isValidField(value, field) {
     case "number":
       return isNumber(value)
     case "geolocation":
-      return isPlainObject(value) &&
+      return (
+        isPlainObject(value) &&
         Object.keys(value).length === 2 &&
         isNumber(value.lat) &&
         isNumber(value.long)
+      )
     default:
       return true
   }
 }
 
 export function isValidId(id) {
-  return isString(id)
-    && id.length > 0
-    && id === id.replace(/([^a-z0-9\s])/gi, "_")
+  return isString(id) && id.length > 0 && id === id.replace(/([^a-z0-9\s])/gi, "_")
 }
 
 // only supports primitives, arrays and objects
@@ -119,8 +118,10 @@ export function deepEqual(a, b) {
   }
 
   if (isPlainObject(a) && isPlainObject(b)) {
-    return Object.keys(a).length === Object.keys(b).length &&
-      !Object.keys(a).some(key => !deepEqual(a[key], b[key]))
+    return (
+      Object.keys(a).length === Object.keys(b).length &&
+      !Object.keys(a).some((key) => !deepEqual(a[key], b[key]))
+    )
   }
 
   if (Array.isArray(a) && Array.isArray(b)) {

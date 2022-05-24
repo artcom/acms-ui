@@ -1,4 +1,5 @@
 import { basename, extname } from "path-browserify"
+import { toLower } from "lodash"
 
 import { sha256 } from "../utils/sha"
 
@@ -6,7 +7,7 @@ import { showError } from "./error"
 import { changeValue } from "./value"
 
 export function uploadFile(path, file, acmsAssets) {
-  return async dispatch => {
+  return async (dispatch) => {
     function onUploadProgress(event) {
       dispatch(progressUpload(path, event.loaded / event.total))
     }
@@ -29,7 +30,7 @@ async function generateFilename(file) {
   const extension = extname(file.name)
   const name = basename(file.name, extension)
   const hash = await sha256(file)
-  return `${name}-${hash}${extension}`.replace(/([^a-z0-9\-.])/gi, "_")
+  return toLower(`${name}-${hash}${extension}`.replace(/([^a-z0-9\-.])/gi, "_"))
 }
 
 function startUpload(path) {
