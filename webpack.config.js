@@ -10,7 +10,7 @@ module.exports = (env = {}) => ({
       {
         test: /\.(js|jsx)$/,
         exclude: /node_modules/,
-        loader: "babel-loader"
+        loader: "babel-loader",
       },
       {
         test: /\.css$/,
@@ -19,25 +19,26 @@ module.exports = (env = {}) => ({
           {
             loader: "css-loader",
             options: {
-              sourceMap: false
-            }
-          }
-        ]
-      }
-    ]
+              sourceMap: false,
+            },
+          },
+        ],
+      },
+    ],
   },
   resolve: {
     fallback: {
       path: false, // do not include a polyfill for path
+      stream: require.resolve("stream-browserify"),
     },
     extensions: [".js", ".jsx"],
   },
   plugins: [
     new HtmlWebpackPlugin({
-      template: "./src/index.html"
+      template: "./src/index.html",
     }),
     new webpack.ProvidePlugin({
       process: "process/browser",
-    })
+    }),
   ],
 })

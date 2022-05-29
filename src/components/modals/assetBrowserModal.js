@@ -8,7 +8,7 @@ import Form, { FormSelect } from "react-bootstrap/Form"
 import Modal from "react-bootstrap/Modal"
 import { ListGroup, ListGroupItem, Badge } from "react-bootstrap"
 import store from "../../store"
-import StyledFormControl from "./styledFormControl"
+import { StyledFormControl } from "../body/field/editors/styledForms"
 import { ApiContext } from "../../index"
 
 import {
@@ -16,11 +16,7 @@ import {
   finishEntityRenaming,
   updateEntityRenaming,
 } from "../../actions/entity"
-import {
-  selectRenamedEntity,
-  getChangedContent,
-  getOriginalContent,
-} from "../../selectors"
+import { selectRenamedEntity, getChangedContent, getOriginalContent } from "../../selectors"
 import { listAllFiles } from "../../actions/listAllFiles"
 import { getAssetsInUse } from "../../actions/data"
 
@@ -63,16 +59,14 @@ export default function AssetBrowserModal() {
   const acmsAssets = useContext(ApiContext).acmsAssets
   const acmsApi = useContext(ApiContext).acmsApi
 
-  const acmsConfigPath = useSelector(state => state.acmsConfigPath)
+  const acmsConfigPath = useSelector((state) => state.acmsConfigPath)
   const changedContent = useSelector(getChangedContent)
   const originalContent = useSelector(getOriginalContent)
   console.log("CHANGED CONTENT", changedContent, changedContent)
 
-  const toggleAssetSelection = path => {
+  const toggleAssetSelection = (path) => {
     if (selectedAssets.includes(path)) {
-      setSelectedAssets(
-        selectedAssets.filter(assetPath => assetPath !== path)
-      )
+      setSelectedAssets(selectedAssets.filter((assetPath) => assetPath !== path))
     } else {
       setSelectedAssets([...selectedAssets, path])
     }
@@ -88,13 +82,11 @@ export default function AssetBrowserModal() {
     updateAssetsInUse()
   }, [])
 
-  const filterAssets = filterString => {
+  const filterAssets = (filterString) => {
     if (filterString !== "") {
       setFilteredAssets(
-        allAssets.filter(assets =>
-          assets.originalName
-            .toLocaleLowerCase()
-            .includes(filterString.toLocaleLowerCase())
+        allAssets.filter((assets) =>
+          assets.originalName.toLocaleLowerCase().includes(filterString.toLocaleLowerCase())
         )
       )
     } else {
@@ -104,20 +96,19 @@ export default function AssetBrowserModal() {
 
   return (
     // <Modal show={ renamedEntity.isVisible } onHide={ () => dispatch(cancelEntityRenaming()) }>
-    <StyledAssetBrowserModal
-      show={ modalOpen }
-      onHide={ () => setModalOpen(false) }>
+    <StyledAssetBrowserModal show={modalOpen} onHide={() => setModalOpen(false)}>
       <Modal.Header closeButton>
         <Modal.Title>Asset Browser</Modal.Title>
       </Modal.Header>
       <Modal.Body>
-        { /* <Form.Label>Name</Form.Label> */ }
+        {/* <Form.Label>Name</Form.Label> */}
         <Form.Group
           controlId="assetBrowser.ControlSearch"
-          onChange={ e => {
+          onChange={(e) => {
             e.preventDefault()
             filterAssets(e.target.value)
-          } }>
+          }}
+        >
           <Form.Label>Filter</Form.Label>
           <Form.Control type="filter" placeholder="filter string" />
         </Form.Group>
@@ -132,28 +123,29 @@ export default function AssetBrowserModal() {
           </Form.Group>
         </Form>
         <ListGroup>
-          { filteredAssets.map(file =>
+          {filteredAssets.map((file) => (
             <ListGroup.Item
-              key={ file.hash }
-              active={ selectedAssets.includes(file.path) }
-              onClick={ e => {
+              key={file.hash}
+              active={selectedAssets.includes(file.path)}
+              onClick={(e) => {
                 // e.preventDefault()
                 toggleAssetSelection(file.path)
-              } }>
-              <a target="_blank" href={ `${acmsAssets.url}/${file.path}` }>
-                <img src={ `${acmsAssets.url}/${file.path}` } />
+              }}
+            >
+              <a target="_blank" href={`${acmsAssets.url}/${file.path}`} rel="noreferrer">
+                <img src={`${acmsAssets.url}/${file.path}`} />
               </a>
-              { file.originalName }
-              { file.useCount > 0 &&
+              {file.originalName}
+              {file.useCount > 0 && (
                 <>
-                  { " " }
+                  {" "}
                   <Badge variant="primary" pill>
-                    { file.useCount }
+                    {file.useCount}
                   </Badge>
                 </>
-              }
+              )}
             </ListGroup.Item>
-          ) }
+          ))}
         </ListGroup>
       </Modal.Body>
       <Modal.Footer>
@@ -163,43 +155,47 @@ export default function AssetBrowserModal() {
           disabled={
             differenceWith(
               selectedAssets,
-              allAssets.filter(f => f.useCount > 0),
+              allAssets.filter((f) => f.useCount > 0),
               isEqual
             ).length !== 0
           } // TODO!!!
-          onClick={ e => {
+          onClick={(e) => {
             e.preventDefault()
-            const inUse = allAssets.filter(f => f.useCount > 0)
+            const inUse = allAssets.filter((f) => f.useCount > 0)
             console.log("SELECT IN USE", inUse)
-            setSelectedAssets(inUse.map(f => f.path))
-          } }>
+            setSelectedAssets(inUse.map((f) => f.path))
+          }}
+        >
           Select in use
         </Button>
         <Button
           type="submit"
           variant="info"
-          disabled={ selectedAssets.length === allAssets.length }
-          onClick={ e => {
+          disabled={selectedAssets.length === allAssets.length}
+          onClick={(e) => {
             e.preventDefault()
-            setSelectedAssets(allAssets.map(f => f.path))
-          } }>
+            setSelectedAssets(allAssets.map((f) => f.path))
+          }}
+        >
           Select all
         </Button>
         <Button
           type="submit"
           variant="info"
-          disabled={ selectedAssets.length === 0 }
-          onClick={ e => {
+          disabled={selectedAssets.length === 0}
+          onClick={(e) => {
             e.preventDefault()
             setSelectedAssets([])
-          } }>
+          }}
+        >
           Deselect all
         </Button>
         <Button
           type="submit"
           variant="info"
-          disabled={ selectedAssets.length === 0 }
-          onClick={ () => {} }>
+          disabled={selectedAssets.length === 0}
+          onClick={() => {}}
+        >
           Delete
         </Button>
       </Modal.Footer>
