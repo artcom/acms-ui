@@ -35,6 +35,7 @@ export default function FileSelector({ accept, children, onSelect }) {
       accept={accept}
       onDropAccepted={(acceptedFiles) => onSelect(acceptedFiles)}
       multiple={false}
+      maxFiles={1}
     >
       {({ getRootProps, getInputProps, isDragAccept, isDragReject }) => (
         <Container {...getRootProps({ isDragAccept, isDragReject })}>
