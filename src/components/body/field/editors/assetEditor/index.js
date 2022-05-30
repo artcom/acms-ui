@@ -50,8 +50,26 @@ export function renderUpload(field, onFileSelect) {
   if (field.progress !== undefined) {
     return <ProgressBar min={0} max={1} now={field.progress} />
   } else {
+    let accept = {}
+    if (
+      (field.type === "image" || field.type === "audio" || field.type === "video") &&
+      field.filetypes
+    ) {
+      const acceptedFiletypes = {}
+      field.filetypes.forEach((filetype) => {
+        if (filetype === "jpg") {
+          acceptedFiletypes["image/jpeg"] = []
+        }
+        acceptedFiletypes[`${field.type}/${filetype}`] = []
+      })
+      accept = acceptedFiletypes
+      console.log("acceptedFiletypes", acceptedFiletypes)
+    } else {
+      accept = field.type === "file" ? "" : `${field.type}/*`
+    }
+
     return (
-      <FileSelector onSelect={onFileSelect}>
+      <FileSelector accept={accept} onSelect={onFileSelect}>
         <div>Drop {field.type} here, or click to open file dialog.</div>
       </FileSelector>
     )

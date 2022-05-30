@@ -18,39 +18,42 @@ Create a configuration file (e.g. `acmsConfig.json`) inside the [`acms-config`](
 
 ```json5
 {
-  "title": "ACMS",                           // title shown in the header, default: null
-  "logoImageUri": "https://assets/logo.jpg", // logo shown in the header, default: null
-  "contentPath": "content",                  // root directory containing the content data, default: "content"
-  "templatesPath": "templates",              // root directory containing the (nested) template files, default: "templates"
-  "childrenLabel": "Children",               // label shown above the children, default: "Children"
-  "fieldsLabel": "Fields",                   // label shown above the fields, default: "Fields"
-  "saveLabel": "Save",                       // label of the save button, default: "Save"
-  "textDirection": "ltr",                    // optional text direction for non localized text, default: "ltr", see https://developer.mozilla.org/de/docs/Web/CSS/
-  "languages": [                             // optional language configuration
+  title: "ACMS", // title shown in the header, default: null
+  logoImageUri: "https://assets/logo.jpg", // logo shown in the header, default: null
+  contentPath: "content", // root directory containing the content data, default: "content"
+  templatesPath: "templates", // root directory containing the (nested) template files, default: "templates"
+  childrenLabel: "Children", // label shown above the children, default: "Children"
+  fieldsLabel: "Fields", // label shown above the fields, default: "Fields"
+  saveLabel: "Save", // label of the save button, default: "Save"
+  textDirection: "ltr", // optional text direction for non localized text, default: "ltr", see https://developer.mozilla.org/de/docs/Web/CSS/
+  languages: [
+    // optional language configuration
     {
-      "id": "en",                            // unique language id (e.g. "en"), see language subtag registry: https://www.iana.org/assignments/language-subtag-registry/language-subtag-registry
-      "name": "English",                     // language name, default: id
-      "textDirection": "ltr"                 // direction of the text, default: "ltr", see https://developer.mozilla.org/de/docs/Web/CSS/direction
-    }
+      id: "en", // unique language id (e.g. "en"), see language subtag registry: https://www.iana.org/assignments/language-subtag-registry/language-subtag-registry
+      name: "English", // language name, default: id
+      textDirection: "ltr", // direction of the text, default: "ltr", see https://developer.mozilla.org/de/docs/Web/CSS/direction
+    },
   ],
-  "users": [                                 // list of users, default: shown here
+  users: [
+    // list of users, default: shown here
     {
-      "id": "admin",                         // unique user id
-      "name": "Admin",                       // user name, default: id
-      "permissions": {                       // permission settings, default: shown here
-        "include": [
-          "**"                               // list of glob patterns defining which fields to include, default: shown here
+      id: "admin", // unique user id
+      name: "Admin", // user name, default: id
+      permissions: {
+        // permission settings, default: shown here
+        include: [
+          "**", // list of glob patterns defining which fields to include, default: shown here
         ],
-        "exclude": []                        // list of glob patterns defining which fields to exclude, default: shown here
-      }
-    }
-  ]
+        exclude: [], // list of glob patterns defining which fields to exclude, default: shown here
+      },
+    },
+  ],
 }
 ```
 
 ### User Management
 
-The user management is **not safe** and only meant to provide convenience views on the content. Its possible to filter fields and children by path (see `users/permissions`) to filter *internal* data.
+The user management is **not safe** and only meant to provide convenience views on the content. Its possible to filter fields and children by path (see `users/permissions`) to filter _internal_ data.
 
 ### Templates
 
@@ -65,6 +68,7 @@ Template files specify the structure of the content data while the actual values
 ```
 
 #### Example
+
 ```json5
 {
   "fields": [                            // optional list of fields
@@ -99,7 +103,7 @@ Template files specify the structure of the content data while the actual values
       "template": "location"
     }
   ],
-  "children": [                          // optional list of of allowed templates for the children 
+  "children": [                          // optional list of of allowed templates for the children
     "template1",
     "template2"
   ],
@@ -113,126 +117,149 @@ Template files specify the structure of the content data while the actual values
 The following field types are supported:
 
 #### `audio`, `file`, `video`
-An uploadable asset which is stored on the asset server with a unique (hashed) filename
+
+An uploadable asset which is stored on the asset server with a unique (hashed) filename.
+Filetype is optional and only works for audio, video and image.
 
 Example:
+
 ```json5
 {
-    "id": "coverImage",
-    "name": "Front Cover Image",
-    "type": "image"
+  id: "coverImage",
+  name: "Front Cover Image",
+  type: "image",
+  filetype: ["jpeg", "png", "gif"],
 }
 ```
 
 #### `image`
-An uploadable asset which is stored on the asset server with a unique (hashed) filename
-* `width`: optional width of the image
-* `minWidth`: optional minimum width of the image
-* `maxWidth`: optional maximum width of the image
-* `height`: optional height of the image
-* `minHeight`: optional minimum height of the image
-* `maxHeight`: optional maximum height of the image
-* `aspectRatio`: optional aspect ratio of the image
 
-Example:	
+An uploadable asset which is stored on the asset server with a unique (hashed) filename
+
+- `filetypes`: optional list of file extensions (e.g. `["jpeg", "png"]`)
+- `width`: optional width of the image
+- `minWidth`: optional minimum width of the image
+- `maxWidth`: optional maximum width of the image
+- `height`: optional height of the image
+- `minHeight`: optional minimum height of the image
+- `maxHeight`: optional maximum height of the image
+- `aspectRatio`: optional aspect ratio of the image
+
+Example:
+
 ```json5
 {
-    "id": "coverImage",
-    "name": "Front Cover Image",
-    "type": "image",
-    "width": 1920,
-    "minWidth": 800,
-    "maxWidth": 2200,
-    "height": 1080,
-    "minHeight": 800,
-    "maxHeight": 1600,
-    "aspectRatio": "16:9"
+  id: "coverImage",
+  name: "Front Cover Image",
+  type: "image",
+  filetypes: ["jpeg", "png"],
+  width: 1920,
+  minWidth: 800,
+  maxWidth: 2200,
+  height: 1080,
+  minHeight: 800,
+  maxHeight: 1600,
+  aspectRatio: "16:9",
 }
 ```
 
 #### `string`, `markdown`
+
 A string type with the following otional properties:
-  * `multiline`: Defines wether the string can have multiple lines, default: `false`
-  * `maxLength`: Defines the maximum number of characters, default: `Infinity`
+
+- `multiline`: Defines wether the string can have multiple lines, default: `false`
+- `maxLength`: Defines the maximum number of characters, default: `Infinity`
 
 Example:
+
 ```json5
 {
-    "id": "label",
-    "name": "Start Label",
-    "type": "string",
-    "maxLength": 32,
-    "multiline": true
+  id: "label",
+  name: "Start Label",
+  type: "string",
+  maxLength: 32,
+  multiline: true,
 }
 ```
 
 #### `number`
+
 A number type with the following optional properties:
-* `min`: The minimum value, default `-Infinity`
-* `max`: The maximum value, default `Infinity`
-* `integer`: Defines wether the number is an integer, default: `false`
+
+- `min`: The minimum value, default `-Infinity`
+- `max`: The maximum value, default `Infinity`
+- `integer`: Defines wether the number is an integer, default: `false`
 
 Example:
+
 ```json5
 {
-    "id": "numLoops",
-    "name": "Number of loops",
-    "type": "number",
-    "min": 0,
-    "max": 100
+  id: "numLoops",
+  name: "Number of loops",
+  type: "number",
+  min: 0,
+  max: 100,
 }
 ```
 
 #### `geolocation`
+
 A geolocation type with values for `lat` (Latitude) and `long` (Longitude).
-* `min`: The minimum value, default `lat: -90`, `long: -180`
-* `max`: The maximum value, default `lat: 90`, `long: 180`
+
+- `min`: The minimum value, default `lat: -90`, `long: -180`
+- `max`: The maximum value, default `lat: 90`, `long: 180`
 
 Example:
+
 ```json5
 {
-  "id": "location",
-  "type": "geolocation"
+  id: "location",
+  type: "geolocation",
 }
 ```
 
 #### `boolean`
+
 A boolean either being `true` or `false`.
 
 Example:
+
 ```json5
 {
-    "id": "active",
-    "name": "Active State",
-    "type": "boolean"
+  id: "active",
+  name: "Active State",
+  type: "boolean",
 }
 ```
 
 ### `enum`
+
 A list of selectable `string` values.
 
 Example:
+
 ```json5
 {
-    "id": "myEnum",
-    "name": "My Enum Type",
-    "type": "enum",
-    "values": [
-        {
-            "id": "value1",
-            "name": "First Value"
-        },
-        {
-            "id": "value2",
-            "name": "Second Value"
-        },
-        {
-            "id": "value3",
-            "name": "Third Value"
-        }
-    ]
+  id: "myEnum",
+  name: "My Enum Type",
+  type: "enum",
+  values: [
+    {
+      id: "value1",
+      name: "First Value",
+    },
+    {
+      id: "value2",
+      name: "Second Value",
+    },
+    {
+      id: "value3",
+      name: "Third Value",
+    },
+  ],
 }
 ```
+
 Note: If you want to omit the `name` properties you can simplify `values` to a list of strings: `["value1", "value2", "value3"]`
 
 ### Field Condition
@@ -259,10 +286,11 @@ It is possible to hide/show fields in the CMS frontend depending on sibling fiel
 ```
 
 If several values should be considered you can use the `IN` and `LIST` operator:
+
 ```json5
 {
-    "id": "coverVideo",
-    "type": "string",
-    "condition": [ "IN", [ "GET", "layoutType" ], [ "LIST", "videoCover", "imageCover" ] ]
+  id: "coverVideo",
+  type: "string",
+  condition: ["IN", ["GET", "layoutType"], ["LIST", "videoCover", "imageCover"]],
 }
 ```
