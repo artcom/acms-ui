@@ -209,7 +209,7 @@ Example:
 ```
 
 ### `enum`
-A list of selectable `string` values.
+A list of selectable values.
 
 Example:
 ```json5
@@ -219,21 +219,31 @@ Example:
     "type": "enum",
     "values": [
         {
-            "id": "value1",
+            "value": "value1",
             "name": "First Value"
         },
         {
-            "id": "value2",
+            "value": [2, 3, 4],
             "name": "Second Value"
         },
         {
-            "id": "value3",
+            "value": {
+              "thirdValue": "thirdValue"
+            },
             "name": "Third Value"
+        },
+        {
+          "value": true,
+          "name": "Fourth Value"
+        },
+        {
+          "value": "no name"
         }
     ]
 }
 ```
-Note: If you want to omit the `name` properties you can simplify `values` to a list of strings: `["value1", "value2", "value3"]`
+Note: As shown in the last entry of the `values` array, the `name` property is not required. The displayed name will then be generated based on the type of `value`.
+
 
 ### Field Condition
 
