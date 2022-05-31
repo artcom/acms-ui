@@ -18,6 +18,8 @@ import { undoChanges } from "../../actions/value"
 
 import { fromPath } from "../../utils/hash"
 
+import { ArrowRight, ArrowLeft } from "react-bootstrap-icons"
+
 import {
   getLanguages,
   selectTemplateChildren,
@@ -52,7 +54,7 @@ const LeftArrowCol = styled(Col).attrs(() => ({
   md: 1,
 }))`
   display: flex;
-  height: 100vh;
+  height: auto;
   align-items: start;
   padding: 0;
 `
@@ -91,7 +93,7 @@ const Body = () => {
         <LeftArrowCol>
           {leftSibling && (
             <ArrowButton title={leftSibling.name} href={fromPath(leftSibling.path)}>
-              &#8592;
+              <ArrowLeft />
             </ArrowButton>
           )}
         </LeftArrowCol>
@@ -114,7 +116,7 @@ const Body = () => {
         <RightArrowCol>
           {rightSibling && (
             <ArrowButton title={rightSibling.name} href={fromPath(rightSibling.path)}>
-              &#8594;
+              <ArrowRight />
             </ArrowButton>
           )}
         </RightArrowCol>

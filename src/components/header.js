@@ -16,6 +16,8 @@ import { saveData } from "../actions/data"
 import { fromPath } from "../utils/hash"
 import { getPathNames, selectTemplateId, selectAllSiblingTemplates } from "../selectors"
 
+import { House } from "react-bootstrap-icons"
+
 const Logo = styled.img`
   width: auto;
   padding-right: 1rem;
@@ -46,12 +48,6 @@ const SaveButton = styled(Button)`
 const HomeButton = styled(Button)`
   display: flex;
   align-items: center;
-`
-
-const HomeIcon = styled.div`
-  margin-top: -10px;
-  font-size: 2.5em;
-  line-height: 1em;
 `
 
 const StyledBreadcrumb = styled(Breadcrumb)`
@@ -85,7 +81,7 @@ const Header = () => {
           </LogoContainer>
           <StyledButtonGroup aria-label="First group">
             <HomeButton variant="secondary" href={fromPath([])} disabled={path.length === 0}>
-              <HomeIcon>&#8962;</HomeIcon>
+              <House size={20} />
             </HomeButton>
             <StyledBreadcrumb
               listProps={{
