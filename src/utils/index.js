@@ -76,7 +76,7 @@ export function createFieldValue(field) {
 export function isValidField(value, field) {
   switch (field.type) {
     case "enum":
-      return field.values.map((val) => val.value).some((val) => isEqual(val, value))
+      return field.values.some((val) => isEqual(val.value, value))
     case "boolean":
       return value === true || value === false
     case "audio":
