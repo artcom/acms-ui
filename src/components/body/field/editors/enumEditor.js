@@ -1,15 +1,10 @@
 import startCase from "lodash/startCase"
-import { isString, isNumber, isObject, isBoolean } from "lodash"
+import { isString, isNumber, isBoolean, isEqual } from "lodash"
 import { StyledFormSelect } from "./styledForms"
 
 export default function EnumEditor({ field, onChange }) {
-  const values = field.values.map((item) => {
-    const value = item.value
-    let name
-
-    if (item.name) {
-      name = item.name
-    } else {
+  const values = field.values.map(({ value, name }, index) => {
+    if (!name) {
       switch (true) {
         case isString(value):
           name = startCase(value)
@@ -18,25 +13,22 @@ export default function EnumEditor({ field, onChange }) {
         case isBoolean(value):
           name = value.toString()
           break
-        case isObject(value):
-          name = JSON.stringify(value)
-          break
         default:
-          name = "name undefined"
+          name = index.toString()
           break
       }
     }
 
-    return { value: JSON.stringify(value), name }
+    return { value, name }
   })
 
   return (
     <StyledFormSelect
-      value={JSON.stringify(field.value)}
-      onChange={(event) => onChange(JSON.parse(event.target.value))}
+      value={values.findIndex((element) => isEqual(field.value, element.value), values)}
+      onChange={(event) => onChange(values[event.target.value].value)}
     >
-      {values.map(({ value, name }, index) => (
-        <option key={index} value={value}>
+      {values.map(({ name }, index) => (
+        <option key={index} value={index}>
           {name}
         </option>
       ))}
