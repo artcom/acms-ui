@@ -15,7 +15,8 @@ import SearchForm from "./searchForm"
 import { saveData } from "../actions/data"
 import { fromPath } from "../utils/hash"
 import { getPathNames, selectTemplateId, selectAllSiblingTemplates } from "../selectors"
-import HomeIcon from "./body/field/icons/homeIcon"
+
+import { House } from "react-bootstrap-icons"
 
 const Logo = styled.img`
   width: auto;
@@ -80,7 +81,7 @@ const Header = () => {
           </LogoContainer>
           <StyledButtonGroup aria-label="First group">
             <HomeButton variant="secondary" href={fromPath([])} disabled={path.length === 0}>
-              <HomeIcon />
+              <House size={25} />
             </HomeButton>
             <StyledBreadcrumb
               listProps={{

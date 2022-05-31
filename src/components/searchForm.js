@@ -11,7 +11,7 @@ import { StyledFormControl } from "./body/field/editors/styledForms"
 import { searchData } from "../actions/data"
 import { getSearch } from "../selectors"
 
-import { SearchIcon, ClearIcon } from "./body/field/icons/searchIcons"
+import { Search, XLg } from "react-bootstrap-icons"
 
 const SearchButton = styled(Button)`
   padding: 10px 15px;
@@ -25,7 +25,7 @@ const StyledForm = styled(Form)`
   margin-left: 1em;
 `
 
-const Search = () => {
+const SearchForm = () => {
   const dispatch = useDispatch()
   const inputField = useRef()
   const search = useSelector(getSearch)
@@ -77,11 +77,11 @@ const Search = () => {
           title={!show ? "Open Search" : "Close Search"}
           onClick={() => setShow(!show)}
         >
-          {show ? <ClearIcon /> : <SearchIcon />}
+          {show ? <XLg size={20} /> : <Search size={20} />}
         </SearchButton>
       </InputGroup>
     </StyledForm>
   )
 }
 
-export default Search
+export default SearchForm

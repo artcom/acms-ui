@@ -18,7 +18,7 @@ import { undoChanges } from "../../actions/value"
 
 import { fromPath } from "../../utils/hash"
 
-import { LeftArrowIcon, RightArrowIcon } from "./field/icons/arrowIcons"
+import { ArrowRight, ArrowLeft } from "react-bootstrap-icons"
 
 import {
   getLanguages,
@@ -93,7 +93,7 @@ const Body = () => {
         <LeftArrowCol>
           {leftSibling && (
             <ArrowButton title={leftSibling.name} href={fromPath(leftSibling.path)}>
-              <LeftArrowIcon />
+              <ArrowLeft />
             </ArrowButton>
           )}
         </LeftArrowCol>
@@ -116,7 +116,7 @@ const Body = () => {
         <RightArrowCol>
           {rightSibling && (
             <ArrowButton title={rightSibling.name} href={fromPath(rightSibling.path)}>
-              <RightArrowIcon />
+              <ArrowRight />
             </ArrowButton>
           )}
         </RightArrowCol>
