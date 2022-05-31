@@ -1,4 +1,5 @@
 import startCase from "lodash/startCase"
+import { isString, isNumber, isObject, isBoolean } from "lodash"
 import { StyledFormSelect } from "./styledForms"
 
 export default function EnumEditor({ field, onChange }) {
@@ -9,19 +10,19 @@ export default function EnumEditor({ field, onChange }) {
     if (item.name) {
       name = item.name
     } else {
-      switch (typeof value) {
-        case "string":
+      switch (true) {
+        case isString(value):
           name = startCase(value)
           break
-        case "number":
-        case "boolean":
+        case isNumber(value):
+        case isBoolean(value):
           name = value.toString()
           break
-        case "object":
+        case isObject(value):
           name = JSON.stringify(value)
           break
         default:
-          name = "undefined"
+          name = "name undefined"
           break
       }
     }

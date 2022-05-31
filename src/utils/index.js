@@ -1,8 +1,4 @@
-import get from "lodash/get"
-import isString from "lodash/isString"
-import isNumber from "lodash/isNumber"
-import isUndefined from "lodash/isUndefined"
-import isPlainObject from "lodash/isPlainObject"
+import { get, isEqual, isString, isNumber, isUndefined, isPlainObject } from "lodash"
 
 const DEFAULT_TEMPLATE = { fields: [], fixedChildren: [], children: [] }
 
@@ -80,7 +76,7 @@ export function createFieldValue(field) {
 export function isValidField(value, field) {
   switch (field.type) {
     case "enum":
-      return field.values.map((val) => val.value).includes(value)
+      return field.values.map((val) => val.value).some((val) => isEqual(val, value))
     case "boolean":
       return value === true || value === false
     case "audio":
