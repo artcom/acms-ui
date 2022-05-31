@@ -113,19 +113,21 @@ Template files specify the structure of the content data while the actual values
 The following field types are supported:
 
 #### `audio`, `file`, `video`
-An uploadable asset which is stored on the asset server with a unique (hashed) filename
+An uploadable asset which is stored on the asset server with a unique (hashed) filename. 
 
 Example:
 ```jsonc
 {
-    "id": "coverImage",
-    "name": "Front Cover Image",
-    "type": "image"
+    "id": "bachelorThesis",
+    "name": "Bachelor Thesis",
+    "type": "file",
+    "allowedMimeTypes": ["application/pdf"]  // optional list of allowed mime types
 }
 ```
 
 #### `image`
 An uploadable asset which is stored on the asset server with a unique (hashed) filename
+* `allowedMimeTypes`: optional list of allowed mime types, default: `["image/*"]`
 * `width`: optional width of the image
 * `minWidth`: optional minimum width of the image
 * `maxWidth`: optional maximum width of the image
@@ -140,6 +142,7 @@ Example:
     "id": "coverImage",
     "name": "Front Cover Image",
     "type": "image",
+    "allowedMimeTypes" : ["image/jpeg", "image/png"],
     "width": 1920,
     "minWidth": 800,
     "maxWidth": 2200,

@@ -29,9 +29,14 @@ const Container = styled.div`
   width: 100%;
 `
 
-export default function FileSelector({ children, onSelect }) {
+export default function FileSelector({ allowedMimeTypes, children, onSelect }) {
   return (
-    <Dropzone onDropAccepted={(acceptedFiles) => onSelect(acceptedFiles)} multiple={false}>
+    <Dropzone
+      accept={allowedMimeTypes}
+      onDropAccepted={(acceptedFiles) => onSelect(acceptedFiles)}
+      multiple={false}
+      maxFiles={1}
+    >
       {({ getRootProps, getInputProps, isDragAccept, isDragReject }) => (
         <Container {...getRootProps({ isDragAccept, isDragReject })}>
           <input {...getInputProps()} />
