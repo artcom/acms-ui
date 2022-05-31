@@ -16,7 +16,7 @@ Copy `config.json.template` into `/public/config.json` and change values accordi
 
 Create a configuration file (e.g. `acmsConfig.json`) inside the [`acms-config`](https://github.com/artcom/acms-config) repo:
 
-```json5
+```jsonc
 {
   "title": "ACMS",                           // title shown in the header, default: null
   "logoImageUri": "https://assets/logo.jpg", // logo shown in the header, default: null
@@ -56,7 +56,7 @@ The user management is **not safe** and only meant to provide convenience views 
 
 Template files specify the structure of the content data while the actual values are located in the `content` directory. Every template entity can have children which themself are structured by a template. Nested templates within the `templates` directory are referenced via local path. E.g.:
 
-```json5
+```jsonc
 /templates/template1.json            // => `template1`
 /templates/template2.json            // => `template2`
 /templates/template3/index.json      // => `template3`
@@ -65,7 +65,7 @@ Template files specify the structure of the content data while the actual values
 ```
 
 #### Example
-```json5
+```jsonc
 {
   "fields": [                            // optional list of fields
         {
@@ -86,7 +86,7 @@ Template files specify the structure of the content data while the actual values
             "type": "number",
             "integer": true
         }
-  ]
+  ],
   "fixedChildren": [                     // optional list of fixed/named children
     {
       "id": "frontScreen",               // unique id within the whole template
@@ -116,7 +116,7 @@ The following field types are supported:
 An uploadable asset which is stored on the asset server with a unique (hashed) filename
 
 Example:
-```json5
+```jsonc
 {
     "id": "coverImage",
     "name": "Front Cover Image",
@@ -135,7 +135,7 @@ An uploadable asset which is stored on the asset server with a unique (hashed) f
 * `aspectRatio`: optional aspect ratio of the image
 
 Example:	
-```json5
+```jsonc
 {
     "id": "coverImage",
     "name": "Front Cover Image",
@@ -156,7 +156,7 @@ A string type with the following otional properties:
   * `maxLength`: Defines the maximum number of characters, default: `Infinity`
 
 Example:
-```json5
+```jsonc
 {
     "id": "label",
     "name": "Start Label",
@@ -173,7 +173,7 @@ A number type with the following optional properties:
 * `integer`: Defines wether the number is an integer, default: `false`
 
 Example:
-```json5
+```jsonc
 {
     "id": "numLoops",
     "name": "Number of loops",
@@ -189,7 +189,7 @@ A geolocation type with values for `lat` (Latitude) and `long` (Longitude).
 * `max`: The maximum value, default `lat: 90`, `long: 180`
 
 Example:
-```json5
+```jsonc
 {
   "id": "location",
   "type": "geolocation"
@@ -200,7 +200,7 @@ Example:
 A boolean either being `true` or `false`.
 
 Example:
-```json5
+```jsonc
 {
     "id": "active",
     "name": "Active State",
@@ -212,7 +212,7 @@ Example:
 A list of selectable values.
 
 Example:
-```json5
+```jsonc
 {
     "id": "myEnum",
     "name": "My Enum Type",
@@ -249,7 +249,7 @@ Note: As shown in the last entry of the `values` array, the `name` property is n
 
 It is possible to hide/show fields in the CMS frontend depending on sibling fields value. A typical case is an `enum` field which specifies a layout type (e.g. `videoCover`/`imageCover`). Based on the field value you want to either show an `image` or `video` field. This can be achieved with the following `GET`and `EQUALS` operators:
 
-```json5
+```jsonc
 {
     "id": "layoutType",
     "type": "enum",
@@ -269,7 +269,7 @@ It is possible to hide/show fields in the CMS frontend depending on sibling fiel
 ```
 
 If several values should be considered you can use the `IN` and `LIST` operator:
-```json5
+```jsonc
 {
     "id": "coverVideo",
     "type": "string",
