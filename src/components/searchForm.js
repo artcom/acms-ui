@@ -73,7 +73,6 @@ const SearchForm = () => {
         )}
         <SearchButton
           variant="secondary"
-          type="submit"
           title={!show ? "Open Search" : "Close Search"}
           onClick={() => setShow(!show)}
         >
