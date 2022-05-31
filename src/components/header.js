@@ -81,7 +81,7 @@ const Header = () => {
           </LogoContainer>
           <StyledButtonGroup aria-label="First group">
             <HomeButton variant="secondary" href={fromPath([])} disabled={path.length === 0}>
-              <House size={25} />
+              <House size={20} />
             </HomeButton>
             <StyledBreadcrumb
               listProps={{

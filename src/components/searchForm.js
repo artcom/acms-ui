@@ -77,7 +77,7 @@ const SearchForm = () => {
           title={!show ? "Open Search" : "Close Search"}
           onClick={() => setShow(!show)}
         >
-          {show ? <XLg size={20} /> : <Search size={20} />}
+          {show ? <XLg /> : <Search />}
         </SearchButton>
       </InputGroup>
     </StyledForm>
