@@ -14,13 +14,10 @@ export function loadData(acmsApi, acmsConfigPath) {
         acmsApi.queryFiles(config.templatesPath, version),
         acmsApi.queryJson(config.contentPath, version),
       ])
-      console.log("🚀 ~ originalContent", originalContent)
 
       const changedContent = createNextState(originalContent, (draft) =>
         fixContent(originalContent, draft, templates)
       )
-
-      console.log("🚀 ~ changedContent", changedContent)
 
       dispatch({
         type: "UPDATE_DATA",
