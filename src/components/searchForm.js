@@ -9,8 +9,9 @@ import { debounce } from "lodash"
 import { StyledFormControl } from "./body/field/editors/styledForms"
 
 import { searchData } from "../actions/data"
-import { SearchIcon, ClearIcon } from "./searchIcons"
 import { getSearch } from "../selectors"
+
+import { Search, XLg } from "react-bootstrap-icons"
 
 const SearchButton = styled(Button)`
   padding: 10px 15px;
@@ -24,7 +25,7 @@ const StyledForm = styled(Form)`
   margin-left: 1em;
 `
 
-const Search = () => {
+const SearchForm = () => {
   const dispatch = useDispatch()
   const inputField = useRef()
   const search = useSelector(getSearch)
@@ -72,15 +73,14 @@ const Search = () => {
         )}
         <SearchButton
           variant="secondary"
-          type="submit"
           title={!show ? "Open Search" : "Close Search"}
           onClick={() => setShow(!show)}
         >
-          {show ? <ClearIcon /> : <SearchIcon />}
+          {show ? <XLg /> : <Search />}
         </SearchButton>
       </InputGroup>
     </StyledForm>
   )
 }
 
-export default Search
+export default SearchForm

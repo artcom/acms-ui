@@ -2,6 +2,8 @@ import { forwardRef } from "react"
 import { Button } from "react-bootstrap"
 import styled from "styled-components"
 
+import { List } from "react-bootstrap-icons"
+
 const StyledButton = styled(Button)`
   padding: 0px 5px;
 `
@@ -18,7 +20,7 @@ const ToggleButton = forwardRef(({ children, onClick }, ref) => (
     }}
   >
     {children}
-    &#9776;
+    <List />
   </StyledButton>
 ))
 

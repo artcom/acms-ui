@@ -1,6 +1,7 @@
 import OverlayTrigger from "react-bootstrap/OverlayTrigger"
 import Popover from "react-bootstrap/Popover"
-import RequirementIcon from "./requirementIcon"
+
+import { InfoLg } from "react-bootstrap-icons"
 
 const ImageRequirements = ({ field }) => {
   const hasRequirements =
@@ -67,7 +68,7 @@ const ImageRequirements = ({ field }) => {
 
   return (
     <OverlayTrigger placement="bottom" delay={{ show: 250, hide: 400 }} overlay={Tooltip}>
-      <RequirementIcon />
+      <InfoLg size={25} opacity={0.6} />
     </OverlayTrigger>
   )
 }
