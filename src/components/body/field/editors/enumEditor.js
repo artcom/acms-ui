@@ -24,7 +24,7 @@ export default function EnumEditor({ field, onChange }) {
 
   return (
     <StyledFormSelect
-      value={values.findIndex((element) => isEqual(field.value, element.value), values)}
+      value={values.findIndex((element) => isEqual(field.value, element.value))}
       onChange={(event) => onChange(values[event.target.value].value)}
     >
       {values.map(({ name }, index) => (
