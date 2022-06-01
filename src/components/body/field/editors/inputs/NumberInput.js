@@ -9,10 +9,6 @@ const NumberInput = ({ field, onChange }) => {
 
   const [stringValue, setStringValue] = useState(field.value.toString())
 
-  useEffect(() => {
-    setStringValue(field.value.toString())
-  }, [field.value])
-
   const regex = /^-?((\d*([.,]\d*)?))?$/
   const valid =
     field.value >= min &&
