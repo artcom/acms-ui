@@ -23,6 +23,7 @@ const Invalid = styled(Form.Control.Feedback).attrs({
 
 const Container = styled.div`
   position: relative;
+  text-align: center;
 `
 
 export default function ImageEditor({ field }) {

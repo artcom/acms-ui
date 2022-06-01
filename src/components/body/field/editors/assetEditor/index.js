@@ -10,7 +10,6 @@ const Editor = styled.div`
 `
 
 const File = styled.div`
-  font-size: 0.7rem;
   line-height: 2.5;
   text-align: center;
 `
@@ -38,7 +37,7 @@ function renderView(field) {
     case "audio":
       return <Audio controls key={src} src={src} />
     case "file":
-      return <File key={src}>{path.basename(src)}</File>
+      return <File key={src}><a href={src}>{path.basename(src).split("-")[0]}</a></File>
     case "video":
       return <Video controls key={src} src={src} />
     case "image":
