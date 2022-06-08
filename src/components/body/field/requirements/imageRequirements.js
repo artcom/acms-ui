@@ -1,5 +1,6 @@
 import OverlayTrigger from "react-bootstrap/OverlayTrigger"
 import Popover from "react-bootstrap/Popover"
+import { upperCase } from "lodash"
 
 import { InfoLg } from "react-bootstrap-icons"
 
@@ -11,7 +12,8 @@ const ImageRequirements = ({ field }) => {
     field.width ||
     field.minWidth ||
     field.maxWidth ||
-    field.aspectRatio
+    field.aspectRatio ||
+    field.allowedMimeTypes
 
   if (!hasRequirements) {
     return null
@@ -60,6 +62,19 @@ const ImageRequirements = ({ field }) => {
           <>
             {" "}
             Aspect Ratio: {field.aspectRatio} <br />{" "}
+          </>
+        )}
+        {field.allowedMimeTypes && (
+          <>
+            {" "}
+            Mime Types:{" "}
+            {field.allowedMimeTypes.map((type, index) => {
+              if (index === field.allowedMimeTypes.length - 1) {
+                return upperCase(type.split("/")[1])
+              }
+              return `${upperCase(type.split("/")[1])}, `
+            })}
+            <br />{" "}
           </>
         )}
       </Popover.Body>
