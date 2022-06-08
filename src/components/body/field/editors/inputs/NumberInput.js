@@ -1,5 +1,5 @@
 import get from "lodash/get"
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { Form } from "react-bootstrap"
 import { StyledFormControl } from "../styledForms"
 
@@ -19,7 +19,12 @@ const NumberInput = ({ field, onChange }) => {
     if (regex.test(event.target.value) || event.target.value === "") {
       setStringValue(event.target.value)
       let numberValue = parseFloat(event.target.value.replace(",", "."))
-      if (event.target.value === "-" || event.target.value === "" || event.target.value === "-.") {
+      if (
+        event.target.value === "-" ||
+        event.target.value === "" ||
+        event.target.value === "-." ||
+        event.target.value === "."
+      ) {
         numberValue = 0
       }
 
@@ -30,6 +35,10 @@ const NumberInput = ({ field, onChange }) => {
   const onBlurString = () => {
     setStringValue(field.value.toString())
   }
+
+  useEffect(() => {
+    setStringValue(field.value.toString())
+  }, [field.value])
 
   return (
     <>
