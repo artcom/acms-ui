@@ -59,7 +59,11 @@ const SearchForm = () => {
   }
 
   return (
-    <StyledForm>
+    <StyledForm
+      onSubmit={(e) => {
+        e.preventDefault()
+      }}
+    >
       <InputGroup>
         {show && (
           <StyledFormControl
