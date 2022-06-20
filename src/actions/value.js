@@ -25,5 +25,5 @@ export function undoChanges(path) {
 }
 
 export function clearSrcTag(path) {
-  return changeValue(path, "")
+  return changeValue(path, { hashedPath: "", staticPath: "", lastModified: "" })
 }

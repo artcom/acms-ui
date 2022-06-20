@@ -6,6 +6,8 @@ import { sha256 } from "../utils/sha"
 import { showError } from "./error"
 import { changeValue } from "./value"
 
+import { fromPath } from "../utils/hash"
+
 export function uploadFile(path, file, acmsAssets) {
   return async (dispatch) => {
     function onUploadProgress(event) {
@@ -18,7 +20,12 @@ export function uploadFile(path, file, acmsAssets) {
 
       const url = await acmsAssets.uploadFile(filename, file, { onUploadProgress })
 
-      dispatch(changeValue(path, url))
+      const newValue = {
+        hashedPath: url,
+        staticPath: "http://${backendHost}/" + fromPath(path),
+        lastModified: new Date().toLocaleString(),
+      }
+      dispatch(changeValue(path, newValue))
     } catch (error) {
       dispatch(cancelUpload(path))
       dispatch(showError("Failed to Upload File", error.stack))

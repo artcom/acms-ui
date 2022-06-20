@@ -33,6 +33,7 @@
     "react-dropzone": "^14.2.1",
     "react-is": "^18.1.0",
     "react-redux": "^8.0.1",
+    "react-router-dom": "^6.3.0",
     "redux": "^4.2.0",
     "redux-devtools-extension": "^2.13.9",
     "redux-logger": "^3.0.6",

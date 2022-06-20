@@ -25,19 +25,23 @@ const Video = styled.video`
 export default function AssetEditor({ field, onFileSelect }) {
   return (
     <Editor>
-      {field.value && renderView(field)}
+      {field.value.hashedPath && renderView(field)}
       {renderUpload(field, onFileSelect)}
     </Editor>
   )
 }
 
 function renderView(field) {
-  const src = field.value
+  const src = field.value.hashedPath
   switch (field.type) {
     case "audio":
       return <Audio controls key={src} src={src} />
     case "file":
-      return <File key={src}><a href={src}>{path.basename(src).split("-")[0]}</a></File>
+      return (
+        <File key={src}>
+          <a href={src}>{path.basename(src).split("-")[0]}</a>
+        </File>
+      )
     case "video":
       return <Video controls key={src} src={src} />
     case "image":

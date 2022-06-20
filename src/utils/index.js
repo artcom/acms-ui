@@ -44,7 +44,8 @@ export function createField(field) {
   }
 }
 
-export function createFieldValue(field) {
+export function createFieldValue(value, field) {
+  console.log("field: ", field)
   if (!isUndefined(field.default)) {
     return field.default
   }
@@ -58,6 +59,11 @@ export function createFieldValue(field) {
     case "image":
     case "file":
     case "video":
+      return {
+        hashedPath: value,
+        staticPath: "",
+        lastModified: "",
+      }
     case "markdown":
     case "string":
       return ""
@@ -83,7 +89,13 @@ export function isValidField(value, field) {
     case "image":
     case "file":
     case "video":
-      return isString(value)
+      return (
+        isPlainObject(value) &&
+        Object.keys(value).length === 3 &&
+        isString(value.hashedPath) &&
+        isString(value.staticPath) &&
+        isString(value.lastModified)
+      )
     case "markdown":
     case "string":
       return isString(value)
