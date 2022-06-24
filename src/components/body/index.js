@@ -73,6 +73,23 @@ const ChildrenCol = styled(Col).attrs(() => ({
   md: 4,
 }))``
 
+// useEffect(() => {
+//   const href = window.location.href.split(/(?=#)/)
+//   if (href[1] === fromPath(path)) {
+//     window.location.href =
+//       "http://localhost/services/acms-assets/progit-c0d571a042c58fa0604b18e174aa419f1988b1122f83226eb72a25be2b2f93d6.jpg"
+//   }
+//   console.log("🚀 ~ window.location.href", window.location.href)
+// }, [window.location.href])
+
+// useEffect(() => {
+//   if (window.location.href === "http://localhost:8080/#/media/pdf") {
+//     navigate(
+//       "/services/acms-assets/progit-c0d571a042c58fa0604b18e174aa419f1988b1122f83226eb72a25be2b2f93d6.jpg"
+//     )
+//   }
+// }, [navigate, window.location.href])
+
 const Body = () => {
   const dispatch = useDispatch()
   const canHaveChildren = useSelector(selectTemplateChildren).length > 0

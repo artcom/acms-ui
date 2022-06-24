@@ -58,12 +58,12 @@ function fixContent(content, draft, templates) {
         if (utils.isValidField(value, field)) {
           draft[field.id][id] = value
         } else {
-          draft[field.id][id] = utils.createFieldValue(field)
+          draft[field.id][id] = utils.createFieldValue(value, field)
         }
       }
     } else {
       if (!utils.isValidField(content[field.id], field)) {
-        draft[field.id] = utils.createFieldValue(field)
+        draft[field.id] = utils.createFieldValue(content[field.id], field)
       }
     }
   })

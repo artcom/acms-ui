@@ -1,4 +1,4 @@
-import { get, isEqual, isString, isNumber, isUndefined, isPlainObject } from "lodash"
+import { get, isEqual, isString, isNumber, isUndefined, isPlainObject, fromPath } from "lodash"
 
 const DEFAULT_TEMPLATE = { fields: [], fixedChildren: [], children: [] }
 
@@ -44,7 +44,7 @@ export function createField(field) {
   }
 }
 
-export function createFieldValue(field) {
+export function createFieldValue(value, field) {
   if (!isUndefined(field.default)) {
     return field.default
   }
@@ -58,6 +58,7 @@ export function createFieldValue(field) {
     case "image":
     case "file":
     case "video":
+      return createAssetObject(value, field.path)
     case "markdown":
     case "string":
       return ""
@@ -83,7 +84,12 @@ export function isValidField(value, field) {
     case "image":
     case "file":
     case "video":
-      return isString(value)
+      return (
+        isPlainObject(value) &&
+        Object.keys(value).length === 2 &&
+        isString(value.hashedPath) &&
+        isString(value.staticPath)
+      )
     case "markdown":
     case "string":
       return isString(value)
@@ -123,4 +129,29 @@ export function deepEqual(a, b) {
   }
 
   return false
+}
+
+function createAssetObject(value, path) {
+  if (isPlainObject(value)) {
+    let staticPath
+
+    if (value.staticPath) {
+      staticPath = value.staticPath
+    } else {
+      if (value.hashedPath) {
+        staticPath = value.hashedPath !== "" ? "http://${backendHost}/" + fromPath(path) : ""
+      } else {
+        staticPath = ""
+      }
+    }
+    return {
+      hashedPath: value.hashedPath ? value.hashedPath : "",
+      staticPath: staticPath,
+    }
+  } else {
+    return {
+      hashedPath: value,
+      staticPath: "http://${backendHost}/" + fromPath(path),
+    }
+  }
 }

@@ -1,5 +1,5 @@
 import { basename, extname } from "path-browserify"
-import { toLower } from "lodash"
+import { toLower, fromPath } from "lodash"
 
 import { sha256 } from "../utils/sha"
 
@@ -18,7 +18,12 @@ export function uploadFile(path, file, acmsAssets) {
 
       const url = await acmsAssets.uploadFile(filename, file, { onUploadProgress })
 
-      dispatch(changeValue(path, url))
+      const newValue = {
+        hashedPath: url,
+        staticPath: "http://${backendHost}/" + fromPath(path),
+      }
+
+      dispatch(changeValue(path, newValue))
     } catch (error) {
       dispatch(cancelUpload(path))
       dispatch(showError("Failed to Upload File", error.stack))
