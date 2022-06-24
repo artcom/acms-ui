@@ -335,24 +335,3 @@ function getSibling(id, parentPath, fixedChildren) {
     name: fixedChild && fixedChild.name ? fixedChild.name : startCase(id),
   }
 }
-
-export const getAllAssetValues = createSelector(
-  [selectTemplates, getChangedContent],
-  (templates, changedContent) => {
-    console.log("🚀 ~ changedContent", changedContent)
-    console.log("🚀 ~ templates", templates)
-    let all = []
-    Object.entries(templates).forEach(([key, value]) =>
-      all.push(
-        value.fields
-          .filter(
-            (field) =>
-              ((field.type === "image" || field.type === "file") && !field.condition) ||
-              evaluate(field.condition, changedContent)
-          )
-          .map((field) => {})
-      )
-    )
-    console.log("all: ", all)
-  }
-)

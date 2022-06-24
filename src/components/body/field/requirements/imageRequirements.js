@@ -1,8 +1,6 @@
 import OverlayTrigger from "react-bootstrap/OverlayTrigger"
 import Popover from "react-bootstrap/Popover"
 
-import path from "path-browserify"
-
 import { InfoLg } from "react-bootstrap-icons"
 
 const ImageRequirements = ({ field }) => {
@@ -15,7 +13,8 @@ const ImageRequirements = ({ field }) => {
     field.maxWidth ||
     field.aspectRatio
 
-  const hasInfos = field.value.hashedPath !== "" || field.value.lastModified !== ""
+  const hasInfos =
+    field.value.hashedPath !== "" || field.value.lastModified !== "" || field.value.filename !== ""
 
   if (!hasRequirements && !hasInfos) {
     return null
@@ -75,10 +74,10 @@ const ImageRequirements = ({ field }) => {
         <div>
           <Popover.Header>Image Infos</Popover.Header>
           <Popover.Body>
-            {field.value.hashedPath !== "" && (
+            {field.value.filename !== "" && (
               <>
                 {" "}
-                Name: {path.basename(field.value.hashedPath).split("-")[0]} <br />{" "}
+                Name: {field.value.filename} <br />{" "}
               </>
             )}
             {field.value.lastModified !== "" && (

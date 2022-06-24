@@ -1,5 +1,7 @@
 import { get, isEqual, isString, isNumber, isUndefined, isPlainObject } from "lodash"
 
+import path from "path-browserify"
+
 const DEFAULT_TEMPLATE = { fields: [], fixedChildren: [], children: [] }
 
 export function getFromPath(object, path, defaultValue) {
@@ -45,7 +47,6 @@ export function createField(field) {
 }
 
 export function createFieldValue(value, field) {
-  console.log("field: ", field)
   if (!isUndefined(field.default)) {
     return field.default
   }
@@ -59,10 +60,30 @@ export function createFieldValue(value, field) {
     case "image":
     case "file":
     case "video":
-      return {
-        hashedPath: value,
-        staticPath: "",
-        lastModified: "",
+      if (isPlainObject(value)) {
+        let filename
+
+        if (value.filename) {
+          filename = value.filename
+        } else {
+          if (value.hashedPath) {
+            filename = value.hashedPath !== "" ? path.basename(value.hashedPath).split("-")[0] : ""
+          } else {
+            filename = ""
+          }
+        }
+
+        return {
+          hashedPath: value.hashedPath ? value.hashedPath : "",
+          filename: filename,
+          lastModified: value.lastModified ? value.lastModified : "",
+        }
+      } else {
+        return {
+          hashedPath: value,
+          filename: value !== "" ? path.basename(value).split("-")[0] : value,
+          lastModified: "",
+        }
       }
     case "markdown":
     case "string":
@@ -93,7 +114,7 @@ export function isValidField(value, field) {
         isPlainObject(value) &&
         Object.keys(value).length === 3 &&
         isString(value.hashedPath) &&
-        isString(value.staticPath) &&
+        isString(value.filename) &&
         isString(value.lastModified)
       )
     case "markdown":

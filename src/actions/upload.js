@@ -6,8 +6,6 @@ import { sha256 } from "../utils/sha"
 import { showError } from "./error"
 import { changeValue } from "./value"
 
-import { fromPath } from "../utils/hash"
-
 export function uploadFile(path, file, acmsAssets) {
   return async (dispatch) => {
     function onUploadProgress(event) {
@@ -22,7 +20,7 @@ export function uploadFile(path, file, acmsAssets) {
 
       const newValue = {
         hashedPath: url,
-        staticPath: "http://${backendHost}/" + fromPath(path),
+        filename: basename(url).split("-")[0],
         lastModified: new Date().toLocaleString(),
       }
       dispatch(changeValue(path, newValue))
