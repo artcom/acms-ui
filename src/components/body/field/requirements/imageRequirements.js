@@ -1,5 +1,6 @@
 import OverlayTrigger from "react-bootstrap/OverlayTrigger"
 import Popover from "react-bootstrap/Popover"
+import { upperCase } from "lodash"
 
 import { InfoLg } from "react-bootstrap-icons"
 
@@ -11,7 +12,8 @@ const ImageRequirements = ({ field }) => {
     field.width ||
     field.minWidth ||
     field.maxWidth ||
-    field.aspectRatio
+    field.aspectRatio ||
+    field.allowedMimeTypes
 
   const hasInfos =
     field.value.path !== "" || field.value.lastModified !== "" || field.value.filename !== ""
@@ -22,72 +24,75 @@ const ImageRequirements = ({ field }) => {
   const Tooltip = (
     <Popover>
       {hasRequirements && (
-        <div>
+        <>
           <Popover.Header>Image Requirements</Popover.Header>
           <Popover.Body>
             {field.height && (
               <>
-                {" "}
-                Height: {field.height} <br />{" "}
+                Height: {field.height} <br />
               </>
             )}
             {field.minHeight && (
               <>
-                {" "}
-                Min. Height: {field.minHeight} <br />{" "}
+                Min. Height: {field.minHeight} <br />
               </>
             )}
             {field.maxHeight && (
               <>
-                {" "}
-                Max. Height: {field.maxHeight} <br />{" "}
+                Max. Height: {field.maxHeight} <br />
               </>
             )}
             {field.width && (
               <>
-                {" "}
-                Width: {field.width} <br />{" "}
+                Width: {field.width} <br />
               </>
             )}
             {field.minWidth && (
               <>
-                {" "}
-                Min. Width: {field.minWidth} <br />{" "}
+                Min. Width: {field.minWidth} <br />
               </>
             )}
             {field.maxWidth && (
               <>
-                {" "}
-                Max. Width: {field.maxWidth} <br />{" "}
+                Max. Width: {field.maxWidth} <br />
               </>
             )}
             {field.aspectRatio && (
               <>
-                {" "}
-                Aspect Ratio: {field.aspectRatio} <br />{" "}
+                Aspect Ratio: {field.aspectRatio} <br />
+              </>
+            )}
+            {field.allowedMimeTypes && (
+              <>
+                Mime Types:{" "}
+                {field.allowedMimeTypes.map((type, index) => {
+                  if (index === field.allowedMimeTypes.length - 1) {
+                    return upperCase(type.split("/")[1])
+                  }
+                  return `${upperCase(type.split("/")[1])}, `
+                })}
+                <br />
               </>
             )}
           </Popover.Body>
-        </div>
+        </>
       )}
       {hasInfos && (
-        <div>
+        <>
           <Popover.Header>Image Infos</Popover.Header>
           <Popover.Body>
             {field.value.filename !== "" && (
               <>
-                {" "}
-                Name: {field.value.filename} <br />{" "}
+                Name: {field.value.filename} <br />
               </>
             )}
             {field.value.lastModified !== "" && (
               <>
-                {" "}
-                Last modified: {field.value.lastModified} <br />{" "}
+                Last modified: {field.value.lastModified} <br />
               </>
             )}
           </Popover.Body>
-        </div>
+        </>
       )}
     </Popover>
   )

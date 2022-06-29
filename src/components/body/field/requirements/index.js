@@ -1,6 +1,7 @@
 import ImageRequirements from "./imageRequirements"
 import StringRequirements from "./stringRequirements"
 import NumberRequirements from "./numberRequirements"
+import FileRequirements from "./fileRequirements"
 
 const Requirements = ({ field }) => {
   switch (field.type) {
@@ -10,6 +11,8 @@ const Requirements = ({ field }) => {
       return <StringRequirements field={field} />
     case "number":
       return <NumberRequirements field={field} />
+    case "file":
+      return <FileRequirements field={field} />
     default:
       return null
   }
