@@ -24,57 +24,49 @@ const ImageRequirements = ({ field }) => {
       <Popover.Body>
         {field.height && (
           <>
-            {" "}
-            Height: {field.height} <br />{" "}
+            Height: {field.height} <br />
           </>
         )}
         {field.minHeight && (
           <>
-            {" "}
-            Min. Height: {field.minHeight} <br />{" "}
+            Min. Height: {field.minHeight} <br />
           </>
         )}
         {field.maxHeight && (
           <>
-            {" "}
-            Max. Height: {field.maxHeight} <br />{" "}
+            Max. Height: {field.maxHeight} <br />
           </>
         )}
         {field.width && (
           <>
-            {" "}
-            Width: {field.width} <br />{" "}
+            Width: {field.width} <br />
           </>
         )}
         {field.minWidth && (
           <>
-            {" "}
-            Min. Width: {field.minWidth} <br />{" "}
+            Min. Width: {field.minWidth} <br />
           </>
         )}
         {field.maxWidth && (
           <>
-            {" "}
-            Max. Width: {field.maxWidth} <br />{" "}
+            Max. Width: {field.maxWidth} <br />
           </>
         )}
         {field.aspectRatio && (
           <>
-            {" "}
-            Aspect Ratio: {field.aspectRatio} <br />{" "}
+            Aspect Ratio: {field.aspectRatio} <br />
           </>
         )}
         {field.allowedMimeTypes && (
           <>
-            {" "}
-            Mime Types:{" "}
+            Mime Types:
             {field.allowedMimeTypes.map((type, index) => {
               if (index === field.allowedMimeTypes.length - 1) {
                 return upperCase(type.split("/")[1])
               }
               return `${upperCase(type.split("/")[1])}, `
             })}
-            <br />{" "}
+            <br />
           </>
         )}
       </Popover.Body>

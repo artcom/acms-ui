@@ -16,15 +16,14 @@ const FileRequirements = ({ field }) => {
       <Popover.Body>
         {field.allowedMimeTypes && (
           <>
-            {" "}
-            Mime Types:{" "}
+            Mime Types:
             {field.allowedMimeTypes.map((type, index) => {
               if (index === field.allowedMimeTypes.length - 1) {
                 return upperCase(type.split("/")[1])
               }
               return `${upperCase(type.split("/")[1])}, `
             })}
-            <br />{" "}
+            <br />
           </>
         )}
       </Popover.Body>
