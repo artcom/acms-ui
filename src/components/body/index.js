@@ -47,6 +47,7 @@ const ArrowButton = styled(Button).attrs(() => ({
   outline: none;
   position: sticky;
   top: 50%;
+  height: 2.5em;
 `
 
 const LeftArrowCol = styled(Col).attrs(() => ({
@@ -54,7 +55,7 @@ const LeftArrowCol = styled(Col).attrs(() => ({
   md: 1,
 }))`
   display: flex;
-  height: auto;
+  height: 100vh;
   align-items: start;
   padding: 0;
 `
