@@ -59,7 +59,7 @@ const ImageRequirements = ({ field }) => {
         )}
         {field.allowedMimeTypes && (
           <>
-            Mime Types:
+            Mime Types:{" "}
             {field.allowedMimeTypes.map((type, index) => {
               if (index === field.allowedMimeTypes.length - 1) {
                 return upperCase(type.split("/")[1])
