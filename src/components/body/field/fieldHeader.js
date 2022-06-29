@@ -8,7 +8,6 @@ import { startCase } from "lodash"
 
 import ToggleButton from "../../toggleButton"
 import Requirements from "./requirements"
-// import Infos from "./infos"
 
 const StyledDropdown = styled(Dropdown)`
   margin-left: 0.5rem;
@@ -26,7 +25,6 @@ const Flexbox = styled.div`
 
 const FieldHeader = ({ field, dispatch }) => (
   <Flexbox>
-    {/* <Infos field={field} /> */}
     <Fieldname>{field.name ? field.name : startCase(field.id)}</Fieldname>
     <Requirements field={field} />
     <StyledDropdown id={field.id}>
@@ -45,7 +43,7 @@ const FieldHeader = ({ field, dispatch }) => (
           field.type === "file") && (
           <DropdownItem
             key="clear"
-            disabled={field.value.hashedPath === ""}
+            disabled={field.value.path === ""}
             onClick={() => dispatch(clearSrcTag(field.path))}
           >
             Clear

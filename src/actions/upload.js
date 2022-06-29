@@ -19,7 +19,7 @@ export function uploadFile(path, file, acmsAssets) {
       const url = await acmsAssets.uploadFile(filename, file, { onUploadProgress })
 
       const newValue = {
-        hashedPath: url,
+        path: url,
         filename: basename(url).split("-")[0],
         lastModified: new Date().toLocaleString(),
       }

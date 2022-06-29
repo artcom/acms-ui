@@ -29,7 +29,7 @@ const Container = styled.div`
 export default function ImageEditor({ field }) {
   const imageRef = useRef(null)
   const [valid, setValid] = useState(true)
-  const src = field.value.hashedPath
+  const src = field.value.path
 
   return (
     <Container>

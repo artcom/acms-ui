@@ -1,5 +1,4 @@
 import styled from "styled-components"
-import path from "path-browserify"
 import ProgressBar from "react-bootstrap/ProgressBar"
 import ImageEditor from "./imageEditor"
 import FileSelector from "../fileSelector"
@@ -25,21 +24,21 @@ const Video = styled.video`
 export default function AssetEditor({ field, onFileSelect }) {
   return (
     <Editor>
-      {field.value.hashedPath && renderView(field)}
+      {field.value.path && renderView(field)}
       {renderUpload(field, onFileSelect)}
     </Editor>
   )
 }
 
 function renderView(field) {
-  const src = field.value.hashedPath
+  const src = field.value.path
   switch (field.type) {
     case "audio":
       return <Audio controls key={src} src={src} />
     case "file":
       return (
         <File key={src}>
-          <a href={src}>{path.basename(src).split("-")[0]}</a>
+          <a href={src}>{src.filename}</a>
         </File>
       )
     case "video":

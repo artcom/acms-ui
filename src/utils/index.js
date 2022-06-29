@@ -60,31 +60,7 @@ export function createFieldValue(value, field) {
     case "image":
     case "file":
     case "video":
-      if (isPlainObject(value)) {
-        let filename
-
-        if (value.filename) {
-          filename = value.filename
-        } else {
-          if (value.hashedPath) {
-            filename = value.hashedPath !== "" ? path.basename(value.hashedPath).split("-")[0] : ""
-          } else {
-            filename = ""
-          }
-        }
-
-        return {
-          hashedPath: value.hashedPath ? value.hashedPath : "",
-          filename: filename,
-          lastModified: value.lastModified ? value.lastModified : "",
-        }
-      } else {
-        return {
-          hashedPath: value,
-          filename: value !== "" ? path.basename(value).split("-")[0] : value,
-          lastModified: "",
-        }
-      }
+      return getCorrectAssetValue(value)
     case "markdown":
     case "string":
       return ""
@@ -113,7 +89,7 @@ export function isValidField(value, field) {
       return (
         isPlainObject(value) &&
         Object.keys(value).length === 3 &&
-        isString(value.hashedPath) &&
+        isString(value.path) &&
         isString(value.filename) &&
         isString(value.lastModified)
       )
@@ -156,4 +132,32 @@ export function deepEqual(a, b) {
   }
 
   return false
+}
+
+function getCorrectAssetValue(value) {
+  if (isPlainObject(value)) {
+    let filename
+
+    if (value.filename) {
+      filename = value.filename
+    } else {
+      if (value.path) {
+        filename = value.path !== "" ? path.basename(value.path).split("-")[0] : ""
+      } else {
+        filename = ""
+      }
+    }
+
+    return {
+      path: value.path ? value.path : "",
+      filename: filename,
+      lastModified: value.lastModified ? value.lastModified : "",
+    }
+  } else {
+    return {
+      path: value,
+      filename: value !== "" ? path.basename(value).split("-")[0] : value,
+      lastModified: "",
+    }
+  }
 }

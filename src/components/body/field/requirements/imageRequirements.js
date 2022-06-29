@@ -14,7 +14,7 @@ const ImageRequirements = ({ field }) => {
     field.aspectRatio
 
   const hasInfos =
-    field.value.hashedPath !== "" || field.value.lastModified !== "" || field.value.filename !== ""
+    field.value.path !== "" || field.value.lastModified !== "" || field.value.filename !== ""
 
   if (!hasRequirements && !hasInfos) {
     return null
