@@ -38,7 +38,7 @@ function renderView(field) {
     case "file":
       return (
         <File key={src}>
-          <a href={src}>{src.filename}</a>
+          <a href={src}>{field.value.filename}</a>
         </File>
       )
     case "video":
