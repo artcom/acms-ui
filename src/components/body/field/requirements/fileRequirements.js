@@ -2,9 +2,27 @@ import OverlayTrigger from "react-bootstrap/OverlayTrigger"
 import Popover from "react-bootstrap/Popover"
 import { upperCase } from "lodash"
 
+import { useState } from "react"
+
+import styled from "styled-components"
+
 import { InfoLg } from "react-bootstrap-icons"
 
+const StyledPopoverHeader = styled(Popover.Header)`
+  border-top: 1px solid lightgrey;
+  border-radius: 0px;
+`
+
 const FileRequirements = ({ field }) => {
+  const [showPopover, setShowPopover] = useState(false)
+
+  const handleOnMouseEnter = () => {
+    setShowPopover(true)
+  }
+  const handleOnMouseLeave = () => {
+    setShowPopover(false)
+  }
+
   const hasRequirements = field.allowedMimeTypes ? true : false
 
   const hasInfos =
@@ -14,10 +32,10 @@ const FileRequirements = ({ field }) => {
     return null
   }
   const Tooltip = (
-    <Popover>
+    <Popover onMouseEnter={handleOnMouseEnter} onMouseLeave={handleOnMouseLeave}>
       {field.allowedMimeTypes && (
         <>
-          <Popover.Header>File Requirements</Popover.Header>
+          <Popover.Header>Requirements</Popover.Header>
           <Popover.Body>
             <>
               Mime Types:{" "}
@@ -34,7 +52,7 @@ const FileRequirements = ({ field }) => {
       )}
       {hasInfos && (
         <>
-          <Popover.Header>Image Infos</Popover.Header>
+          <StyledPopoverHeader>Infos</StyledPopoverHeader>
           <Popover.Body>
             {field.value.filename !== "" && (
               <>
@@ -53,8 +71,18 @@ const FileRequirements = ({ field }) => {
   )
 
   return (
-    <OverlayTrigger placement="bottom" delay={{ show: 250, hide: 400 }} overlay={Tooltip}>
-      <InfoLg size={25} opacity={0.6} />
+    <OverlayTrigger
+      show={showPopover}
+      placement="bottom"
+      delay={{ show: 250, hide: 400 }}
+      overlay={Tooltip}
+    >
+      <InfoLg
+        onMouseEnter={handleOnMouseEnter}
+        onMouseLeave={handleOnMouseLeave}
+        size={25}
+        opacity={0.6}
+      />
     </OverlayTrigger>
   )
 }
