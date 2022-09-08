@@ -1,5 +1,6 @@
 /* eslint-disable no-undef */
 const webpack = require("webpack")
+const path = require("path")
 const HtmlWebpackPlugin = require("html-webpack-plugin")
 
 module.exports = (env = {}) => ({
@@ -10,7 +11,7 @@ module.exports = (env = {}) => ({
       {
         test: /\.(js|jsx)$/,
         exclude: /node_modules/,
-        loader: "babel-loader"
+        loader: "babel-loader",
       },
       {
         test: /\.css$/,
@@ -19,12 +20,12 @@ module.exports = (env = {}) => ({
           {
             loader: "css-loader",
             options: {
-              sourceMap: false
-            }
-          }
-        ]
-      }
-    ]
+              sourceMap: false,
+            },
+          },
+        ],
+      },
+    ],
   },
   resolve: {
     fallback: {
@@ -34,10 +35,15 @@ module.exports = (env = {}) => ({
   },
   plugins: [
     new HtmlWebpackPlugin({
-      template: "./src/index.html"
+      template: "./src/index.html",
     }),
     new webpack.ProvidePlugin({
       process: "process/browser",
-    })
+    }),
   ],
+  devServer: {
+    static: {
+      directory: path.join(__dirname, "public"),
+    },
+  },
 })
