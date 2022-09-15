@@ -73,7 +73,35 @@ export function createFieldValue(field) {
   }
 }
 
-export function isValidField(value, field) {
+export function isLocalizedField(field) {
+  return Array.isArray(field.localization)
+}
+
+export function isValidField(content, field) {
+  if (!isLocalizedField(field)) {
+    return isValidFieldValue(content, field)
+  }
+
+  // check if content contains the correct list of localizations
+  const locales = Object.keys(content)
+  if (locales.length !== field.localization.length) {
+    return false
+  }
+
+  for (let i = 0; i < locales.length; i++) {
+    if (locales[i] !== field.localization[i]) {
+      return false
+    }
+
+    if (!isValidFieldValue(content[locales[i]], field)) {
+      return false
+    }
+  }
+
+  return true
+}
+
+export function isValidFieldValue(value, field) {
   switch (field.type) {
     case "enum":
       return field.values.some((val) => isEqual(val.value, value))
@@ -103,24 +131,4 @@ export function isValidField(value, field) {
 
 export function isValidId(id) {
   return isString(id) && id.length > 0 && id === id.replace(/([^a-z0-9\s])/gi, "_")
-}
-
-// only supports primitives, arrays and objects
-export function deepEqual(a, b) {
-  if (a === b) {
-    return true
-  }
-
-  if (isPlainObject(a) && isPlainObject(b)) {
-    return (
-      Object.keys(a).length === Object.keys(b).length &&
-      !Object.keys(a).some((key) => !deepEqual(a[key], b[key]))
-    )
-  }
-
-  if (Array.isArray(a) && Array.isArray(b)) {
-    return a.length === b.length && !a.some((value, index) => !deepEqual(value, b[index]))
-  }
-
-  return false
 }

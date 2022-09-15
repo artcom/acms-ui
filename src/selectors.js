@@ -163,7 +163,7 @@ const selectFields = createSelector(
 
         return {
           ...field,
-          hasChanged: !utils.deepEqual(originalValue, changedValue),
+          hasChanged: originalValue !== changedValue,
           isNew: isUndefined(originalValue),
           path: fieldPath,
           value: changedValue,
@@ -199,7 +199,7 @@ const selectChildren = createSelector(
         return {
           id,
           name: startCase(id),
-          hasChanged: !utils.deepEqual(originalChildContent, changedChildContent),
+          hasChanged: originalChildContent !== changedChildContent,
           isNew: isUndefined(originalChildContent),
           isDeleted: isUndefined(changedChildContent),
           isEnabled: isEnabled(referenceContent, childTemplate),
@@ -230,7 +230,7 @@ const selectFixedChildren = createSelector(
       return {
         id,
         name: name || startCase(id),
-        hasChanged: !utils.deepEqual(originalChildContent, changedChildContent),
+        hasChanged: originalChildContent !== changedChildContent,
         isNew: isUndefined(originalChildContent),
         isEnabled: isEnabled(changedChildContent, childTemplate),
         subtitle: subtitle(changedChildContent, childTemplate),
