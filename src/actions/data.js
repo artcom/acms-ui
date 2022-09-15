@@ -51,7 +51,7 @@ function fixContent(content, draft, templates) {
 
   // fix invalid fields
   fields.forEach((field) => {
-    if (field.localization) {
+    if (Array.isArray(field.localization)) {
       draft[field.id] = {}
       for (const id of field.localization) {
         const value = content[field.id][id]
