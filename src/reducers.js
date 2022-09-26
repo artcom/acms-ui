@@ -1,6 +1,8 @@
 /* eslint-disable no-param-reassign */
 import get from "lodash/get"
+import isEqual from "lodash/isEqual"
 import set from "lodash/set"
+import produce from "immer"
 import unset from "lodash/unset"
 import { createReducer, original } from "@reduxjs/toolkit"
 import resolveConfig from "./resolveConfig"
@@ -31,29 +33,50 @@ export const originalContent = createReducer(null, {
   UPDATE_DATA: (draft, { payload }) => payload.originalContent,
 })
 
-export const changedContent = createReducer(null, {
-  UPDATE_DATA: (draft, { payload }) => payload.changedContent,
-  SET_VALUE: (draft, { payload }) => {
-    set(draft, payload.path, payload.value)
-  },
-  UNDO_CHANGES: (draft, { payload }) => {
-    set(draft, payload.path, payload.originalValue)
-  },
-  FINISH_ENTITY_CREATION: (draft, { payload }) => {
-    set(draft, payload.path, payload.values)
-  },
-  FINISH_ENTITY_RENAMING: (draft, { payload }) => {
-    if (payload.oldId !== payload.newId) {
-      const oldPath = [...payload.path, payload.oldId]
-      const newPath = [...payload.path, payload.newId]
-      set(draft, newPath, get(original(draft), oldPath))
-      unset(draft, oldPath)
+export function changedContent(state = null, action) {
+  switch (action.type) {
+    case "UPDATE_DATA":
+      return action.payload.changedContent
+    case "SET_VALUE": {
+      const { path, value, originalContent } = action.payload
+      const newState = produce(state, (draft) => {
+        set(draft, path, value)
+      })
+
+      return resetEqualPath(originalContent, newState, path)
     }
-  },
-  DELETE_ENTITY: (draft, { payload }) => {
-    unset(draft, payload.path)
-  },
-})
+    case "FINISH_ENTITY_CREATION": {
+      const { path, values, originalContent } = action.payload
+      const newState = produce(state, (draft) => {
+        set(draft, path, values)
+      })
+      return resetEqualPath(originalContent, newState, path)
+    }
+    case "FINISH_ENTITY_RENAMING":
+      {
+        const { oldId, newId, path, originalContent } = action.payload
+        if (oldId !== newId) {
+          const newState = produce(state, (draft) => {
+            const oldPath = [...path, oldId]
+            const newPath = [...path, newId]
+            set(draft, newPath, get(original(draft), oldPath))
+            unset(draft, oldPath)
+          })
+          return resetEqualPath(originalContent, newState, path)
+        }
+      }
+      break
+    case "DELETE_ENTITY": {
+      const { path, originalContent } = action.payload
+      const newState = produce(state, (draft) => {
+        unset(draft, path)
+      })
+      return resetEqualPath(originalContent, newState, path)
+    }
+    default:
+      return state
+  }
+}
 
 export const newEntity = createReducer(null, {
   START_ENTITY_CREATION: (draft, { payload }) => payload,
@@ -109,3 +132,28 @@ export const user = createReducer(null, {
 export const search = createReducer("", {
   SET_SEARCH: (draft, { payload }) => payload.search,
 })
+
+// replaces the upmost ancestors which is deep equal with the original content with the original content
+// to ensure referential equality
+function resetEqualPath(originalState, changedState, path) {
+  if (!isEqual(get(originalState, path), get(changedState, path))) {
+    return changedState
+  }
+
+  let index = 0
+  for (; index < path.length; index++) {
+    const partialPath = path.slice(0, -(index + 1))
+    if (!isEqual(get(originalState, partialPath), get(changedState, partialPath))) {
+      break
+    }
+  }
+
+  if (index < path.length) {
+    return produce(changedState, (draft) => {
+      const partialPath = path.slice(0, -index)
+      set(draft, partialPath, get(originalState, partialPath))
+    })
+  } else {
+    return originalState
+  }
+}

@@ -1,27 +1,20 @@
 import get from "lodash/get"
 
 export function setValue(path, value) {
-  return {
-    type: "SET_VALUE",
-    payload: {
-      path,
-      value,
-    },
+  return (dispatch, getState) => {
+    dispatch({
+      type: "SET_VALUE",
+      payload: {
+        path,
+        value,
+        originalContent: getState().originalContent,
+      },
+    })
   }
 }
 
 export function undoChanges(path) {
-  return (dispatch, getState) => {
-    const originalValue = get(getState().originalContent, path)
-
-    dispatch({
-      type: "UNDO_CHANGES",
-      payload: {
-        path,
-        originalValue,
-      },
-    })
-  }
+  return (dispatch, getState) => setValue(path, get(getState().originalContent, path))
 }
 
 export function clearSrcTag(path) {
