@@ -54,12 +54,12 @@ function fixContent(content, draft, templates) {
     if (!utils.isValidField(content[field.id], field)) {
       if (utils.isLocalizedField(field)) {
         draft[field.id] = {}
-        for (const id of field.localization) {
-          const originalValue = content[field.id][id]
+        for (const locale of field.localization) {
+          const originalValue = content[field.id][locale]
           if (utils.isValidFieldValue(originalValue, field)) {
-            draft[field.id][id] = originalValue
+            draft[field.id][locale] = originalValue
           } else {
-            draft[field.id][id] = utils.createFieldValue(field)
+            draft[field.id][locale] = utils.createFieldValue(field)
           }
         }
       } else {
