@@ -1,6 +1,6 @@
 import get from "lodash/get"
 
-export function changeValue(path, value) {
+export function setValue(path, value) {
   return {
     type: "SET_VALUE",
     payload: {
@@ -25,5 +25,5 @@ export function undoChanges(path) {
 }
 
 export function clearSrcTag(path) {
-  return changeValue(path, "")
+  return setValue(path, "")
 }

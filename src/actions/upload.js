@@ -4,7 +4,7 @@ import { toLower } from "lodash"
 import { sha256 } from "../utils/sha"
 
 import { showError } from "./error"
-import { changeValue } from "./value"
+import { setValue } from "./value"
 
 export function uploadFile(path, file, acmsAssets) {
   return async (dispatch) => {
@@ -18,7 +18,7 @@ export function uploadFile(path, file, acmsAssets) {
 
       const url = await acmsAssets.uploadFile(filename, file, { onUploadProgress })
 
-      dispatch(changeValue(path, url))
+      dispatch(setValue(path, url))
     } catch (error) {
       dispatch(cancelUpload(path))
       dispatch(showError("Failed to Upload File", error.stack))

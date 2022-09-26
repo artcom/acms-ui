@@ -3,7 +3,7 @@ import ListGroup from "react-bootstrap/ListGroup"
 import styled from "styled-components"
 
 import { uploadFile } from "../../../actions/upload"
-import { changeValue } from "../../../actions/value"
+import { setValue } from "../../../actions/value"
 
 import editors from "./editors"
 import StringRequirements from "./requirements/stringRequirements"
@@ -67,7 +67,7 @@ function renderEditor(field, textDirection, acmsAssets, dispatch, Editor) {
     <Editor
       field={field}
       textDirection={textDirection}
-      onChange={(newValue) => dispatch(changeValue(field.path, newValue))}
+      onChange={(newValue) => dispatch(setValue(field.path, newValue))}
       onFileSelect={(files) => dispatch(uploadFile(field.path, files[0], acmsAssets))}
     />
   )
