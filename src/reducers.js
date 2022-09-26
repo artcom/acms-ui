@@ -2,7 +2,7 @@
 import get from "lodash/get"
 import isEqual from "lodash/isEqual"
 import set from "lodash/set"
-import produce from "immer"
+import { produce } from "immer"
 import unset from "lodash/unset"
 import { createReducer, original } from "@reduxjs/toolkit"
 import resolveConfig from "./resolveConfig"
@@ -136,14 +136,14 @@ export const search = createReducer("", {
 // replaces the upmost ancestors which is deep equal with the original content with the original content
 // to ensure referential equality
 function resetEqualPath(originalState, changedState, path) {
-  if (!isEqual(get(originalState, path), get(changedState, path))) {
+  if (!isEqual(getContent(originalState, path), getContent(changedState, path))) {
     return changedState
   }
 
   let index = 0
   for (; index < path.length; index++) {
     const partialPath = path.slice(0, -(index + 1))
-    if (!isEqual(get(originalState, partialPath), get(changedState, partialPath))) {
+    if (!isEqual(getContent(originalState, partialPath), getContent(changedState, partialPath))) {
       break
     }
   }
@@ -151,9 +151,13 @@ function resetEqualPath(originalState, changedState, path) {
   if (index < path.length) {
     return produce(changedState, (draft) => {
       const partialPath = path.slice(0, -index)
-      set(draft, partialPath, get(originalState, partialPath))
+      set(draft, partialPath, getContent(originalState, partialPath))
     })
   } else {
     return originalState
   }
+}
+
+function getContent(content, path) {
+  return path.length > 0 ? get(content, path) : content
 }

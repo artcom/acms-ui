@@ -52,6 +52,7 @@ export function finishEntityCreation() {
       payload: {
         path: selectNewEntityPath(state),
         values: selectNewEntityValues(state),
+        originalContent: state.originalContent,
       },
     })
   }
@@ -93,6 +94,7 @@ export function finishEntityRenaming() {
         path: getPath(state),
         oldId,
         newId: camelCase(newId),
+        originalContent: state.originalContent,
       },
     })
   }
@@ -105,10 +107,14 @@ export function cancelEntityRenaming() {
 }
 
 export function deleteEntity(path) {
-  return {
-    type: "DELETE_ENTITY",
-    payload: {
-      path,
-    },
+  return (dispatch, getState) => {
+    const state = getState()
+    dispatch({
+      type: "DELETE_ENTITY",
+      payload: {
+        path,
+        originalContent: state.originalContent,
+      },
+    })
   }
 }
