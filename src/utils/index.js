@@ -82,18 +82,17 @@ export function isValidField(content, field) {
     return isValidFieldValue(content, field)
   }
 
-  // check if content contains the correct list of localizations
   const locales = Object.keys(content)
   if (locales.length !== field.localization.length) {
     return false
   }
 
-  for (let i = 0; i < locales.length; i++) {
-    if (locales[i] !== field.localization[i]) {
+  for (const locale of locales) {
+    if (!field.localization.includes(locale)) {
       return false
     }
 
-    if (!isValidFieldValue(content[locales[i]], field)) {
+    if (!isValidFieldValue(content[locale], field)) {
       return false
     }
   }
