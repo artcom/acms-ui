@@ -43,35 +43,38 @@ export function changedContent(state = null, action) {
         set(draft, path, value)
       })
 
-      return resetEqualPath(originalContent, newState, path)
+      return resetEqualAncestors(originalContent, newState, path)
     }
     case "FINISH_ENTITY_CREATION": {
       const { path, values, originalContent } = action.payload
       const newState = produce(state, (draft) => {
         set(draft, path, values)
       })
-      return resetEqualPath(originalContent, newState, path)
+
+      return resetEqualAncestors(originalContent, newState, path)
     }
-    case "FINISH_ENTITY_RENAMING":
-      {
-        const { oldId, newId, path, originalContent } = action.payload
-        if (oldId !== newId) {
-          const newState = produce(state, (draft) => {
-            const oldPath = [...path, oldId]
-            const newPath = [...path, newId]
-            set(draft, newPath, get(original(draft), oldPath))
-            unset(draft, oldPath)
-          })
-          return resetEqualPath(originalContent, newState, path)
-        }
+    case "FINISH_ENTITY_RENAMING": {
+      const { oldId, newId, path, originalContent } = action.payload
+      if (oldId === newId) {
+        return
       }
-      break
+
+      const newState = produce(state, (draft) => {
+        const oldPath = [...path, oldId]
+        const newPath = [...path, newId]
+        set(draft, newPath, get(original(draft), oldPath))
+        unset(draft, oldPath)
+      })
+
+      return resetEqualAncestors(originalContent, newState, path)
+    }
     case "DELETE_ENTITY": {
       const { path, originalContent } = action.payload
       const newState = produce(state, (draft) => {
         unset(draft, path)
       })
-      return resetEqualPath(originalContent, newState, path)
+
+      return resetEqualAncestors(originalContent, newState, path)
     }
     default:
       return state
@@ -133,31 +136,44 @@ export const search = createReducer("", {
   SET_SEARCH: (draft, { payload }) => payload.search,
 })
 
-// replaces the upmost ancestors which is deep equal with the original content with the original content
-// to ensure referential equality
-function resetEqualPath(originalState, changedState, path) {
-  if (!isEqual(getContent(originalState, path), getContent(changedState, path))) {
+// replaces the upmost ancestors which is deep equal with the original content with the
+// original content to ensure referential equality
+function resetEqualAncestors(originalState, changedState, path) {
+  // if the state value differs do nothing
+  if (!isContentEqual(originalState, changedState, path)) {
     return changedState
   }
 
-  let index = 0
-  for (; index < path.length; index++) {
-    const partialPath = path.slice(0, -(index + 1))
-    if (!isEqual(getContent(originalState, partialPath), getContent(changedState, partialPath))) {
+  // if the direct ancestor differs do nothing
+  let ancestorPath = path.slice(0, -1)
+  if (!isContentEqual(originalState, changedState, ancestorPath)) {
+    return changedState
+  }
+
+  // update ancestorPath with the upmost equal ancestors
+  while (ancestorPath.length > 0) {
+    const parentPath = ancestorPath.slice(0, -1)
+    if (!isContentEqual(originalState, changedState, parentPath)) {
       break
+    } else {
+      ancestorPath = parentPath
     }
   }
 
-  if (index < path.length) {
+  // return the resetted state
+  if (ancestorPath.length > 0) {
     return produce(changedState, (draft) => {
-      const partialPath = path.slice(0, -index)
-      set(draft, partialPath, getContent(originalState, partialPath))
+      set(draft, ancestorPath, get(originalState, ancestorPath))
     })
   } else {
     return originalState
   }
 }
 
-function getContent(content, path) {
-  return path.length > 0 ? get(content, path) : content
+function isContentEqual(originalState, changedState, path) {
+  if (path.length === 0) {
+    return isEqual(originalState, changedState)
+  } else {
+    return isEqual(get(originalState, path), get(changedState, path))
+  }
 }
