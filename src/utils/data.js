@@ -1,21 +1,8 @@
 import { get, isEqual, isString, isNumber, isUndefined, isPlainObject } from "lodash"
-
-const DEFAULT_TEMPLATE = { fields: [], fixedChildren: [], children: [] }
+import { getTemplate } from "./template"
 
 export function getFromPath(object, path, defaultValue) {
   return path.length === 0 ? object : get(object, path, defaultValue)
-}
-
-export function getTemplate(id, templates) {
-  if (templates[id]) {
-    return { ...DEFAULT_TEMPLATE, ...templates[id] }
-  }
-
-  if (templates[`${id}/index`]) {
-    return { ...DEFAULT_TEMPLATE, ...templates[`${id}/index`] }
-  }
-
-  return DEFAULT_TEMPLATE
 }
 
 export function createEntry(entry, templates) {
@@ -23,6 +10,10 @@ export function createEntry(entry, templates) {
 }
 
 export function createChildValue(template, templates) {
+  if (Array.isArray(template)) {
+    return {}
+  }
+
   const { fields = [], fixedChildren = [] } = getTemplate(template, templates)
 
   const child = { template }

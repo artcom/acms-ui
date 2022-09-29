@@ -7,7 +7,8 @@ import startCase from "lodash/startCase"
 import get from "lodash/get"
 import { evaluate } from "./utils/condition"
 import { isAllowed } from "./utils/permission"
-import * as utils from "./utils"
+import { createEntry, getFromPath, isValidId } from "./utils/data"
+import { getTemplate } from "./utils/template"
 import { isInSearch } from "./utils/search"
 
 const SEARCH_PLUGIN = true
@@ -50,8 +51,8 @@ export const getPathNames = createSelector(
   (path, changedContent, templates) =>
     path.map((id, index) => {
       const currentPath = path.slice(0, index)
-      const currentEntry = utils.getFromPath(changedContent, currentPath)
-      const template = utils.getTemplate(currentEntry.template, templates)
+      const currentEntry = getFromPath(changedContent, currentPath)
+      const template = getTemplate(currentEntry.template, templates)
       const fixedChild = template.fixedChildren.find((child) => child.id === id)
       return fixedChild && fixedChild.name ? fixedChild.name : startCase(id)
     })
@@ -73,8 +74,7 @@ export const selectNewEntity = createSelector(
     newEntity
       ? {
           ...newEntity,
-          isValidId:
-            utils.isValidId(newEntity.id) && isUndefined(changedEntity[camelCase(newEntity.id)]),
+          isValidId: isValidId(newEntity.id) && isUndefined(changedEntity[camelCase(newEntity.id)]),
           isVisible: true,
         }
       : { isVisible: false, id: "", templates: [] }
@@ -87,7 +87,7 @@ export const selectRenamedEntity = createSelector(
       ? {
           ...renamedEntity,
           isValidId:
-            utils.isValidId(renamedEntity.newId) &&
+            isValidId(renamedEntity.newId) &&
             (renamedEntity.oldId === camelCase(renamedEntity.newId) ||
               isUndefined(changedEntity[camelCase(renamedEntity.newId)])),
           isVisible: true,
@@ -101,7 +101,7 @@ export const selectNewEntityPath = createSelector([selectNewEntity, getPath], (n
 
 export const selectNewEntityValues = createSelector(
   [selectNewEntity, selectTemplates],
-  (newEntity, templates) => utils.createEntry(newEntity, templates)
+  (newEntity, templates) => createEntry(newEntity, templates)
 )
 
 export const selectOriginalEntity = createSelector(
@@ -116,7 +116,7 @@ export const selectTemplateId = createSelector(
 
 export const selectTemplate = createSelector(
   [selectTemplates, selectChangedEntity],
-  (templates, changedEntity) => utils.getTemplate(changedEntity[TEMPLATE_KEY], templates)
+  (templates, changedEntity) => getTemplate(changedEntity[TEMPLATE_KEY], templates)
 )
 
 export const selectAllSiblingTemplates = createSelector(
@@ -128,7 +128,7 @@ export const selectAllSiblingTemplates = createSelector(
 
     const parentPath = path.slice(0, path.length - 1)
     const parentEntity = getChangedEntity(changedContent, parentPath)
-    const parentTemplate = utils.getTemplate(parentEntity.template, templates)
+    const parentTemplate = getTemplate(parentEntity.template, templates)
     const allChildrenTemplates = [...parentTemplate.children]
 
     parentTemplate.fixedChildren.forEach(({ template }) => {
@@ -194,7 +194,7 @@ const selectChildren = createSelector(
         const originalChildContent = originalEntity[id]
         const changedChildContent = changedEntity[id]
         const referenceContent = changedChildContent || originalChildContent
-        const childTemplate = utils.getTemplate(referenceContent.template, templates)
+        const childTemplate = getTemplate(referenceContent.template, templates)
 
         return {
           id,
@@ -225,7 +225,7 @@ const selectFixedChildren = createSelector(
     template.fixedChildren.map(({ id, name }) => {
       const originalChildContent = originalEntity[id]
       const changedChildContent = changedEntity[id]
-      const childTemplate = utils.getTemplate(changedChildContent.template, templates)
+      const childTemplate = getTemplate(changedChildContent.template, templates)
 
       return {
         id,
@@ -287,7 +287,7 @@ export const getNeighbourSiblings = createSelector(
 
     const parentPath = path.slice(0, path.length - 1)
     const parentEntity = getChangedEntity(changedContent, parentPath)
-    const parentTemplate = utils.getTemplate(parentEntity.template, templates)
+    const parentTemplate = getTemplate(parentEntity.template, templates)
 
     const fieldIds = parentTemplate.fields.map(({ id }) => id)
     const fixedChildIds = parentTemplate.fixedChildren.map(({ id }) => id)

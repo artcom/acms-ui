@@ -4,7 +4,14 @@ import { createNextState } from "@reduxjs/toolkit"
 import isPlainObject from "lodash/isPlainObject"
 import { getChangedContent, selectTemplates, getVersion, getContentPath } from "../selectors"
 import { showError } from "./error"
-import * as utils from "../utils"
+import {
+  createChildValue,
+  createFieldValue,
+  isValidField,
+  isValidFieldValue,
+  isLocalizedField,
+} from "../utils/data"
+import { getTemplate, validateTemplates } from "../utils/template"
 
 export function loadData(acmsApi, acmsConfigPath) {
   return async (dispatch) => {
@@ -14,6 +21,8 @@ export function loadData(acmsApi, acmsConfigPath) {
         acmsApi.queryFiles(config.templatesPath, version),
         acmsApi.queryJson(config.contentPath, version),
       ])
+
+      validateTemplates(templates)
 
       const changedContent = createNextState(originalContent, (draft) =>
         fixContent(originalContent, draft, templates)
@@ -45,50 +54,61 @@ export function searchData(search) {
   }
 }
 
-function fixContent(content, draft, templates) {
+export function fixContent(content, draft, templates) {
   const { template, ...allEntries } = content
-  const { fields = [], fixedChildren = [], children = [] } = utils.getTemplate(template, templates)
+  const { fields = [], children = [] } = getTemplate(template, templates)
 
   // fix invalid fields
   fields.forEach((field) => {
-    if (!utils.isValidField(content[field.id], field)) {
-      if (utils.isLocalizedField(field)) {
+    if (!isValidField(content[field.id], field)) {
+      if (isLocalizedField(field)) {
         draft[field.id] = {}
         for (const locale of field.localization) {
           const originalValue = content[field.id][locale]
-          if (utils.isValidFieldValue(originalValue, field)) {
+          if (isValidFieldValue(originalValue, field)) {
             draft[field.id][locale] = originalValue
           } else {
-            draft[field.id][locale] = utils.createFieldValue(field)
+            draft[field.id][locale] = createFieldValue(field)
           }
         }
       } else {
-        draft[field.id] = utils.createFieldValue(field)
+        draft[field.id] = createFieldValue(field)
       }
     }
   })
 
-  // fix fixedChildren
-  fixedChildren.forEach((child) => {
+  // fix children
+  children.forEach((child) => {
     if (!isPlainObject(content[child.id])) {
-      draft[child.id] = utils.createChildValue(child.template, templates)
+      draft[child.id] = createChildValue(child.template, templates)
     } else {
-      fixContent(content[child.id], draft[child.id], templates)
+      // fixChildren(content[child.id], draft[child.id], child.template, templates)
     }
   })
 
-  // fix additional children
-  const namedEntries = [...fields, ...fixedChildren].map(({ id }) => id)
-  const additionalChildIds = Object.keys(allEntries).filter((id) => !namedEntries.includes(id))
-  additionalChildIds.forEach((id) => {
-    if (!children.includes(content[id].template)) {
-      // delete children with invalid template
-      delete draft[id]
-    } else {
-      fixContent(content[id], draft[id], templates)
-    }
-  })
+  // delete all unknown entries
+  const knownIds = [...fields.map(({ id }) => id), ...children.map(({ id }) => id)]
+  Object.keys(allEntries)
+    .filter((id) => !knownIds.includes(id))
+    .forEach((id) => delete draft[id])
 }
+
+// function fixChildren(content, draft, template, templates) {
+//   if (Array.isArray(template)) {
+//     fixChildren(content[child.id], draft[child.id], child.template, templates)
+//   } else {
+//     fixContent(content[child.id], draft[child.id], templates)
+//   }
+//   const childIds = Object.keys(content).sort()
+//   for (const childId of childIds) {
+//     fixContent(content[childId], draft[childId], templates)
+//   }
+
+//   // fix child indexes
+//   childIds.forEach((childId, index) => {
+//     // ensure no data is overwritten
+//   })
+// }
 
 export function saveData(acmsApi, acmsConfigPath) {
   return async (dispatch, getState) => {
@@ -113,7 +133,7 @@ export function saveData(acmsApi, acmsConfigPath) {
 
 function toFiles({ template, ...content }, templates, path = []) {
   const files = {}
-  const fields = utils.getTemplate(template, templates).fields || []
+  const fields = getTemplate(template, templates).fields || []
 
   // add index file
   const fieldIds = fields.map(({ id }) => id)
