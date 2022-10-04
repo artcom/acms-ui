@@ -136,21 +136,16 @@ export const search = createReducer("", {
   SET_SEARCH: (draft, { payload }) => payload.search,
 })
 
-// replaces the upmost ancestors which is deep equal with the original content with the
-// original content to ensure referential equality
+// replaces the upmost ancestor which is deep equal to the original ancestor with the original
+// content to ensure referential equality
 function resetEqualAncestors(originalState, changedState, path) {
   // if the state value differs do nothing
   if (!isContentEqual(originalState, changedState, path)) {
     return changedState
   }
 
-  // if the direct ancestor differs do nothing
-  let ancestorPath = path.slice(0, -1)
-  if (!isContentEqual(originalState, changedState, ancestorPath)) {
-    return changedState
-  }
-
   // update ancestorPath with the upmost equal ancestors
+  let ancestorPath = path
   while (ancestorPath.length > 0) {
     const parentPath = ancestorPath.slice(0, -1)
     if (!isContentEqual(originalState, changedState, parentPath)) {
@@ -160,7 +155,7 @@ function resetEqualAncestors(originalState, changedState, path) {
     }
   }
 
-  // return the resetted state
+  // return the equal ancestor
   if (ancestorPath.length > 0) {
     return produce(changedState, (draft) => {
       set(draft, ancestorPath, get(originalState, ancestorPath))
