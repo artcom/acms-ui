@@ -18,16 +18,16 @@ const StyledCardHeader = styled(Card.Header)`
   display: flex;
   justify-content: space-between;
 `
+const StyledErrorField = styled.div`
+  padding: 10px 20px;
+  color: red;
+`
 
 const FieldContent = ({ acmsAssets, dispatch, field, languages, textDirection }) => {
   const Editor = editors[field.type]
 
   if (!Editor) {
-    return (
-      <span>
-        Unknown field type <code>{field.type}</code>
-      </span>
-    )
+    return <StyledErrorField>Unknown field type &apos;{field.type}&apos;</StyledErrorField>
   }
 
   return field.localization
