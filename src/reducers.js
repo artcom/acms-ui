@@ -2,9 +2,8 @@
 import get from "lodash/get"
 import isEqual from "lodash/isEqual"
 import set from "lodash/set"
-import { produce } from "immer"
 import unset from "lodash/unset"
-import { createReducer, original } from "@reduxjs/toolkit"
+import { createNextState, createReducer, original } from "@reduxjs/toolkit"
 import resolveConfig from "./resolveConfig"
 
 export const config = createReducer(null, {
@@ -39,7 +38,7 @@ export function changedContent(state = null, action) {
       return action.payload.changedContent
     case "SET_VALUE": {
       const { path, value, originalContent } = action.payload
-      const newState = produce(state, (draft) => {
+      const newState = createNextState(state, (draft) => {
         set(draft, path, value)
       })
 
@@ -47,7 +46,7 @@ export function changedContent(state = null, action) {
     }
     case "FINISH_ENTITY_CREATION": {
       const { path, values, originalContent } = action.payload
-      const newState = produce(state, (draft) => {
+      const newState = createNextState(state, (draft) => {
         set(draft, path, values)
       })
 
@@ -59,7 +58,7 @@ export function changedContent(state = null, action) {
         return
       }
 
-      const newState = produce(state, (draft) => {
+      const newState = createNextState(state, (draft) => {
         const oldPath = [...path, oldId]
         const newPath = [...path, newId]
         set(draft, newPath, get(original(draft), oldPath))
@@ -70,7 +69,7 @@ export function changedContent(state = null, action) {
     }
     case "DELETE_ENTITY": {
       const { path, originalContent } = action.payload
-      const newState = produce(state, (draft) => {
+      const newState = createNextState(state, (draft) => {
         unset(draft, path)
       })
 
@@ -157,7 +156,7 @@ function resetEqualAncestors(originalState, changedState, path) {
 
   // return the equal ancestor
   if (ancestorPath.length > 0) {
-    return produce(changedState, (draft) => {
+    return createNextState(changedState, (draft) => {
       set(draft, ancestorPath, get(originalState, ancestorPath))
     })
   } else {
