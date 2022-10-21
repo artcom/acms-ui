@@ -10,10 +10,14 @@ export function loadData(acmsApi, acmsConfigPath) {
   return async (dispatch) => {
     try {
       const { data: config, version } = await acmsApi.queryJson(acmsConfigPath)
-      const [{ data: templates }, { data: originalContent }] = await Promise.all([
+      const [{ data: unresolvedTemplates }, { data: originalContent }] = await Promise.all([
         acmsApi.queryFiles(config.templatesPath, version),
         acmsApi.queryJson(config.contentPath, version),
       ])
+
+      const templates = createNextState(unresolvedTemplates, (draft) =>
+        resolveCustomTypes(unresolvedTemplates, draft, config.customTypes)
+      )
 
       const changedContent = createNextState(originalContent, (draft) =>
         fixContent(originalContent, draft, templates)
@@ -43,6 +47,21 @@ export function searchData(search) {
       search,
     },
   }
+}
+
+function resolveCustomTypes(templates, draft, customTypes = {}) {
+  Object.entries(templates).forEach(([templateId, { fields = [] }]) => {
+    fields.forEach((field, index) => {
+      const customType = customTypes[field.type]
+      if (customType) {
+        draft[templateId].fields[index] = {
+          ...customType,
+          ...field,
+          type: customType.type,
+        }
+      }
+    })
+  })
 }
 
 function fixContent(content, draft, templates) {
