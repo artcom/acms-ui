@@ -7,6 +7,7 @@ import { setValue } from "../../../actions/value"
 
 import editors from "./editors"
 import StringRequirements from "./requirements/stringRequirements"
+import PreviewButton from "./previewButton"
 
 const StyledListGroupItem = styled(ListGroup.Item)`
   padding: 0px;
@@ -21,6 +22,15 @@ const StyledCardHeader = styled(Card.Header)`
 const StyledErrorField = styled.div`
   padding: 10px 20px;
   color: red;
+`
+
+const ContentContainer = styled.div`
+  display: flex;
+  flex-direction: row;
+`
+
+const EditorContainer = styled.div`
+  flex-grow: 1;
 `
 
 const FieldContent = ({ acmsAssets, dispatch, field, languages, textDirection }) => {
@@ -64,12 +74,17 @@ function renderLocalizedEditors(field, languages, textDirection, acmsAssets, dis
 
 function renderEditor(field, textDirection, acmsAssets, dispatch, Editor) {
   return (
-    <Editor
-      field={field}
-      textDirection={textDirection}
-      onChange={(newValue) => dispatch(setValue(field.path, newValue))}
-      onFileSelect={(files) => dispatch(uploadFile(field.path, files[0], acmsAssets))}
-    />
+    <ContentContainer>
+      <EditorContainer>
+        <Editor
+          field={field}
+          textDirection={textDirection}
+          onChange={(newValue) => dispatch(setValue(field.path, newValue))}
+          onFileSelect={(files) => dispatch(uploadFile(field.path, files[0], acmsAssets))}
+        />
+      </EditorContainer>
+      {field.preview && <PreviewButton preview={field.preview} value={field.value} />}
+    </ContentContainer>
   )
 }
 
