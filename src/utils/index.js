@@ -82,6 +82,10 @@ export function isValidField(content, field) {
     return isValidFieldValue(content, field)
   }
 
+  if (!isPlainObject(content)) {
+    return false
+  }
+
   const locales = Object.keys(content)
   if (locales.length !== field.localization.length) {
     return false
