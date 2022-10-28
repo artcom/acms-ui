@@ -15,6 +15,8 @@ const PreviewButton = ({ preview, value }) => {
     <StyledButton
       variant="secondary"
       href={preview.replaceAll("${value}", encodeURIComponent(JSON.stringify(value)))}
+      target="_blank"
+      rel="noopener noreferrer"
     >
       <Play size={25} opacity={0.6} />
     </StyledButton>
