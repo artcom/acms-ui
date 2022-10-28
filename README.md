@@ -44,7 +44,14 @@ Create a configuration file (e.g. `acmsConfig.json`) inside the [`acms-config`](
         "exclude": []                        // list of glob patterns defining which fields to exclude, default: shown here
       }
     }
-  ]
+  ],
+   "customTypes": {                          // a collection of custom types with preconfigured properties, the custom type id can be used in templates
+    "myCustomString": {
+      "type": "string",
+      "maxLength": 123,
+      "multiline": true
+    }
+  }
 }
 ```
 
@@ -67,13 +74,14 @@ Template files specify the structure of the content data while the actual values
 #### Example
 ```jsonc
 {
-  "fields": [                            // optional list of fields
+  "fields": [                                                     // optional list of fields
         {
-            "id": "title",               // unique id within the whole template
-            "name": "Main Title",        // optional display name shown in the ACMS UI, default startCase(id)
-            "type": "string",            // field type see below
-            "maxLength": 8,              // optional type specific properties
-            "localization": ["en", "ar"] // optional localization
+            "id": "title",                                        // unique id within the whole template
+            "name": "Main Title",                                 // optional display name shown in the ACMS UI, default startCase(id)
+            "type": "string",                                     // field type see below
+            "maxLength": 8,                                       // optional type specific properties
+            "localization": ["en", "ar"],                         // optional localization
+            "preview": "https://previewer.de/?fieldValue=${value}"// optional preview link
         },
         {
             "id": "enabled",
