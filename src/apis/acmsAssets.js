@@ -1,5 +1,5 @@
 import axios from "axios"
-import * as urlJoin from "url-join"
+import urlJoin from "url-join"
 
 export default class AcmsAssets {
   constructor(url) {
