@@ -1,6 +1,9 @@
 #!/usr/bin/env sh
 set -eo pipefail
 
+npm install
+npm run build
+
 apk update && apk add zip
 echo {\"version\": \"$COMMIT_TAG\", \"commit\": \"$COMMIT_HASH\", \"buildJob\": $CI_JOB_ID} > dist/build.json
 mkdir artifacts
