@@ -10,7 +10,7 @@ export function isInSearch(searchValue, content) {
   switch (typeof content) {
     case "object":
       return Object.entries(content).some(
-        ([key, value]) => key !== "template" && isInSearch(searchValue, value)
+        ([key, value]) => key !== "template" && isInSearch(searchValue, value),
       )
     case "number":
       return content.toString().includes(searchValue.replace(",", "."))

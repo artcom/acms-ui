@@ -1,5 +1,3 @@
-/* eslint-disable no-param-reassign */
-
 import { createNextState } from "@reduxjs/toolkit"
 import isPlainObject from "lodash/isPlainObject"
 import { getChangedContent, selectTemplates, getVersion, getContentPath } from "../selectors"
@@ -16,11 +14,11 @@ export function loadData(acmsApi, acmsConfigPath) {
       ])
 
       const templates = createNextState(unresolvedTemplates, (draft) =>
-        resolveCustomTypes(unresolvedTemplates, draft, config.customTypes)
+        resolveCustomTypes(unresolvedTemplates, draft, config.customTypes),
       )
 
       const changedContent = createNextState(originalContent, (draft) =>
-        fixContent(originalContent, draft, templates)
+        fixContent(originalContent, draft, templates),
       )
 
       dispatch({
@@ -138,7 +136,7 @@ function toFiles({ template, ...content }, templates, path = []) {
   const fieldIds = fields.map(({ id }) => id)
   files[[...path, "index"].join("/")] = fieldIds.reduce(
     (result, id) => ({ ...result, [id]: content[id] }),
-    { template }
+    { template },
   )
 
   // add all fixed children files

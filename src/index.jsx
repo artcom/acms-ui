@@ -37,6 +37,6 @@ bootstrap().then(async ({ acmsApi, acmsAssets, acmsConfigPath }) => {
       <ApiContext.Provider value={{ acmsApi, acmsAssets }}>
         <Application />
       </ApiContext.Provider>
-    </Provider>
+    </Provider>,
   )
 })

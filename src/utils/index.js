@@ -36,7 +36,7 @@ export function createChildValue(template, templates) {
 export function createField(field) {
   if (field.localization) {
     return field.localization.reduce((localizedField, id) => {
-      localizedField[id] = createFieldValue(field) // eslint-disable-line no-param-reassign
+      localizedField[id] = createFieldValue(field)
       return localizedField
     }, {})
   } else {

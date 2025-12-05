@@ -4,7 +4,8 @@ import Form from "react-bootstrap/Form"
 
 const Image = styled.img`
   max-width: 100%;
-  background-image: linear-gradient(to right, rgba(150, 150, 150, 0.75), rgba(150, 150, 150, 0.75)),
+  background-image:
+    linear-gradient(to right, rgba(150, 150, 150, 0.75), rgba(150, 150, 150, 0.75)),
     linear-gradient(to right, black 50%, white 50%),
     linear-gradient(to bottom, black 50%, white 50%);
   background-blend-mode: normal, difference, normal;
@@ -46,7 +47,7 @@ export default function ImageEditor({ field }) {
 
 function isValid(
   { naturalWidth, naturalHeight },
-  { width, height, maxWidth, minWidth, maxHeight, minHeight, aspectRatio }
+  { width, height, maxWidth, minWidth, maxHeight, minHeight, aspectRatio },
 ) {
   if (width && width !== naturalWidth) {
     return false

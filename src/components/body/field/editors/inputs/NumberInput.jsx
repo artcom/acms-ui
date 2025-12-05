@@ -37,6 +37,7 @@ const NumberInput = ({ field, onChange }) => {
   }
 
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setStringValue(field.value.toString())
   }, [field.value])
 

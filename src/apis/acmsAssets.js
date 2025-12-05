@@ -19,7 +19,7 @@ export default class AcmsAssets {
     try {
       await this.api.request({ method: "PROPFIND", headers: { Depth: 0 }, url: path })
       return true
-    } catch (error) {
+    } catch {
       return false
     }
   }

@@ -20,6 +20,6 @@ function evaluateCommand(expression, values) {
   const handler = handlers[command]
   return handler(
     args.map((arg) => evaluate(arg, values)),
-    values
+    values,
   )
 }

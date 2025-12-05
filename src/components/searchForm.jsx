@@ -37,7 +37,7 @@ const SearchForm = () => {
     debounce((v) => {
       dispatch(searchData(v))
     }, 300),
-    []
+    [],
   )
 
   useEffect(() => debouncedSearch(value), [debouncedSearch, value])

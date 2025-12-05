@@ -42,7 +42,7 @@ export const selectTemplates = createSelector([getTemplates], (templates) =>
     children: [],
     fixedChildren: [],
     ...template,
-  }))
+  })),
 )
 
 export const getPathNames = createSelector(
@@ -54,7 +54,7 @@ export const getPathNames = createSelector(
       const template = utils.getTemplate(currentEntry.template, templates)
       const fixedChild = template.fixedChildren.find((child) => child.id === id)
       return fixedChild && fixedChild.name ? fixedChild.name : startCase(id)
-    })
+    }),
 )
 
 function getChangedEntity(changedContent, path) {
@@ -64,7 +64,7 @@ function getChangedEntity(changedContent, path) {
 
 export const selectChangedEntity = createSelector(
   [getChangedContent, getPath],
-  (changedContent, path) => getChangedEntity(changedContent, path)
+  (changedContent, path) => getChangedEntity(changedContent, path),
 )
 
 export const selectNewEntity = createSelector(
@@ -77,7 +77,7 @@ export const selectNewEntity = createSelector(
             utils.isValidId(newEntity.id) && isUndefined(changedEntity[camelCase(newEntity.id)]),
           isVisible: true,
         }
-      : { isVisible: false, id: "", templates: [] }
+      : { isVisible: false, id: "", templates: [] },
 )
 
 export const selectRenamedEntity = createSelector(
@@ -92,7 +92,7 @@ export const selectRenamedEntity = createSelector(
               isUndefined(changedEntity[camelCase(renamedEntity.newId)])),
           isVisible: true,
         }
-      : { isVisible: false, newId: "" }
+      : { isVisible: false, newId: "" },
 )
 export const selectNewEntityPath = createSelector([selectNewEntity, getPath], (newEntity, path) => [
   ...path,
@@ -101,22 +101,22 @@ export const selectNewEntityPath = createSelector([selectNewEntity, getPath], (n
 
 export const selectNewEntityValues = createSelector(
   [selectNewEntity, selectTemplates],
-  (newEntity, templates) => utils.createEntry(newEntity, templates)
+  (newEntity, templates) => utils.createEntry(newEntity, templates),
 )
 
 export const selectOriginalEntity = createSelector(
   [getOriginalContent, getPath],
-  (originalContent, path) => (path.length ? get(originalContent, path) : originalContent)
+  (originalContent, path) => (path.length ? get(originalContent, path) : originalContent),
 )
 
 export const selectTemplateId = createSelector(
   [selectChangedEntity],
-  (changedEntity) => changedEntity[TEMPLATE_KEY]
+  (changedEntity) => changedEntity[TEMPLATE_KEY],
 )
 
 export const selectTemplate = createSelector(
   [selectTemplates, selectChangedEntity],
-  (templates, changedEntity) => utils.getTemplate(changedEntity[TEMPLATE_KEY], templates)
+  (templates, changedEntity) => utils.getTemplate(changedEntity[TEMPLATE_KEY], templates),
 )
 
 export const selectAllSiblingTemplates = createSelector(
@@ -136,19 +136,19 @@ export const selectAllSiblingTemplates = createSelector(
     })
 
     return allChildrenTemplates.filter(
-      (item, index) => allChildrenTemplates.indexOf(item) === index
+      (item, index) => allChildrenTemplates.indexOf(item) === index,
     )
-  }
+  },
 )
 
 export const selectTemplateChildren = createSelector(
   [selectTemplate],
-  (template) => template.children
+  (template) => template.children,
 )
 
 export const selectTemplateFixedChildren = createSelector(
   [selectTemplate],
-  (template) => template.fixedChildren
+  (template) => template.fixedChildren,
 )
 
 const selectFields = createSelector(
@@ -169,7 +169,7 @@ const selectFields = createSelector(
           value: changedValue,
           progress: progress[fieldPath.toString()],
         }
-      })
+      }),
 )
 
 export const selectVisibleFields = createSelector(
@@ -177,7 +177,7 @@ export const selectVisibleFields = createSelector(
   (fields, permissions, search) =>
     fields
       .filter((field) => isAllowed(field.path, permissions))
-      .filter((field) => isInSearch(search.toLowerCase(), field.value))
+      .filter((field) => isInSearch(search.toLowerCase(), field.value)),
 )
 
 const selectChildren = createSelector(
@@ -208,7 +208,7 @@ const selectChildren = createSelector(
           changedChildContent,
         }
       })
-  }
+  },
 )
 
 export const selectVisibleChildren = createSelector(
@@ -216,7 +216,7 @@ export const selectVisibleChildren = createSelector(
   (children, permissions, search) =>
     children
       .filter((child) => isAllowed(child.path, permissions))
-      .filter((child) => isInSearch(search.toLowerCase(), child.changedChildContent))
+      .filter((child) => isInSearch(search.toLowerCase(), child.changedChildContent)),
 )
 
 const selectFixedChildren = createSelector(
@@ -237,7 +237,7 @@ const selectFixedChildren = createSelector(
         path: [...path, id],
         changedChildContent,
       }
-    })
+    }),
 )
 
 function isEnabled(content, { enabledField, fields }) {
@@ -275,7 +275,7 @@ export const selectVisibleFixedChildren = createSelector(
   (children, permissions, search) =>
     children
       .filter((child) => isAllowed(child.path, permissions))
-      .filter((child) => isInSearch(search.toLowerCase(), child.changedChildContent))
+      .filter((child) => isInSearch(search.toLowerCase(), child.changedChildContent)),
 )
 
 export const getNeighbourSiblings = createSelector(
@@ -314,7 +314,7 @@ export const getNeighbourSiblings = createSelector(
       getSibling(siblingsIds[ownIndex - 1], parentPath, parentTemplate.fixedChildren),
       getSibling(siblingsIds[ownIndex + 1], parentPath, parentTemplate.fixedChildren),
     ]
-  }
+  },
 )
 
 function isSiblingInSearch(changedContent, path, id, search) {

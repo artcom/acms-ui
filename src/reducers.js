@@ -1,4 +1,3 @@
-/* eslint-disable no-param-reassign */
 import get from "lodash/get"
 import isEqual from "lodash/isEqual"
 import set from "lodash/set"

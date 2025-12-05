@@ -3,6 +3,7 @@
   "version": "2.19.0",
   "repository": "artcom/acms-ui",
   "license": "MIT",
+  "type": "module",
   "scripts": {
     "lint": "eslint src --fix",
     "format": "prettier --write src",
@@ -30,13 +31,15 @@
   },
   "devDependencies": {
     "@babel/core": "^7.28.5",
+    "@eslint/js": "^9.39.1",
     "@vitejs/plugin-react": "^5.1.1",
-    "eslint": "^8.57.1",
-    "eslint-config-prettier": "^8.10.2",
+    "eslint": "^9.39.1",
+    "eslint-config-prettier": "^10.1.8",
     "eslint-plugin-import": "^2.32.0",
     "eslint-plugin-react": "^7.37.5",
-    "eslint-plugin-react-hooks": "^4.6.2",
-    "prettier": "^2.8.8",
+    "eslint-plugin-react-hooks": "^7.0.1",
+    "globals": "^16.5.0",
+    "prettier": "^3.7.4",
     "vite": "^7.2.6"
   }
 }
