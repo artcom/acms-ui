@@ -13,8 +13,6 @@ export default defineConfig({
     },
     resolve: {
         alias: {
-            // Fix for packages relying on process/browser being available
-            process: "process/browser",
         },
     },
     optimizeDeps: {

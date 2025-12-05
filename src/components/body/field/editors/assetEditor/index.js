@@ -1,5 +1,5 @@
 import styled from "styled-components"
-import path from "path-browserify"
+
 import ProgressBar from "react-bootstrap/ProgressBar"
 import ImageEditor from "./imageEditor"
 import FileSelector from "../fileSelector"
@@ -37,7 +37,7 @@ function renderView(field) {
     case "audio":
       return <Audio controls key={src} src={src} />
     case "file":
-      return <File key={src}><a href={src}>{path.basename(src).split("-")[0]}</a></File>
+      return <File key={src}><a href={src}>{src.split('/').pop().split("-")[0]}</a></File>
     case "video":
       return <Video controls key={src} src={src} />
     case "image":
