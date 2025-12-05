@@ -6,30 +6,31 @@ import unset from "lodash/unset"
 import { createNextState, createReducer, original } from "@reduxjs/toolkit"
 import resolveConfig from "./resolveConfig"
 
-export const config = createReducer(null, {
-  UPDATE_DATA: (draft, { payload }) => resolveConfig(payload.config),
+export const config = createReducer(null, (builder) => {
+  builder.addCase("UPDATE_DATA", (draft, { payload }) => resolveConfig(payload.config))
 })
 
-export const acmsConfigPath = createReducer(null, {
-  CONFIG_PATH: (draft, { payload }) => payload.path,
+export const acmsConfigPath = createReducer(null, (builder) => {
+  builder.addCase("CONFIG_PATH", (draft, { payload }) => payload.path)
 })
 
-export const isSaving = createReducer(false, {
-  START_SAVING: () => true,
-  UPDATE_DATA: () => false,
-  SHOW_ERROR: () => false,
+export const isSaving = createReducer(false, (builder) => {
+  builder
+    .addCase("START_SAVING", () => true)
+    .addCase("UPDATE_DATA", () => false)
+    .addCase("SHOW_ERROR", () => false)
 })
 
-export const version = createReducer(null, {
-  UPDATE_DATA: (draft, { payload }) => payload.version,
+export const version = createReducer(null, (builder) => {
+  builder.addCase("UPDATE_DATA", (draft, { payload }) => payload.version)
 })
 
-export const templates = createReducer(null, {
-  UPDATE_DATA: (draft, { payload }) => payload.templates,
+export const templates = createReducer(null, (builder) => {
+  builder.addCase("UPDATE_DATA", (draft, { payload }) => payload.templates)
 })
 
-export const originalContent = createReducer(null, {
-  UPDATE_DATA: (draft, { payload }) => payload.originalContent,
+export const originalContent = createReducer(null, (builder) => {
+  builder.addCase("UPDATE_DATA", (draft, { payload }) => payload.originalContent)
 })
 
 export function changedContent(state = null, action) {
@@ -80,59 +81,60 @@ export function changedContent(state = null, action) {
   }
 }
 
-export const newEntity = createReducer(null, {
-  START_ENTITY_CREATION: (draft, { payload }) => payload,
-  UPDATE_ENTITY_CREATION: (draft, { payload }) => {
-    Object.entries(payload).forEach(([key, value]) => {
-      draft[key] = value
+export const newEntity = createReducer(null, (builder) => {
+  builder
+    .addCase("START_ENTITY_CREATION", (draft, { payload }) => payload)
+    .addCase("UPDATE_ENTITY_CREATION", (draft, { payload }) => {
+      Object.entries(payload).forEach(([key, value]) => {
+        draft[key] = value
+      })
     })
-  },
-  FINISH_ENTITY_CREATION: () => null,
-  CANCEL_ENTITY_CREATION: () => null,
+    .addCase("FINISH_ENTITY_CREATION", () => null)
+    .addCase("CANCEL_ENTITY_CREATION", () => null)
 })
 
-export const renamedEntity = createReducer(null, {
-  START_ENTITY_RENAMING: (draft, { payload }) => payload,
-  UPDATE_ENTITY_RENAMING: (draft, { payload }) => {
-    draft.newId = payload.newId
-  },
-  FINISH_ENTITY_RENAMING: () => null,
-  CANCEL_ENTITY_RENAMING: () => null,
+export const renamedEntity = createReducer(null, (builder) => {
+  builder
+    .addCase("START_ENTITY_RENAMING", (draft, { payload }) => payload)
+    .addCase("UPDATE_ENTITY_RENAMING", (draft, { payload }) => {
+      draft.newId = payload.newId
+    })
+    .addCase("FINISH_ENTITY_RENAMING", () => null)
+    .addCase("CANCEL_ENTITY_RENAMING", () => null)
 })
 
-export const path = createReducer([], {
-  UPDATE_PATH: (draft, { payload }) => payload.path,
+export const path = createReducer([], (builder) => {
+  builder.addCase("UPDATE_PATH", (draft, { payload }) => payload.path)
 })
 
-export const flash = createReducer(null, {
-  SHOW_ERROR: (draft, { payload }) => payload,
-  HIDE_ERROR: () => null,
+export const flash = createReducer(null, (builder) => {
+  builder
+    .addCase("SHOW_ERROR", (draft, { payload }) => payload)
+    .addCase("HIDE_ERROR", () => null)
 })
 
-export const progress = createReducer(
-  {},
-  {
-    START_UPLOAD: (draft, { payload }) => {
+export const progress = createReducer({}, (builder) => {
+  builder
+    .addCase("START_UPLOAD", (draft, { payload }) => {
       draft[payload.path.toString()] = 0
-    },
-    PROGRESS_UPLOAD: (draft, { payload }) => {
+    })
+    .addCase("PROGRESS_UPLOAD", (draft, { payload }) => {
       draft[payload.path.toString()] = payload.progress
-    },
-    SET_VALUE: (draft, { payload }) => {
+    })
+    .addCase("SET_VALUE", (draft, { payload }) => {
       delete draft[payload.path.toString()]
-    },
-    CANCEL_UPLOAD: (draft, { payload }) => {
+    })
+    .addCase("CANCEL_UPLOAD", (draft, { payload }) => {
       delete draft[payload.path.toString()]
-    },
-  }
-)
-
-export const user = createReducer(null, {
-  UPDATE_USER: (draft, { payload }) => payload.user,
+    })
 })
 
-export const search = createReducer("", {
-  SET_SEARCH: (draft, { payload }) => payload.search,
+export const user = createReducer(null, (builder) => {
+  builder.addCase("UPDATE_USER", (draft, { payload }) => payload.user)
+})
+
+export const search = createReducer("", (builder) => {
+  builder.addCase("SET_SEARCH", (draft, { payload }) => payload.search)
 })
 
 // replaces the upmost ancestor which is deep equal to the original ancestor with the original
