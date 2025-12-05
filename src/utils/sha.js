@@ -1,20 +1,8 @@
-import createHash from "sha.js"
 
 export async function sha256(file) {
-  const buffer = await toTypedArray(file)
-  const hash = createHash("sha256")
-  return hash.update(buffer).digest("hex")
-}
-
-function toTypedArray(file) {
-  return new Promise((resolve, reject) => {
-    const fileReader = new FileReader()
-    fileReader.onload = (event) => {
-      resolve(new Uint8Array(event.target.result))
-    }
-    fileReader.onerror = (event) => {
-      reject(event.target.error)
-    }
-    fileReader.readAsArrayBuffer(file)
-  })
+  const buffer = await file.arrayBuffer()
+  const hashBuffer = await crypto.subtle.digest("SHA-256", buffer)
+  const hashArray = Array.from(new Uint8Array(hashBuffer))
+  const hashHex = hashArray.map((b) => b.toString(16).padStart(2, "0")).join("")
+  return hashHex
 }
