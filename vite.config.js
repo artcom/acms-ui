@@ -7,14 +7,7 @@ export default defineConfig({
         port: 8081,
         open: true,
     },
-    define: {
-        'process.env': {},
-        global: 'window', // Polyfill global if needed
-    },
-    resolve: {
-        alias: {
-        },
-    },
+
     optimizeDeps: {
         esbuildOptions: {
             loader: {
