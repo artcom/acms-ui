@@ -8,16 +8,5 @@ export default defineConfig({
         open: true,
     },
 
-    optimizeDeps: {
-        esbuildOptions: {
-            loader: {
-                '.js': 'jsx',
-            },
-        },
-    },
-    esbuild: {
-        loader: "jsx",
-        include: /src\/.*\.js?$/,
-        exclude: [],
-    },
+
 });
