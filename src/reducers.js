@@ -108,9 +108,7 @@ export const path = createReducer([], (builder) => {
 })
 
 export const flash = createReducer(null, (builder) => {
-  builder
-    .addCase("SHOW_ERROR", (draft, { payload }) => payload)
-    .addCase("HIDE_ERROR", () => null)
+  builder.addCase("SHOW_ERROR", (draft, { payload }) => payload).addCase("HIDE_ERROR", () => null)
 })
 
 export const progress = createReducer({}, (builder) => {

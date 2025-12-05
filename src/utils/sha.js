@@ -1,4 +1,3 @@
-
 export async function sha256(file) {
   const buffer = await file.arrayBuffer()
   const hashBuffer = await crypto.subtle.digest("SHA-256", buffer)

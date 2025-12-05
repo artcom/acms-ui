@@ -26,7 +26,9 @@ export function uploadFile(path, file, acmsAssets) {
 }
 
 async function generateFilename(file) {
-  const extension = file.name.slice((file.name.lastIndexOf(".") - 1 >>> 0) + 2) ? `.${file.name.split('.').pop()}` : ""
+  const extension = file.name.slice(((file.name.lastIndexOf(".") - 1) >>> 0) + 2)
+    ? `.${file.name.split(".").pop()}`
+    : ""
   const name = file.name.replace(extension, "")
   const hash = await sha256(file)
   return toLower(`${name}-${hash}${extension}`.replace(/([^a-z0-9\-.])/gi, "_"))
