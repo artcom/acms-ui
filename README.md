@@ -59,6 +59,10 @@ Create a configuration file (e.g. `acmsConfig.json`) inside the [`acms-config`](
 
 The user management is **not safe** and only meant to provide convenience views on the content. Its possible to filter fields and children by path (see `users/permissions`) to filter *internal* data.
 
+### Debugging
+
+This application uses **Redux Toolkit**. For the best debugging experience, install the [Redux DevTools Chrome Extension](https://chrome.google.com/webstore/detail/redux-devtools/lmhkpmbekcpmknklioeibfkpmmfibljd). It allows you to inspect the state, replay actions, and trace changes without needing `redux-logger`.
+
 ### Templates
 
 Template files specify the structure of the content data while the actual values are located in the `content` directory. Every template entity can have children which themself are structured by a template. Nested templates within the `templates` directory are referenced via local path. E.g.:
@@ -72,6 +76,7 @@ Template files specify the structure of the content data while the actual values
 ```
 
 #### Example
+
 ```jsonc
 {
   "fields": [                                                     // optional list of fields
@@ -121,9 +126,11 @@ Template files specify the structure of the content data while the actual values
 The following field types are supported:
 
 #### `audio`, `file`, `video`
-An uploadable asset which is stored on the asset server with a unique (hashed) filename. 
+
+An uploadable asset which is stored on the asset server with a unique (hashed) filename.
 
 Example:
+
 ```jsonc
 {
     "id": "bachelorThesis",
@@ -134,7 +141,9 @@ Example:
 ```
 
 #### `image`
+
 An uploadable asset which is stored on the asset server with a unique (hashed) filename
+
 * `allowedMimeTypes`: optional list of allowed mime types, default: `["image/*"]`
 * `width`: optional width of the image
 * `minWidth`: optional minimum width of the image
@@ -144,7 +153,8 @@ An uploadable asset which is stored on the asset server with a unique (hashed) f
 * `maxHeight`: optional maximum height of the image
 * `aspectRatio`: optional aspect ratio of the image
 
-Example:	
+Example: 
+
 ```jsonc
 {
     "id": "coverImage",
@@ -162,11 +172,14 @@ Example:
 ```
 
 #### `string`, `markdown`
+
 A string type with the following otional properties:
-  * `multiline`: Defines wether the string can have multiple lines, default: `false`
-  * `maxLength`: Defines the maximum number of characters, default: `Infinity`
+
+* `multiline`: Defines wether the string can have multiple lines, default: `false`
+* `maxLength`: Defines the maximum number of characters, default: `Infinity`
 
 Example:
+
 ```jsonc
 {
     "id": "label",
@@ -178,12 +191,15 @@ Example:
 ```
 
 #### `number`
+
 A number type with the following optional properties:
+
 * `min`: The minimum value, default `-Infinity`
 * `max`: The maximum value, default `Infinity`
 * `integer`: Defines wether the number is an integer, default: `false`
 
 Example:
+
 ```jsonc
 {
     "id": "numLoops",
@@ -195,11 +211,14 @@ Example:
 ```
 
 #### `geolocation`
+
 A geolocation type with values for `lat` (Latitude) and `long` (Longitude).
+
 * `min`: The minimum value, default `lat: -90`, `long: -180`
 * `max`: The maximum value, default `lat: 90`, `long: 180`
 
 Example:
+
 ```jsonc
 {
   "id": "location",
@@ -208,9 +227,11 @@ Example:
 ```
 
 #### `boolean`
+
 A boolean either being `true` or `false`.
 
 Example:
+
 ```jsonc
 {
     "id": "active",
@@ -220,9 +241,11 @@ Example:
 ```
 
 ### `enum`
+
 A list of selectable values.
 
 Example:
+
 ```jsonc
 {
     "id": "myEnum",
@@ -253,8 +276,8 @@ Example:
     ]
 }
 ```
-Note: As shown in the last entry of the `values` array, the `name` property is not required. The displayed name will then be generated based on the type of `value`.
 
+Note: As shown in the last entry of the `values` array, the `name` property is not required. The displayed name will then be generated based on the type of `value`.
 
 ### Field Condition
 
@@ -280,6 +303,7 @@ It is possible to hide/show fields in the CMS frontend depending on sibling fiel
 ```
 
 If several values should be considered you can use the `IN` and `LIST` operator:
+
 ```jsonc
 {
     "id": "coverVideo",
