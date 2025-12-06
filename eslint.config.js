@@ -2,13 +2,14 @@ import js from "@eslint/js"
 import globals from "globals"
 import reactPlugin from "eslint-plugin-react"
 import reactHooksPlugin from "eslint-plugin-react-hooks"
-import importPlugin from "eslint-plugin-import"
+import { importX } from "eslint-plugin-import-x"
 import eslintConfigPrettier from "eslint-config-prettier"
 
 export default [
   js.configs.recommended,
   reactPlugin.configs.flat.recommended,
   reactHooksPlugin.configs.flat.recommended,
+  importX.flatConfigs.recommended,
   {
     files: ["**/*.{js,mjs,cjs,jsx}"],
     languageOptions: {
@@ -24,23 +25,20 @@ export default [
         },
       },
     },
-    plugins: {
-      import: importPlugin,
-    },
     settings: {
       react: {
         version: "detect",
       },
-      "import/resolver": {
+      "import-x/resolver": {
         node: {
           extensions: [".js", ".jsx"],
         },
       },
+      "import-x/ignore": ["node_modules"],
     },
     rules: {
       "react/prop-types": "off",
       "react/react-in-jsx-scope": "off",
-      "import/no-unresolved": "error",
     },
   },
   eslintConfigPrettier,
