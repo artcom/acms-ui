@@ -7,7 +7,8 @@ import * as utils from "../utils"
 export function loadData(acmsApi, acmsConfigPath) {
   return async (dispatch) => {
     try {
-      const { data: config, version } = await acmsApi.queryJson(acmsConfigPath)
+      const version = "master"
+      const { data: config } = await acmsApi.queryJson(acmsConfigPath)
       const [{ data: unresolvedTemplates }, { data: originalContent }] = await Promise.all([
         acmsApi.queryFiles(config.templatesPath, version),
         acmsApi.queryJson(config.contentPath, version),

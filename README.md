@@ -6,11 +6,12 @@ A webapp UI which allows browsing/editing the json content served by the [`acms-
 
 ### Config file
 
-Copy `config.json.template` into `/public/config.json` and change values accordingly. `config.json`is served by webpack dev server or provided in a production environment.
+Copy `config.json.template` into `/public/config.json` and change values accordingly. `config.json`is served by vite dev server or provided in a production environment.
 
 `acmsAssetsUri`: Fully qualified URI to a WebDav enabled server, [`acms-assets`](https://github.com/artcom/acms-assets).  
 `acmsApiUri`: Fully qualified URI to the [`acms-api`](https://github.com/artcom/acms-api) service.  
-`acmsConfigPath`: Relative directory path inside the [`acms-config`](https://github.com/artcom/acms-config) to the ACMS UI configuration JSON file (usually `acmsConfig`, see below).
+`acmsConfigPath`: Relative directory path inside the [`acms-config`](https://github.com/artcom/acms-config) to the ACMS UI configuration JSON file (usually `acmsConfig`, see below).  
+`defaultBranch`: The default Git branch used for reading and writing content, default: `"main"`. **Breaking change:** this used to default to `"master"` — existing deployments relying on the old default must explicitly set `"defaultBranch": "master"` in their `config.json`.
 
 ### ACMS UI Configuration file
 
