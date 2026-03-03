@@ -1,9 +1,7 @@
 import axios from "axios"
 
-const DEFAULT_BRANCH = "master"
-
 export default class AcmsApi {
-  constructor(url, defaultBranch = DEFAULT_BRANCH) {
+  constructor(url, defaultBranch) {
     this.api = axios.create({ baseURL: url })
     console.log("ACMS API URL:", url)
     console.log("ACMS API Default Branch:", defaultBranch)

@@ -7,11 +7,10 @@ import * as utils from "../utils"
 export function loadData(acmsApi, acmsConfigPath) {
   return async (dispatch) => {
     try {
-      const version = "master"
       const { data: config } = await acmsApi.queryJson(acmsConfigPath)
       const [{ data: unresolvedTemplates }, { data: originalContent }] = await Promise.all([
-        acmsApi.queryFiles(config.templatesPath, version),
-        acmsApi.queryJson(config.contentPath, version),
+        acmsApi.queryFiles(config.templatesPath),
+        acmsApi.queryJson(config.contentPath),
       ])
 
       const templates = createNextState(unresolvedTemplates, (draft) =>
@@ -29,7 +28,7 @@ export function loadData(acmsApi, acmsConfigPath) {
           originalContent,
           changedContent,
           templates,
-          version,
+          version: acmsApi.defaultBranch,
         },
       })
     } catch (error) {
