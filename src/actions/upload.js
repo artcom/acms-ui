@@ -1,6 +1,6 @@
 import { toLower } from "lodash"
 
-import { sha256 } from "../utils/sha"
+import { hasSubtleCrypto, sha256 } from "../utils/sha"
 
 import { showError } from "./error"
 import { setValue } from "./value"
@@ -30,8 +30,23 @@ async function generateFilename(file) {
     ? `.${file.name.split(".").pop()}`
     : ""
   const name = file.name.replace(extension, "")
-  const hash = await sha256(file)
-  return toLower(`${name}-${hash}${extension}`.replace(/([^a-z0-9\-.])/gi, "_"))
+  const suffix = hasSubtleCrypto() ? await sha256(file) : createUploadSuffix()
+
+  return formatFilename(`${name}-${suffix}${extension}`)
+}
+
+function createUploadSuffix() {
+  // SubtleCrypto is unavailable on insecure HTTP origins, so use a unique suffix instead.
+  const timestamp = Date.now().toString(36)
+  const random = Math.trunc(Math.random() * 0xffffffff)
+    .toString(36)
+    .padStart(7, "0")
+
+  return `${timestamp}-${random}`
+}
+
+function formatFilename(filename) {
+  return toLower(filename.replace(/([^a-z0-9\-.])/gi, "_"))
 }
 
 function startUpload(path) {
