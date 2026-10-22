@@ -5,12 +5,18 @@ export default async () => {
   const response = await fetch("config.json")
 
   if (response.ok) {
-    const { acmsApiUri, acmsAssetsUri, acmsConfigPath, defaultBranch = "main" } = await response.json()
+    const {
+      acmsApiUri,
+      acmsAssetsUri,
+      acmsConfigPath,
+      defaultBranch = "main",
+      ignoreMissingTemplates = false,
+    } = await response.json()
 
     const acmsApi = new AcmsApi(acmsApiUri, defaultBranch)
     const acmsAssets = new AcmsAssets(acmsAssetsUri)
 
-    return { acmsApi, acmsAssets, acmsConfigPath }
+    return { acmsApi, acmsAssets, acmsConfigPath, ignoreMissingTemplates }
   } else {
     throw new Error(response.statusText)
   }

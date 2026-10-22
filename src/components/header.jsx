@@ -110,7 +110,9 @@ const Header = () => {
             </StyledBreadcrumb>
             <SaveButton
               disabled={!hasChanged || isSaving}
-              onClick={() => dispatch(saveData(context.acmsApi, acmsConfigPath))}
+              onClick={() =>
+                dispatch(saveData(context.acmsApi, acmsConfigPath, context.ignoreMissingTemplates))
+              }
             >
               {config.saveLabel}
             </SaveButton>

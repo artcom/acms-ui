@@ -16,8 +16,8 @@ import "bootstrap/dist/css/bootstrap.min.css"
 
 export const ApiContext = createContext()
 
-bootstrap().then(async ({ acmsApi, acmsAssets, acmsConfigPath }) => {
-  await store.dispatch(loadData(acmsApi, acmsConfigPath))
+bootstrap().then(async ({ acmsApi, acmsAssets, acmsConfigPath, ignoreMissingTemplates }) => {
+  await store.dispatch(loadData(acmsApi, acmsConfigPath, ignoreMissingTemplates))
   await store.dispatch(configPath(acmsConfigPath))
 
   store.dispatch(updateUser())
@@ -34,7 +34,7 @@ bootstrap().then(async ({ acmsApi, acmsAssets, acmsConfigPath }) => {
 
   root.render(
     <Provider store={store}>
-      <ApiContext.Provider value={{ acmsApi, acmsAssets }}>
+      <ApiContext.Provider value={{ acmsApi, acmsAssets, ignoreMissingTemplates }}>
         <Application />
       </ApiContext.Provider>
     </Provider>,

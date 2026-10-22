@@ -29,6 +29,7 @@ export const getPath = (state) => state.path
 export const getNewEntity = (state) => state.newEntity
 export const getRenamedEntity = (state) => state.renamedEntity
 export const getTemplates = (state) => state.templates
+export const getIgnoreMissingTemplates = (state) => state.ignoreMissingTemplates
 export const getSearch = (state) => state.search
 
 export const selectPermissions = createSelector([getUser, getUsers], (user, users) => {
@@ -181,14 +182,29 @@ export const selectVisibleFields = createSelector(
 )
 
 const selectChildren = createSelector(
-  [selectTemplate, selectOriginalEntity, selectChangedEntity, selectTemplates, getPath],
-  (template, originalEntity = {}, changedEntity, templates, path) => {
+  [
+    selectTemplate,
+    selectOriginalEntity,
+    selectChangedEntity,
+    selectTemplates,
+    getPath,
+    getIgnoreMissingTemplates,
+  ],
+  (template, originalEntity = {}, changedEntity, templates, path, ignoreMissingTemplates) => {
     const allIds = Object.keys({ ...originalEntity, ...changedEntity })
     const fieldIds = template.fields.map(({ id }) => id)
     const fixedChildIds = template.fixedChildren.map(({ id }) => id)
 
     return allIds
       .filter((id) => id !== TEMPLATE_KEY && !fieldIds.includes(id) && !fixedChildIds.includes(id))
+      .filter((id) => {
+        if (!ignoreMissingTemplates) {
+          return true
+        }
+
+        const referenceContent = changedEntity[id] || originalEntity[id]
+        return !isUndefined(referenceContent.template)
+      })
       .sort()
       .map((id) => {
         const originalChildContent = originalEntity[id]

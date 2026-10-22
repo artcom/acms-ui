@@ -1,10 +1,11 @@
 import { createNextState } from "@reduxjs/toolkit"
 import isPlainObject from "lodash/isPlainObject"
+import isUndefined from "lodash/isUndefined"
 import { getChangedContent, selectTemplates, getVersion, getContentPath } from "../selectors"
 import { showError } from "./error"
 import * as utils from "../utils"
 
-export function loadData(acmsApi, acmsConfigPath) {
+export function loadData(acmsApi, acmsConfigPath, ignoreMissingTemplates = false) {
   return async (dispatch) => {
     try {
       const { data: config } = await acmsApi.queryJson(acmsConfigPath)
@@ -18,7 +19,7 @@ export function loadData(acmsApi, acmsConfigPath) {
       )
 
       const changedContent = createNextState(originalContent, (draft) =>
-        fixContent(originalContent, draft, templates),
+        fixContent(originalContent, draft, templates, ignoreMissingTemplates),
       )
 
       dispatch({
@@ -29,6 +30,7 @@ export function loadData(acmsApi, acmsConfigPath) {
           changedContent,
           templates,
           version: acmsApi.defaultBranch,
+          ignoreMissingTemplates,
         },
       })
     } catch (error) {
@@ -62,7 +64,7 @@ function resolveCustomTypes(templates, draft, customTypes = {}) {
   })
 }
 
-function fixContent(content, draft, templates) {
+function fixContent(content, draft, templates, ignoreMissingTemplates = false) {
   const { template, ...allEntries } = content
   const { fields = [], fixedChildren = [], children = [] } = utils.getTemplate(template, templates)
 
@@ -98,16 +100,21 @@ function fixContent(content, draft, templates) {
   const namedEntries = [...fields, ...fixedChildren].map(({ id }) => id)
   const additionalChildIds = Object.keys(allEntries).filter((id) => !namedEntries.includes(id))
   additionalChildIds.forEach((id) => {
+    if (ignoreMissingTemplates && isUndefined(content[id].template)) {
+      // leave children without a template untouched
+      return
+    }
+
     if (!children.includes(content[id].template)) {
       // delete children with invalid template
       delete draft[id]
     } else {
-      fixContent(content[id], draft[id], templates)
+      fixContent(content[id], draft[id], templates, ignoreMissingTemplates)
     }
   })
 }
 
-export function saveData(acmsApi, acmsConfigPath) {
+export function saveData(acmsApi, acmsConfigPath, ignoreMissingTemplates = false) {
   return async (dispatch, getState) => {
     const state = getState()
     const version = getVersion(state)
@@ -121,7 +128,7 @@ export function saveData(acmsApi, acmsConfigPath) {
       const contentFiles = toFiles(content, templates)
       await acmsApi.save(contentFiles, contentPath, version)
 
-      dispatch(loadData(acmsApi, acmsConfigPath))
+      dispatch(loadData(acmsApi, acmsConfigPath, ignoreMissingTemplates))
     } catch (error) {
       dispatch(showError("Failed to save Data", error.stack))
     }
@@ -141,7 +148,15 @@ function toFiles({ template, ...content }, templates, path = []) {
 
   // add all fixed children files
   const childIds = Object.keys(content).filter((id) => !fieldIds.includes(id))
-  childIds.forEach((id) => Object.assign(files, toFiles(content[id], templates, [...path, id])))
+  childIds.forEach((id) => {
+    const child = content[id]
+    if (isUndefined(child.template)) {
+      // children without a template have no schema to serialize against: write them back as-is
+      files[[...path, id, "index"].join("/")] = child
+    } else {
+      Object.assign(files, toFiles(child, templates, [...path, id]))
+    }
+  })
 
   return files
 }

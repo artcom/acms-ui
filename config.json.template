@@ -2,5 +2,6 @@
   "acmsAssetsUri": "http://127.0.0.1/services/acms-assets/",
   "acmsApiUri": "http://127.0.0.1/services/acms-api",
   "acmsConfigPath": "acmsConfig",
-  "defaultBranch": "main"
+  "defaultBranch": "main",
+  "ignoreMissingTemplates": false
 }
