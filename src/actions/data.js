@@ -92,7 +92,7 @@ function fixContent(content, draft, templates, ignoreMissingTemplates = false) {
     if (!isPlainObject(content[child.id])) {
       draft[child.id] = utils.createChildValue(child.template, templates)
     } else {
-      fixContent(content[child.id], draft[child.id], templates)
+      fixContent(content[child.id], draft[child.id], templates, ignoreMissingTemplates)
     }
   })
 
