@@ -6,6 +6,11 @@ export function getFromPath(object, path, defaultValue) {
   return path.length === 0 ? object : get(object, path, defaultValue)
 }
 
+// an entry without a template key is not managed by the ACMS UI
+export function isUntemplatedEntry(value) {
+  return isPlainObject(value) && isUndefined(value.template)
+}
+
 export function getTemplate(id, templates) {
   if (templates[id]) {
     return { ...DEFAULT_TEMPLATE, ...templates[id] }

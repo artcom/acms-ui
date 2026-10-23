@@ -28,6 +28,10 @@ export const templates = createReducer(null, (builder) => {
   builder.addCase("UPDATE_DATA", (draft, { payload }) => payload.templates)
 })
 
+export const contentFiles = createReducer(null, (builder) => {
+  builder.addCase("UPDATE_DATA", (draft, { payload }) => payload.contentFiles)
+})
+
 export const originalContent = createReducer(null, (builder) => {
   builder.addCase("UPDATE_DATA", (draft, { payload }) => payload.originalContent)
 })

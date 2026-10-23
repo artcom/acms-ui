@@ -129,6 +129,20 @@ Template files specify the structure of the content data while the actual values
 }
 ```
 
+### Content Files
+
+The content tree is loaded from the ACMS API, which merges all JSON files below the content path into one nested structure. A save sends the whole content directory back as a map of files. The ACMS UI writes the files in the structure they were loaded from:
+
+- An entity stored as `about.json` is saved as `about.json`, an entity stored as `about/index.json` as `about/index.json`. New entities are created as `<id>/index.json`.
+- Entries without a `template` key are not managed by the ACMS UI. They are hidden, left untouched on load and written back unchanged: their original files are copied, or they stay inside the index file of their parent if they were stored there.
+- Entries whose template is not listed in `children` of their parent, and values that are neither fields nor children, are deleted on save.
+
+#### Limitations
+
+- All managed files are rewritten as strict JSON with the fields in template order. Comments (JSON5) are lost.
+- Files that are not JSON are removed by the ACMS API on every save.
+- If an entity exists in two forms at once (`about.json` and `about/index.json`), the API merges both on load and the ACMS UI saves one `about/index.json`. If both files set the same key, only one value is kept.
+
 ### Field Types
 
 The following field types are supported:
@@ -319,3 +333,8 @@ If several values should be considered you can use the `IN` and `LIST` operator:
   "condition": ["IN", ["GET", "layoutType"], ["LIST", "videoCover", "imageCover"]],
 }
 ```
+
+## Future Improvements
+
+- **Save on top of the loaded commit.** The ACMS UI sends the default branch name as parent version when saving. The ACMS API then writes on top of the latest commit of the branch and does not merge. Changes committed by others after the content was loaded are overwritten without a conflict. Using the commit hash of the loaded content as parent version would make the API merge the changes or report a conflict.
+- **Write only changed files.** The ACMS API deletes the whole content directory on every save. Sending only changed files and an explicit list of deletions would keep untouched files and formatting.

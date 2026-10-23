@@ -1,17 +1,29 @@
 import { createNextState } from "@reduxjs/toolkit"
 import isPlainObject from "lodash/isPlainObject"
-import { getChangedContent, selectTemplates, getVersion, getContentPath } from "../selectors"
+import {
+  getChangedContent,
+  getContentFiles,
+  selectTemplates,
+  getVersion,
+  getContentPath,
+} from "../selectors"
 import { showError } from "./error"
 import * as utils from "../utils"
+import { toFiles } from "../utils/files"
 
 export function loadData(acmsApi, acmsConfigPath) {
   return async (dispatch) => {
     try {
-      const { data: config } = await acmsApi.queryJson(acmsConfigPath)
-      const [{ data: unresolvedTemplates }, { data: originalContent }] = await Promise.all([
-        acmsApi.queryFiles(config.templatesPath),
-        acmsApi.queryJson(config.contentPath),
-      ])
+      const { data: config, version: commit } = await acmsApi.queryJson(acmsConfigPath)
+
+      // load everything from the same commit, falls back to the default branch if the API
+      // does not expose the commit hash
+      const [{ data: unresolvedTemplates }, { data: originalContent }, { data: contentFiles }] =
+        await Promise.all([
+          acmsApi.queryFiles(config.templatesPath, commit),
+          acmsApi.queryJson(config.contentPath, commit),
+          acmsApi.queryFiles(config.contentPath, commit),
+        ])
 
       const templates = createNextState(unresolvedTemplates, (draft) =>
         resolveCustomTypes(unresolvedTemplates, draft, config.customTypes),
@@ -27,6 +39,7 @@ export function loadData(acmsApi, acmsConfigPath) {
           config,
           originalContent,
           changedContent,
+          contentFiles,
           templates,
           version: acmsApi.defaultBranch,
         },
@@ -98,11 +111,18 @@ function fixContent(content, draft, templates) {
   const namedEntries = [...fields, ...fixedChildren].map(({ id }) => id)
   const additionalChildIds = Object.keys(allEntries).filter((id) => !namedEntries.includes(id))
   additionalChildIds.forEach((id) => {
-    if (!children.includes(content[id].template)) {
+    const child = content[id]
+
+    if (utils.isUntemplatedEntry(child)) {
+      // leave children without a template untouched, they are not managed by the ACMS UI
+      return
+    }
+
+    if (!isPlainObject(child) || !children.includes(child.template)) {
       // delete children with invalid template
       delete draft[id]
     } else {
-      fixContent(content[id], draft[id], templates)
+      fixContent(child, draft[id], templates)
     }
   })
 }
@@ -114,11 +134,12 @@ export function saveData(acmsApi, acmsConfigPath) {
     const content = getChangedContent(state)
     const templates = selectTemplates(state)
     const contentPath = getContentPath(state)
+    const originalFiles = getContentFiles(state)
 
     try {
       dispatch({ type: "START_SAVING" })
 
-      const contentFiles = toFiles(content, templates)
+      const contentFiles = toFiles(content, templates, originalFiles)
       await acmsApi.save(contentFiles, contentPath, version)
 
       dispatch(loadData(acmsApi, acmsConfigPath))
@@ -126,22 +147,4 @@ export function saveData(acmsApi, acmsConfigPath) {
       dispatch(showError("Failed to save Data", error.stack))
     }
   }
-}
-
-function toFiles({ template, ...content }, templates, path = []) {
-  const files = {}
-  const fields = utils.getTemplate(template, templates).fields || []
-
-  // add index file
-  const fieldIds = fields.map(({ id }) => id)
-  files[[...path, "index"].join("/")] = fieldIds.reduce(
-    (result, id) => ({ ...result, [id]: content[id] }),
-    { template },
-  )
-
-  // add all fixed children files
-  const childIds = Object.keys(content).filter((id) => !fieldIds.includes(id))
-  childIds.forEach((id) => Object.assign(files, toFiles(content[id], templates, [...path, id])))
-
-  return files
 }

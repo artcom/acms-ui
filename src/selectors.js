@@ -15,6 +15,7 @@ const TEMPLATE_KEY = "template"
 
 export const getVersion = (state) => state.version
 export const getOriginalContent = (state) => state.originalContent
+export const getContentFiles = (state) => state.contentFiles
 export const getChangedContent = (state) => state.changedContent
 export const getLanguages = (state) => state.config.languages
 export const getContentPath = (state) => state.config.contentPath
@@ -189,6 +190,7 @@ const selectChildren = createSelector(
 
     return allIds
       .filter((id) => id !== TEMPLATE_KEY && !fieldIds.includes(id) && !fixedChildIds.includes(id))
+      .filter((id) => !utils.isUntemplatedEntry(changedEntity[id] || originalEntity[id]))
       .sort()
       .map((id) => {
         const originalChildContent = originalEntity[id]
