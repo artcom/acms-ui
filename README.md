@@ -337,4 +337,5 @@ If several values should be considered you can use the `IN` and `LIST` operator:
 ## Future Improvements
 
 - **Save on top of the loaded commit.** The ACMS UI sends the default branch name as parent version when saving. The ACMS API then writes on top of the latest commit of the branch and does not merge. Changes committed by others after the content was loaded are overwritten without a conflict. Using the commit hash of the loaded content as parent version would make the API merge the changes or report a conflict.
+- **Keep split entries without a template intact.** If an entry without a `template` key is stored partly in the file of its parent and partly in its own files, only its own files are written back and the part inside the parent file is lost.
 - **Write only changed files.** The ACMS API deletes the whole content directory on every save. Sending only changed files and an explicit list of deletions would keep untouched files and formatting.

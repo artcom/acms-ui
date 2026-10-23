@@ -299,7 +299,12 @@ export const getNeighbourSiblings = createSelector(
     Object.keys(parentEntity)
       .sort()
       .forEach((id) => {
-        if (id !== TEMPLATE_KEY && !fieldIds.includes(id) && !fixedChildIds.includes(id)) {
+        if (
+          id !== TEMPLATE_KEY &&
+          !fieldIds.includes(id) &&
+          !fixedChildIds.includes(id) &&
+          !utils.isUntemplatedEntry(parentEntity[id])
+        ) {
           siblingsIds.push(id)
         }
       })
